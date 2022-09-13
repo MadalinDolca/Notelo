@@ -1,0 +1,15 @@
+<resources>
+    <!-- radius size -->
+    <dimen name="radius10">10dp</dimen>
+    <dimen name="radius20">20dp</dimen>
+
+    <!-- text size -->
+    <dimen name="text_small">15sp</dimen>
+    <dimen name="text_standard">20sp</dimen>
+    <dimen name="text_big">30sp</dimen>
+
+    <!-- padding size -->
+    <dimen name="padding_background">25sp</dimen>
+    <dimen name="padding_text">16dp</dimen>
+
+</resources>

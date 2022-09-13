@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "502710986065",
+    "project_id": "notelo-000",
+    "storage_bucket": "notelo-000.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502710986065:android:825d0aed7750b4af675f70",
+        "android_client_info": {
+          "package_name": "com.madalin.notelo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502710986065-4cliu4015rrretbi44j7kso85eiuic8h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3jOSGleH-eN43_DT6uun9YMqzzGa3X2Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502710986065-4cliu4015rrretbi44j7kso85eiuic8h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="email_address">Adresa de email</string>
+    <string name="password">Parola</string>
+    <string name="dont_have_account">Nu ai un cont?</string>
+    <string name="login">Autentifică-te</string>
+    <string name="sign_up">Înscrie-te</string>
+    <string name="confirm_password">Confirmă parola</string>
+    <string name="create_account">Crează contul</string>
+    <string name="already_have_account">Ai deja un cont?</string>
+</resources>
