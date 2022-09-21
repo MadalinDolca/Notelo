@@ -17,7 +17,7 @@
 
         <!-- register lottie -->
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/register_lottie"
+            android:id="@+id/lottie"
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_centerHorizontal="true"
@@ -27,10 +27,10 @@
 
         <!-- email address -->
         <EditText
-            android:id="@+id/register_editTextEmail"
+            android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/register_lottie"
+            android:layout_below="@id/lottie"
             android:layout_marginTop="15dp"
             android:background="@drawable/background_rounded"
             android:backgroundTint="@color/background_alt"
@@ -42,10 +42,10 @@
 
         <!-- password -->
         <EditText
-            android:id="@+id/register_editTextPassword"
+            android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/register_editTextEmail"
+            android:layout_below="@id/editTextEmail"
             android:layout_marginTop="15dp"
             android:background="@drawable/background_rounded"
             android:backgroundTint="@color/background_alt"
@@ -56,10 +56,10 @@
 
         <!-- confirm password -->
         <EditText
-            android:id="@+id/register_editTextConfirmPassword"
+            android:id="@+id/editTextConfirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/register_editTextPassword"
+            android:layout_below="@id/editTextPassword"
             android:layout_marginTop="15dp"
             android:background="@drawable/background_rounded"
             android:backgroundTint="@color/background_alt"
@@ -70,10 +70,10 @@
 
         <!-- register button -->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/register_buttonCreateAccount"
+            android:id="@+id/buttonCreateAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/register_editTextConfirmPassword"
+            android:layout_below="@id/editTextConfirmPassword"
             android:layout_marginTop="15dp"
             android:background="@drawable/background_rounded"
             android:backgroundTint="@color/primary"
@@ -86,7 +86,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/register_buttonCreateAccount"
+            android:layout_below="@id/buttonCreateAccount"
             android:layout_marginTop="30dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
@@ -98,8 +98,9 @@
                 android:textColor="@color/text"
                 android:textSize="@dimen/text_standard" />
 
-            <!-- sign up text -->
+            <!-- login text -->
             <TextView
+                android:id="@+id/textViewLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
