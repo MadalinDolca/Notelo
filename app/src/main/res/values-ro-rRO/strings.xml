@@ -8,4 +8,15 @@
     <string name="confirm_password">Confirmă parola</string>
     <string name="create_account">Crează contul</string>
     <string name="already_have_account">Ai deja un cont?</string>
+    <string name="email_cant_be_empty">Email-ul nu poate fi gol!</string>
+    <string name="email_is_invalid">Email-ul este invalid!</string>
+    <string name="password_cant_be_empty">Parola nu poate fi goală!</string>
+    <string name="password_is_too_short">Parola este prea scurtă!</string>
+    <string name="passwords_dont_match">Parolele nu se potrivesc!</string>
+    <string name="processing">Se procesează</string>
+    <string name="error_creating_account">Eroare la crearea contului</string>
+    <string name="you_have_successfully_registered">Te-ai înregistrat cu succes!</string>
+    <string name="data_recording_error">Eroare înregistrare date</string>
+    <string name="check_your_email_to_confirm_your_account">Verifică-ți email pentru a-ți confirma contul!</string>
+    <string name="login_error">Eroare la autentificare</string>
 </resources>

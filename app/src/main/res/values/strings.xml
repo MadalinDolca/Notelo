@@ -8,4 +8,15 @@
     <string name="confirm_password">Confirm password</string>
     <string name="create_account">Create account</string>
     <string name="already_have_account">Already have an account?</string>
+    <string name="email_cant_be_empty">The email can\'t be empty!</string>
+    <string name="email_is_invalid">The email is invalid!</string>
+    <string name="password_cant_be_empty">Password can\'t be empty!</string>
+    <string name="password_is_too_short">The password is too short!</string>
+    <string name="passwords_dont_match">Passwords don\'t match!</string>
+    <string name="processing">Processing</string>
+    <string name="error_creating_account">Error creating account</string>
+    <string name="you_have_successfully_registered">You have successfully registered!</string>
+    <string name="data_recording_error">Data recording error</string>
+    <string name="check_your_email_to_confirm_your_account">Check your email to confirm your account!</string>
+    <string name="login_error">Login error</string>
 </resources>
