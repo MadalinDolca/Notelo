@@ -17,7 +17,7 @@
 
         <!-- login lottie -->
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/login_lottie"
+            android:id="@+id/lottie"
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_centerHorizontal="true"
@@ -27,10 +27,10 @@
 
         <!-- email address -->
         <EditText
-            android:id="@+id/login_editTextEmail"
+            android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/login_lottie"
+            android:layout_below="@id/lottie"
             android:layout_marginTop="15dp"
             android:background="@drawable/background_rounded"
             android:backgroundTint="@color/background_alt"
@@ -42,10 +42,10 @@
 
         <!-- password -->
         <EditText
-            android:id="@+id/login_editTextPassword"
+            android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/login_editTextEmail"
+            android:layout_below="@id/editTextEmail"
             android:layout_marginTop="15dp"
             android:background="@drawable/background_rounded"
             android:backgroundTint="@color/background_alt"
@@ -56,10 +56,10 @@
 
         <!-- login button -->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/login_buttonLogin"
+            android:id="@+id/buttonLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/login_editTextPassword"
+            android:layout_below="@id/editTextPassword"
             android:layout_marginTop="15dp"
             android:background="@drawable/background_rounded"
             android:backgroundTint="@color/primary"
@@ -72,7 +72,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/login_buttonLogin"
+            android:layout_below="@id/buttonLogin"
             android:layout_marginTop="30dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
@@ -86,6 +86,7 @@
 
             <!-- sign up text -->
             <TextView
+                android:id="@+id/textViewSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
