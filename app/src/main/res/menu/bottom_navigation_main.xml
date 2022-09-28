@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Bottom Navigation menu buttons -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/notesFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_notes"
+        android:title="@string/notes" />
+
+    <item
+        android:id="@+id/recipesFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_recipe"
+        android:title="@string/recipes" />
+
+    <item
+        android:id="@+id/prayersFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_prayer"
+        android:title="@string/prayers" />
+</menu>
