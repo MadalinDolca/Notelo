@@ -1,4 +1,4 @@
-package com.madalin.notelo
+package com.madalin.notelo.ui
 
 import android.content.ContentResolver
 import android.graphics.Color
@@ -12,17 +12,17 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 
 object EdgeToEdge {
-    enum class Inset {
-        BARS, GESTURES
-    }
+    //enum class Inset { BARS, GESTURES }
+    //enum class Spacing { MARGIN, PADDING }
+    //enum class Direction { LEFT, TOP, RIGHT, BOTTOM }
 
-    enum class Spacing {
-        MARGIN, PADDING
-    }
+    const val SPACING_MARGIN = 13000
+    const val SPACING_PADDING = 13001
 
-    enum class Direction {
-        LEFT, TOP, RIGHT, BOTTOM
-    }
+    const val DIRECTION_LEFT = 14000
+    const val DIRECTION_TOP = 14001
+    const val DIRECTION_RIGHT = 14002
+    const val DIRECTION_BOTTOM = 14003
 
     /**
      * Expands the given activity on the entire screen and makes the system bars transparent.
@@ -49,7 +49,7 @@ object EdgeToEdge {
      * @param spacing the type of [Spacing] to apply on the [givenView]
      * @param direction the view [Direction] to which the spacing should be applied
      */
-    fun edgeToEdge(givenActivity: AppCompatActivity, givenView: View, spacing: Spacing, direction: Direction?) {
+    fun edgeToEdge(givenActivity: AppCompatActivity, givenView: View, spacing: Int, direction: Int?) {
         // applies Edge to Edge if the OS version >= Q (API 29) and if the Gesture Navigation is enabled
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (isGestureNavigationEnabled(givenActivity.contentResolver)) {
@@ -57,24 +57,24 @@ object EdgeToEdge {
 
                 givenView.setOnApplyWindowInsetsListener { view, windowInsets ->
                     // applies Insets as margins for the view
-                    if (spacing == Spacing.MARGIN) {
+                    if (spacing == SPACING_MARGIN) {
                         view.updateLayoutParams<MarginLayoutParams> {
                             when (direction) {
-                                Direction.LEFT -> leftMargin = windowInsets.systemWindowInsetLeft
-                                Direction.TOP -> topMargin = windowInsets.systemWindowInsetTop
-                                Direction.RIGHT -> rightMargin = windowInsets.systemWindowInsetRight
-                                Direction.BOTTOM -> bottomMargin = windowInsets.systemWindowInsetBottom
+                                DIRECTION_LEFT -> leftMargin = windowInsets.systemWindowInsetLeft
+                                DIRECTION_TOP -> topMargin = windowInsets.systemWindowInsetTop
+                                DIRECTION_RIGHT -> rightMargin = windowInsets.systemWindowInsetRight
+                                DIRECTION_BOTTOM -> bottomMargin = windowInsets.systemWindowInsetBottom
                                 else -> {}
                             }
                         }
                     }
                     // applies Insets as paddings for the view
-                    else if (spacing == Spacing.PADDING) {
+                    else if (spacing == SPACING_PADDING) {
                         when (direction) {
-                            Direction.LEFT -> view.updatePadding(windowInsets.systemWindowInsetLeft, view.paddingTop, view.paddingRight, view.paddingBottom)
-                            Direction.TOP -> view.updatePadding(view.paddingLeft, windowInsets.systemWindowInsetTop, view.paddingRight, view.paddingBottom)
-                            Direction.RIGHT -> view.updatePadding(view.paddingLeft, view.paddingTop, windowInsets.systemWindowInsetRight, view.paddingBottom)
-                            Direction.BOTTOM -> view.updatePadding(view.paddingLeft, view.paddingTop, view.paddingRight, windowInsets.systemWindowInsetBottom)
+                            DIRECTION_LEFT -> view.updatePadding(windowInsets.systemWindowInsetLeft, view.paddingTop, view.paddingRight, view.paddingBottom)
+                            DIRECTION_TOP -> view.updatePadding(view.paddingLeft, windowInsets.systemWindowInsetTop, view.paddingRight, view.paddingBottom)
+                            DIRECTION_RIGHT -> view.updatePadding(view.paddingLeft, view.paddingTop, windowInsets.systemWindowInsetRight, view.paddingBottom)
+                            DIRECTION_BOTTOM -> view.updatePadding(view.paddingLeft, view.paddingTop, view.paddingRight, windowInsets.systemWindowInsetBottom)
                             else -> {}
                         }
                     }

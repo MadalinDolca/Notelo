@@ -19,4 +19,12 @@
     <string name="data_recording_error">Data recording error</string>
     <string name="check_your_email_to_confirm_your_account">Check your email to confirm your account!</string>
     <string name="login_error">Login error</string>
+    <string name="notes">Notes</string>
+    <string name="recipes">Recipes</string>
+    <string name="prayers">Prayers</string>
+    <string name="note_title">Note\'s title</string>
+    <string name="note_content">Note\'s content</string>
+    <string name="you_dont_have_any_notes">You don\'t have any notes</string>
+    <string name="add">Add</string>
+
 </resources>

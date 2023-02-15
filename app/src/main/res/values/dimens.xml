@@ -9,7 +9,12 @@
     <dimen name="text_big">30sp</dimen>
 
     <!-- padding size -->
-    <dimen name="padding_background">25sp</dimen>
-    <dimen name="padding_text">16dp</dimen>
+    <dimen name="padding_container">15dp</dimen>
+    <dimen name="padding_sole_screen">25dp</dimen>
+
+    <!-- margin size -->
+    <dimen name="margin_container">10dp</dimen>
+    <dimen name="margin_element">15dp</dimen>
+    <dimen name="margin_separator">30dp</dimen>
 
 </resources>

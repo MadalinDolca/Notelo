@@ -7,13 +7,14 @@
     android:background="@color/background"
     android:fillViewport="true"
     android:scrollbars="none"
-    tools:context=".LoginActivity">
+    tools:context=".authentication.LoginActivity">
 
     <!-- container -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_background">
+        android:gravity="center"
+        android:padding="@dimen/padding_sole_screen">
 
         <!-- login lottie -->
         <com.airbnb.lottie.LottieAnimationView
@@ -31,12 +32,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/lottie"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="@dimen/margin_element"
             android:background="@drawable/background_rounded"
             android:backgroundTint="@color/background_alt"
             android:hint="@string/email_address"
             android:inputType="textEmailAddress"
-            android:padding="@dimen/padding_text"
+            android:padding="@dimen/padding_container"
             android:textColor="@color/text"
             android:textSize="@dimen/text_standard" />
 
@@ -46,12 +47,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/editTextEmail"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="@dimen/margin_element"
             android:background="@drawable/background_rounded"
             android:backgroundTint="@color/background_alt"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:padding="@dimen/padding_text"
+            android:padding="@dimen/padding_container"
             android:textSize="@dimen/text_standard" />
 
         <!-- login button -->
@@ -60,10 +61,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/editTextPassword"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="@dimen/margin_element"
             android:background="@drawable/background_rounded"
             android:backgroundTint="@color/primary"
-            android:padding="@dimen/padding_text"
+            android:padding="@dimen/padding_container"
             android:text="@string/login"
             android:textColor="@color/text_on_primary"
             android:textSize="@dimen/text_standard" />
@@ -73,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/buttonLogin"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="@dimen/margin_separator"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -89,7 +90,7 @@
                 android:id="@+id/textViewSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="@dimen/margin_element"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"

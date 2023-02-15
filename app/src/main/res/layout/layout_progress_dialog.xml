@@ -14,7 +14,7 @@
         android:backgroundTint="@color/background_alt"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="@dimen/padding_background">
+        android:padding="@dimen/padding_container">
 
         <!-- progress bar -->
         <ProgressBar
@@ -38,7 +38,7 @@
             android:id="@+id/textViewMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/margin_element"
             android:text="@string/processing"
             android:textColor="@color/text"
             android:textSize="@dimen/text_standard" />

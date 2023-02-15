@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- Bottom Navigation menu buttons -->
+<!-- Bottom Navigation menu buttons having the same IDs as @navigation/main_fragments -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/notesFragment"

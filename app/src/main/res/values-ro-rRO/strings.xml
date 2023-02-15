@@ -19,4 +19,12 @@
     <string name="data_recording_error">Eroare înregistrare date</string>
     <string name="check_your_email_to_confirm_your_account">Verifică-ți email pentru a-ți confirma contul!</string>
     <string name="login_error">Eroare la autentificare</string>
+    <string name="notes">Notițe</string>
+    <string name="recipes">Rețete</string>
+    <string name="prayers">Rugăciuni</string>
+    <string name="note_title">Note\'s title</string>
+    <string name="note_content">Note\'s content</string>
+    <string name="you_dont_have_any_notes">Nu ai notițe</string>
+    <string name="add">Adaugă</string>
+
 </resources>

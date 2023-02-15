@@ -1,17 +1,19 @@
-package com.madalin.notelo
+package com.madalin.notelo.authentication
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Patterns
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.madalin.notelo.EdgeToEdge.Direction.*
-import com.madalin.notelo.EdgeToEdge.Spacing.*
-import com.madalin.notelo.EdgeToEdge.edgeToEdge
+import com.madalin.notelo.MainActivity
+import com.madalin.notelo.R
 import com.madalin.notelo.databinding.ActivityLoginBinding
+import com.madalin.notelo.ui.EdgeToEdge.DIRECTION_BOTTOM
+import com.madalin.notelo.ui.EdgeToEdge.DIRECTION_TOP
+import com.madalin.notelo.ui.EdgeToEdge.SPACING_MARGIN
+import com.madalin.notelo.ui.EdgeToEdge.edgeToEdge
+import com.madalin.notelo.ui.PopupBanner
 
 class LoginActivity : AppCompatActivity() {
 
@@ -22,8 +24,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater) // get activity views
         setContentView(binding.root) // setContentView(R.layout.activity_login)
-        edgeToEdge(this, binding.lottie, MARGIN, TOP)
-        edgeToEdge(this, binding.textViewSignUp, MARGIN, BOTTOM)
+        edgeToEdge(this, binding.lottie, SPACING_MARGIN, DIRECTION_TOP)
+        edgeToEdge(this, binding.textViewSignUp, SPACING_MARGIN, DIRECTION_BOTTOM)
 
         binding.buttonLogin.setOnClickListener { loginUser() }
 
@@ -42,13 +44,13 @@ class LoginActivity : AppCompatActivity() {
      */
     fun loginUser() {
         // get fields data
-        var email = binding.editTextEmail.text.toString().trim()
-        var password = binding.editTextPassword.text.toString().trim()
+        val email = binding.editTextEmail.text.toString().trim()
+        val password = binding.editTextPassword.text.toString().trim()
 
         // checks the correctness of the data in the fields
         when {
             //email
-            TextUtils.isEmpty(email) -> {
+            email.isEmpty() -> {
                 binding.editTextEmail.error = getString(R.string.email_cant_be_empty)
                 binding.editTextEmail.requestFocus()
             }
@@ -58,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             // password
-            TextUtils.isEmpty(password) -> {
+            password.isEmpty() -> {
                 binding.editTextPassword.error = getString(R.string.password_cant_be_empty)
                 binding.editTextPassword.requestFocus()
             }
@@ -79,12 +81,19 @@ class LoginActivity : AppCompatActivity() {
                                 finish()
                             } else {
                                 auth.currentUser?.sendEmailVerification() // sends a verification email
-                                Toast.makeText(this@LoginActivity, getString(R.string.check_your_email_to_confirm_your_account), Toast.LENGTH_SHORT).show()
+
+                                PopupBanner.make(
+                                    this@LoginActivity, PopupBanner.TYPE_FAILURE,
+                                    getString(R.string.check_your_email_to_confirm_your_account)
+                                ).show()
                             }
                         }
                         // if the authentication failed
                         else {
-                            Toast.makeText(this@LoginActivity, getString(R.string.login_error), Toast.LENGTH_SHORT).show()
+                            PopupBanner.make(
+                                this@LoginActivity, PopupBanner.TYPE_FAILURE,
+                                getString(R.string.login_error)
+                            ).show()
                         }
                     }
             }

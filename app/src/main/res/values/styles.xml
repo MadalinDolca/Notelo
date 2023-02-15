@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- PopupBanner Top Animation -->
+    <style name="popupBannerTopAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/popupbanner_top_enter</item>
+        <item name="android:windowExitAnimation">@anim/popupbanner_top_exit</item>
+    </style>
+
+    <!-- PopupBanner Bottom Animation -->
+    <style name="popupBannerBottomAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/popupbanner_bottom_enter</item>
+        <item name="android:windowExitAnimation">@anim/popupbanner_bottom_exit</item>
+    </style>
+</resources>

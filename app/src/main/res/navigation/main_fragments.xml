@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- navigation for the fragments used in MainActivity -->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation_main"
+    android:id="@+id/main_fragments"
     app:startDestination="@id/notesFragment">
 
+    <!-- NotesFragment -->
     <fragment
         android:id="@+id/notesFragment"
         android:name="com.madalin.notelo.notes.NotesFragment"
         android:label="fragment_notes"
         tools:layout="@layout/fragment_notes" />
 
+    <!-- RecipesFragment -->
     <fragment
         android:id="@+id/recipesFragment"
         android:name="com.madalin.notelo.recipes.RecipesFragment"
         android:label="fragment_recipes"
         tools:layout="@layout/fragment_recipes" />
 
+    <!-- PrayersFragment -->
     <fragment
         android:id="@+id/prayersFragment"
         android:name="com.madalin.notelo.prayers.PrayersFragment"
         android:label="fragment_prayers"
         tools:layout="@layout/fragment_prayers" />
+
 </navigation>
