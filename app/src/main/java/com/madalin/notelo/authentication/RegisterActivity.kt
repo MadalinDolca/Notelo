@@ -129,6 +129,8 @@ class RegisterActivity : AppCompatActivity() {
                                 this@RegisterActivity, PopupBanner.TYPE_FAILURE,
                                 "${getString(R.string.error_creating_account)}: ${userCreationTask.exception?.message}"
                             ).show()
+
+                            AppProgressDialog.dismiss()
                         }
                     }
             }
