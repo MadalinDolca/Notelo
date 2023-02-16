@@ -1,11 +1,9 @@
 package com.madalin.notelo.authentication
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Patterns
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -13,8 +11,8 @@ import com.google.firebase.ktx.Firebase
 import com.madalin.notelo.Collection.USERS
 import com.madalin.notelo.R
 import com.madalin.notelo.databinding.ActivityRegisterBinding
-import com.madalin.notelo.databinding.LayoutProgressDialogBinding
 import com.madalin.notelo.models.User
+import com.madalin.notelo.ui.AppProgressDialog
 import com.madalin.notelo.ui.EdgeToEdge.DIRECTION_BOTTOM
 import com.madalin.notelo.ui.EdgeToEdge.DIRECTION_TOP
 import com.madalin.notelo.ui.EdgeToEdge.SPACING_MARGIN
@@ -24,9 +22,6 @@ import com.madalin.notelo.ui.PopupBanner
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
-    private lateinit var progressDialog: ProgressDialog
-    private lateinit var progressDialogBinding: LayoutProgressDialogBinding
-
     private var auth = Firebase.auth
     private var firestore = Firebase.firestore
 
@@ -91,16 +86,7 @@ class RegisterActivity : AppCompatActivity() {
 
             // if the data is correct, proceed to registration in Firebase
             else -> {
-                // prepare and show the progress dialog
-                progressDialog = ProgressDialog(this@RegisterActivity)
-                progressDialog.apply {
-                    show()
-                    window?.setBackgroundDrawableResource(android.R.color.transparent) // transparent background
-                    setContentView(R.layout.layout_progress_dialog)
-
-                    progressDialogBinding = LayoutProgressDialogBinding.inflate(progressDialog.layoutInflater) // get progress dialog views
-                    progressDialog.setContentView(progressDialogBinding.root)
-                }
+                AppProgressDialog.make(this@RegisterActivity, getString(R.string.processing)) // shows a dialog
 
                 // initiate user account creation
                 auth.createUserWithEmailAndPassword(email, password)
@@ -116,15 +102,11 @@ class RegisterActivity : AppCompatActivity() {
                                     .addOnCompleteListener { addDatabaseTask ->
                                         // if the data has been successfully stored to the database
                                         if (addDatabaseTask.isSuccessful) {
-                                            progressDialogBinding.apply {
-                                                progressBar.visibility = View.GONE // hides the spinner
-                                                lottie.visibility = View.VISIBLE // shows the lottie animation
-                                                textViewMessage.text = getString(R.string.you_have_successfully_registered) // sets a text message
-                                            }
+                                            AppProgressDialog.update(AppProgressDialog.TYPE_SUCCESS, getString(R.string.you_have_successfully_registered)) // updates the dialog
 
                                             // removes the progress dialog and starts the LoginActivity
                                             Handler().postDelayed({
-                                                progressDialog.dismiss()
+                                                AppProgressDialog.dismiss()
                                                 startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
                                                 finish()
                                             }, 3000)
@@ -136,7 +118,7 @@ class RegisterActivity : AppCompatActivity() {
                                                 "${getString(R.string.data_recording_error)}: ${userCreationTask.exception?.message}"
                                             ).show()
 
-                                            progressDialog.dismiss()
+                                            AppProgressDialog.dismiss()
                                         }
                                     }
                             }
