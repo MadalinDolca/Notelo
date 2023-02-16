@@ -5,6 +5,7 @@
     <color name="secondary">#FFD559</color>
     <color name="background">#FFFFFF</color>
     <color name="background_alt">#F2F2F2</color>
+    <color name="stroke">#ECECEC</color>
     <color name="text">#414141</color>
     <color name="text_alt">#6A6A6A</color>
     <color name="text_on_primary">#FFFFFF</color>

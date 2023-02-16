@@ -5,101 +5,133 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:fillViewport="true"
     android:scrollbars="none"
     tools:context=".authentication.LoginActivity">
 
     <!-- container -->
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="vertical"
         android:padding="@dimen/padding_sole_screen">
 
-        <!-- login lottie -->
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/lottie"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:layout_centerHorizontal="true"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="false"
-            app:lottie_rawRes="@raw/lottie_login" />
-
-        <!-- email address -->
-        <EditText
-            android:id="@+id/editTextEmail"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/lottie"
-            android:layout_marginTop="@dimen/margin_element"
-            android:background="@drawable/background_rounded"
-            android:backgroundTint="@color/background_alt"
-            android:hint="@string/email_address"
-            android:inputType="textEmailAddress"
-            android:padding="@dimen/padding_container"
-            android:textColor="@color/text"
-            android:textSize="@dimen/text_standard" />
+            android:layout_height="wrap_content">
 
-        <!-- password -->
-        <EditText
-            android:id="@+id/editTextPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/editTextEmail"
-            android:layout_marginTop="@dimen/margin_element"
-            android:background="@drawable/background_rounded"
-            android:backgroundTint="@color/background_alt"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:padding="@dimen/padding_container"
-            android:textSize="@dimen/text_standard" />
+            <!-- login lottie -->
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="false"
+                app:lottie_rawRes="@raw/lottie_login" />
 
-        <!-- login button -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/editTextPassword"
-            android:layout_marginTop="@dimen/margin_element"
-            android:background="@drawable/background_rounded"
-            android:backgroundTint="@color/primary"
-            android:padding="@dimen/padding_container"
-            android:text="@string/login"
-            android:textColor="@color/text_on_primary"
-            android:textSize="@dimen/text_standard" />
+            <!-- email address -->
+            <EditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_element"
+                android:background="@drawable/background_rounded"
+                android:backgroundTint="@color/background_alt"
+                android:hint="@string/email_address"
+                android:inputType="textEmailAddress"
+                android:padding="@dimen/padding_container"
+                android:textColor="@color/text"
+                android:textSize="@dimen/text_standard"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lottie" />
 
-        <!-- sign up layout -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/buttonLogin"
-            android:layout_marginTop="@dimen/margin_separator"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
+            <!-- password -->
+            <EditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_element"
+                android:background="@drawable/background_rounded"
+                android:backgroundTint="@color/background_alt"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:padding="@dimen/padding_container"
+                android:textSize="@dimen/text_standard"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextEmail"
+                app:layout_constraintWidth_max="300dp" />
 
+            <!-- login button -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_element"
+                android:background="@drawable/background_rounded"
+                android:backgroundTint="@color/primary"
+                android:padding="@dimen/padding_container"
+                android:text="@string/login"
+                android:textColor="@color/text_on_primary"
+                android:textSize="@dimen/text_standard"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextPassword" />
+
+            <!-- dont have an account -->
             <TextView
+                android:id="@+id/textViewDontHaveAnAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_separator"
                 android:text="@string/dont_have_account"
                 android:textColor="@color/text"
-                android:textSize="@dimen/text_standard" />
+                android:textSize="@dimen/text_standard"
+                app:layout_constraintEnd_toStartOf="@+id/textViewSignUp"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/buttonLogin" />
 
-            <!-- sign up text -->
+            <!-- sign up -->
             <TextView
                 android:id="@+id/textViewSignUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_element"
+                android:layout_marginTop="@dimen/margin_separator"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
                 android:text="@string/sign_up"
                 android:textColor="@color/primary"
                 android:textSize="@dimen/text_standard"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textViewDontHaveAnAccount"
+                app:layout_constraintTop_toBottomOf="@id/buttonLogin" />
 
-    </RelativeLayout>
+            <!-- recover account -->
+            <TextView
+                android:id="@+id/textView_recoverAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_element"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="@string/recover_your_account"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/text_standard"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewDontHaveAnAccount" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 
 </ScrollView>

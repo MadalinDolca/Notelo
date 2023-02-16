@@ -34,6 +34,12 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
             finish()
         }
+
+        // starts PasswordResetActivity upon clicking the "Recover account" TextView
+        binding.textViewRecoverAccount.setOnClickListener {
+            startActivity(Intent(this@LoginActivity, PasswordResetActivity::class.java))
+            finish()
+        }
     }
 
     /**
