@@ -30,6 +30,7 @@ class PopupBanner {
         // popup's type
         const val TYPE_SUCCESS = 2000
         const val TYPE_FAILURE = 2001
+        const val TYPE_INFO = 2003
 
         /**
          * Returns an instance of the current [PopupBanner] if it exists, otherwise creates a new one.
@@ -120,6 +121,7 @@ class PopupBanner {
             when (type) {
                 TYPE_SUCCESS -> binding?.imageView?.setImageResource(R.drawable.ic_check_circle)
                 TYPE_FAILURE -> binding?.imageView?.setImageResource(R.drawable.ic_cancel_circle)
+                TYPE_INFO -> binding?.imageView?.setImageResource(R.drawable.ic_info_circle)
             }
         }
     }
