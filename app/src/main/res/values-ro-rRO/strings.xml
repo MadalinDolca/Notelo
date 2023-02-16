@@ -26,5 +26,10 @@
     <string name="note_content">Note\'s content</string>
     <string name="you_dont_have_any_notes">Nu ai notițe</string>
     <string name="add">Adaugă</string>
+    <string name="reset_your_password">Resetează-ți parola</string>
+    <string name="go_back_to_login">Întoarce-te la <b>autentificare</b></string>
+    <string name="check_your_email_to_reset_your_password">Verifică-ți email-ul pentru a-ți reseta parola</string>
+    <string name="something_went_wrong_please_try_again">Ceva nu a mers bine, te rog să încearci din nou</string>
+    <string name="recover_your_account">Recuperează-ți contul</string>
 
 </resources>
