@@ -31,5 +31,7 @@
     <string name="check_your_email_to_reset_your_password">Check your email to reset your password</string>
     <string name="something_went_wrong_please_try_again">Something went wrong, please try again</string>
     <string name="recover_your_account">Recover your account</string>
+    <string name="collection">Collection</string>
+    <string name="discover">Discover</string>
 
 </resources>

@@ -3,20 +3,20 @@
 <!-- Bottom Navigation menu buttons having the same IDs as @navigation/main_fragments -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/notesFragment"
+        android:id="@+id/collectionFragment"
         android:enabled="true"
-        android:icon="@drawable/ic_notes"
-        android:title="@string/notes" />
+        android:icon="@drawable/ic_collection"
+        android:title="@string/collection" />
 
     <item
-        android:id="@+id/recipesFragment"
+        android:id="@+id/addFragment"
         android:enabled="true"
-        android:icon="@drawable/ic_recipe"
-        android:title="@string/recipes" />
+        android:icon="@drawable/ic_add_circle"
+        android:title="@string/add" />
 
     <item
-        android:id="@+id/prayersFragment"
+        android:id="@+id/discoverFragment"
         android:enabled="true"
-        android:icon="@drawable/ic_prayer"
-        android:title="@string/prayers" />
+        android:icon="@drawable/ic_explore"
+        android:title="@string/discover" />
 </menu>

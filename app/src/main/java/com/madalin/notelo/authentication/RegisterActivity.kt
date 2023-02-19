@@ -11,13 +11,13 @@ import com.google.firebase.ktx.Firebase
 import com.madalin.notelo.Collection.USERS
 import com.madalin.notelo.R
 import com.madalin.notelo.databinding.ActivityRegisterBinding
-import com.madalin.notelo.models.User
-import com.madalin.notelo.ui.AppProgressDialog
-import com.madalin.notelo.ui.EdgeToEdge.DIRECTION_BOTTOM
-import com.madalin.notelo.ui.EdgeToEdge.DIRECTION_TOP
-import com.madalin.notelo.ui.EdgeToEdge.SPACING_MARGIN
-import com.madalin.notelo.ui.EdgeToEdge.edgeToEdge
-import com.madalin.notelo.ui.PopupBanner
+import com.madalin.notelo.user.User
+import com.madalin.notelo.utilities.AppProgressDialog
+import com.madalin.notelo.utilities.EdgeToEdge.DIRECTION_BOTTOM
+import com.madalin.notelo.utilities.EdgeToEdge.DIRECTION_TOP
+import com.madalin.notelo.utilities.EdgeToEdge.SPACING_MARGIN
+import com.madalin.notelo.utilities.EdgeToEdge.edgeToEdge
+import com.madalin.notelo.utilities.PopupBanner
 
 class RegisterActivity : AppCompatActivity() {
 

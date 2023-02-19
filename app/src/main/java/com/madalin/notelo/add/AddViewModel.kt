@@ -1,7 +1,7 @@
-package com.madalin.notelo.recipes
+package com.madalin.notelo.add
 
 import androidx.lifecycle.ViewModel
 
-class RecipesViewModel : ViewModel() {
+class AddViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }

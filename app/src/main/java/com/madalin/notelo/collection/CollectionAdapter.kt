@@ -1,4 +1,4 @@
-package com.madalin.notelo.notes
+package com.madalin.notelo.collection
 
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.madalin.notelo.databinding.LayoutBannerNoteBinding
 
-class NotesAdapter : RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
+class CollectionAdapter : RecyclerView.Adapter<CollectionAdapter.NotesViewHolder>() {
     private var notesList = mutableListOf<Note>()
 
     /**

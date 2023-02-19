@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
     android:scrollbars="none"
     tools:context=".authentication.LoginActivity">
 
@@ -38,13 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_element"
-                android:background="@drawable/background_rounded"
-                android:backgroundTint="@color/background_alt"
                 android:hint="@string/email_address"
                 android:inputType="textEmailAddress"
-                android:padding="@dimen/padding_container"
-                android:textColor="@color/text"
-                android:textSize="@dimen/text_standard"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/lottie" />
 
@@ -54,12 +48,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_element"
-                android:background="@drawable/background_rounded"
-                android:backgroundTint="@color/background_alt"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:padding="@dimen/padding_container"
-                android:textSize="@dimen/text_standard"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/editTextEmail"
                 app:layout_constraintWidth_max="300dp" />
@@ -70,24 +60,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_element"
-                android:background="@drawable/background_rounded"
-                android:backgroundTint="@color/primary"
-                android:padding="@dimen/padding_container"
                 android:text="@string/login"
-                android:textColor="@color/text_on_primary"
-                android:textSize="@dimen/text_standard"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/editTextPassword" />
 
-            <!-- dont have an account -->
+            <!-- don't have an account -->
             <TextView
                 android:id="@+id/textViewDontHaveAnAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_separator"
                 android:text="@string/dont_have_account"
-                android:textColor="@color/text"
-                android:textSize="@dimen/text_standard"
                 app:layout_constraintEnd_toStartOf="@+id/textViewSignUp"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
@@ -97,16 +80,12 @@
             <!-- sign up -->
             <TextView
                 android:id="@+id/textViewSignUp"
+                style="@style/TextViewClickable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_element"
                 android:layout_marginTop="@dimen/margin_separator"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
                 android:text="@string/sign_up"
-                android:textColor="@color/primary"
-                android:textSize="@dimen/text_standard"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -116,16 +95,12 @@
             <!-- recover account -->
             <TextView
                 android:id="@+id/textView_recoverAccount"
+                style="@style/TextViewClickable"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_element"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
                 android:gravity="center"
                 android:text="@string/recover_your_account"
-                android:textColor="@color/primary"
-                android:textSize="@dimen/text_standard"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewDontHaveAnAccount" />

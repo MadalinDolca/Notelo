@@ -1,4 +1,4 @@
-package com.madalin.notelo.ui
+package com.madalin.notelo.utilities
 
 import android.content.ContentResolver
 import android.graphics.Color

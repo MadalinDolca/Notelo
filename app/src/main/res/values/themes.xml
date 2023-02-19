@@ -11,29 +11,14 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
-        <!-- Customize your theme here. -->
 
-        <!-- light status bar and dark content -->
-        <item name="android:windowLightStatusBar">true</item>
-    </style>
-
-    <!-- SplashScreenActivity -->
-    <style name="SplashScreenTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:windowBackground">@drawable/background_splashscreen</item>
-
-        <!-- status bar and navigation bar transparent background -->
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-
-        <!-- light status bar and dark content -->
-        <item name="android:windowLightStatusBar">true</item>
-    </style>
-
-    <!-- Bottom Sheet Dialog Menu -->
-    <style name="BottomSheetDialogMeniuTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="android:colorBackground">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@color/background_alt</item>
-        <item name="android:windowIsFloating">false</item>
+        <!-- Custom -->
+        <item name="android:windowLightStatusBar">true</item> <!-- light status bar and dark content -->
+        <item name="android:windowBackground">@color/background</item> <!-- window background color -->
+        <item name="android:textSize">@dimen/text_standard</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="editTextStyle">@style/EditText</item> <!-- EditText style -->
+        <item name="buttonStyle">@style/Button</item>
     </style>
 
 </resources>

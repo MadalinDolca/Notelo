@@ -1,4 +1,4 @@
-package com.madalin.notelo.ui
+package com.madalin.notelo.utilities
 
 import android.app.Activity
 import android.content.Context
@@ -158,8 +158,8 @@ class PopupBanner {
      */
     fun setAnimation(): PopupBanner {
         when (gravity) {
-            Gravity.TOP -> animation = R.style.popupBannerTopAnimation
-            Gravity.BOTTOM -> animation = R.style.popupBannerBottomAnimation
+            Gravity.TOP -> animation = R.style.PopupBannerTopAnimation
+            Gravity.BOTTOM -> animation = R.style.PopupBannerBottomAnimation
         }
 
         return instance as PopupBanner

@@ -1,7 +1,7 @@
-package com.madalin.notelo.prayers
+package com.madalin.notelo.discover
 
 import androidx.lifecycle.ViewModel
 
-class PrayersViewModel : ViewModel() {
+class DiscoverViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }

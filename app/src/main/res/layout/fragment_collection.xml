@@ -5,7 +5,7 @@
     android:id="@+id/relativeLayoutContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".notes.NotesFragment">
+    tools:context=".collection.CollectionFragment">
 
     <!-- RecyclerView of notes -->
     <androidx.recyclerview.widget.RecyclerView

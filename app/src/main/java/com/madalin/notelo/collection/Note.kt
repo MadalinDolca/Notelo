@@ -1,27 +1,21 @@
-package com.madalin.notelo.models
+package com.madalin.notelo.collection
 
 import com.google.firebase.firestore.ServerTimestamp
 import java.io.Serializable
 import java.util.*
 
-data class User(
+data class Note(
     var key: String = "",
-    var email: String = "",
-    var role: String = ROLE_DEFAULT
+    var title: String = "No title",
+    var content: String = "No content",
+    var color: String = ""
 ) : Serializable {
-
-    var name: String = ""
 
     @ServerTimestamp
     private var createdAt: Date = Date() // private to avoid JVM clash
 
     @ServerTimestamp
     private var updatedAt: Date = Date()
-
-    companion object {
-        const val ROLE_ADMIN = "admin"
-        const val ROLE_DEFAULT = "default"
-    }
 
     fun getCreatedAt(): Date {
         return createdAt

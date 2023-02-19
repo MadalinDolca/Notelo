@@ -1,14 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- EditText -->
+    <style name="EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/background_rounded</item>
+        <item name="android:backgroundTint">@color/background_alt</item>
+        <item name="android:padding">@dimen/padding_container</item>
+    </style>
+
+    <!-- Clickable TextView -->
+    <style name="TextViewClickable">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:textColor">@color/primary</item>
+    </style>
+
+    <!-- Button -->
+    <style name="Button" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/background_rounded</item>
+        <item name="android:backgroundTint">@color/primary</item>
+        <item name="android:padding">@dimen/padding_container</item>
+        <item name="android:textColor">@color/text_on_primary</item>
+    </style>
+
+    <!-- Splash Screen -->
+    <style name="SplashScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/background_splashscreen</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <!-- Bottom Sheet Dialog -->
+    <style name="BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/background_alt</item>
+
+        <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
+        <!--<item name="android:windowCloseOnTouchOutside">false</item>-->
+        <!--<item name="android:windowIsTranslucent">true</item>-->
+        <!--<item name="android:windowContentOverlay">@null</item>-->
+        <!--<item name="android:backgroundDimEnabled">true</item>-->
+        <!--<item name="android:backgroundDimAmount">0.3</item>-->
+        <!--<item name="android:windowFrame">@null</item>-->
+    </style>
+
     <!-- PopupBanner Top Animation -->
-    <style name="popupBannerTopAnimation" parent="android:Animation">
+    <style name="PopupBannerTopAnimation" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/popupbanner_top_enter</item>
         <item name="android:windowExitAnimation">@anim/popupbanner_top_exit</item>
     </style>
 
     <!-- PopupBanner Bottom Animation -->
-    <style name="popupBannerBottomAnimation" parent="android:Animation">
+    <style name="PopupBannerBottomAnimation" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/popupbanner_bottom_enter</item>
         <item name="android:windowExitAnimation">@anim/popupbanner_bottom_exit</item>
     </style>
+
 </resources>

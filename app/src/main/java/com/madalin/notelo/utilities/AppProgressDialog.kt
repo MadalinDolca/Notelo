@@ -1,4 +1,4 @@
-package com.madalin.notelo.ui
+package com.madalin.notelo.utilities
 
 import android.app.ProgressDialog
 import android.content.Context
@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import com.madalin.notelo.R
 import com.madalin.notelo.databinding.LayoutProgressDialogBinding
-import com.madalin.notelo.ui.PopupBanner.Companion.instance
 
 class AppProgressDialog {
     private var context: Context? = null

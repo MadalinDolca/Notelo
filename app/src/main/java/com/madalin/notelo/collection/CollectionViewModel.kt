@@ -1,4 +1,4 @@
-package com.madalin.notelo.notes
+package com.madalin.notelo.collection
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -10,7 +10,7 @@ import com.google.firebase.ktx.Firebase
 import com.madalin.notelo.Collection.NOTES
 
 // Hold and manage UI-related data in a life-cycle conscious way
-class NotesViewModel : ViewModel() {
+class CollectionViewModel : ViewModel() {
     private val firestore = Firebase.firestore
     private var notesList = mutableListOf<Note>() // for storing the notes
 

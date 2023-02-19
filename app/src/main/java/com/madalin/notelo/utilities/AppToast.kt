@@ -1,4 +1,4 @@
-//package com.madalin.notelo.ui
+package com.madalin.notelo.utilities//package com.madalin.notelo.ui
 //
 //import android.content.Context
 //import android.view.LayoutInflater
