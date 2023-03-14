@@ -1,4 +1,4 @@
-package com.madalin.notelo.user
+package com.madalin.notelo.models
 
 import android.os.Parcelable
 import com.google.firebase.firestore.ServerTimestamp
@@ -7,16 +7,11 @@ import java.io.Serializable
 import java.util.*
 
 @Parcelize
-data class User(
+data class Tag(
     var id: String = "",
-    var email: String = "",
+    var categoryId: String = "",
     var name: String = "",
-    var role: String = ROLE_DEFAULT,
+    var color: String = "",
     @ServerTimestamp var createdAt: Date? = null,
     @ServerTimestamp var updatedAt: Date? = null
-) : Parcelable {
-    companion object {
-        const val ROLE_ADMIN = "admin"
-        const val ROLE_DEFAULT = "default"
-    }
-}
+) : Parcelable

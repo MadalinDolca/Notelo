@@ -7,19 +7,13 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import com.madalin.notelo.Collection.USERS
-import com.madalin.notelo.authentication.LoginActivity
+import com.madalin.notelo.screens.authentication.LoginActivity
 import com.madalin.notelo.databinding.ActivityMainBinding
-import com.madalin.notelo.user.User
-import com.madalin.notelo.user.UserData.getUserData
-import com.madalin.notelo.utilities.EdgeToEdge.DIRECTION_BOTTOM
-import com.madalin.notelo.utilities.EdgeToEdge.DIRECTION_TOP
-import com.madalin.notelo.utilities.EdgeToEdge.SPACING_PADDING
-import com.madalin.notelo.utilities.EdgeToEdge.edgeToEdge
-import com.madalin.notelo.utilities.PopupBanner
+import com.madalin.notelo.util.EdgeToEdge.DIRECTION_BOTTOM
+import com.madalin.notelo.util.EdgeToEdge.DIRECTION_TOP
+import com.madalin.notelo.util.EdgeToEdge.SPACING_PADDING
+import com.madalin.notelo.util.EdgeToEdge.edgeToEdge
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -31,8 +25,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root) // setContentView(R.layout.activity_main)
         edgeToEdge(this, binding.coordinatorLayoutContainer, SPACING_PADDING, DIRECTION_TOP)
         edgeToEdge(this, binding.coordinatorLayoutContainer, SPACING_PADDING, DIRECTION_BOTTOM)
-
-        getUserData(this@MainActivity)
 
         navigationController = (supportFragmentManager.findFragmentById(binding.fragmentContainerView.id) as NavHostFragment).navController
         // navigationController = findNavController(binding.fragmentContainerView.id) //navigationController = findNavController(R.id.fragmentContainerView)
