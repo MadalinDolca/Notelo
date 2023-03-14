@@ -2,6 +2,13 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
+
+    // Safe Args
+    //id 'androidx.navigation.safeargs' // Java or mixed Java and Kotlin modules
+    id 'androidx.navigation.safeargs.kotlin' // Kotlin-only modules
+
+    // @Parcelize
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -70,4 +77,7 @@ dependencies {
 
     // Palette
     implementation 'androidx.palette:palette:1.0.0'
+
+    // SwipeRefreshLayout
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 }
