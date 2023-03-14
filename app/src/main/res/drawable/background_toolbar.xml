@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Toolbar Background -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="@color/background_alt" />
+
+    <corners
+        android:bottomLeftRadius="@dimen/radius17"
+        android:bottomRightRadius="@dimen/radius17" />
+
+</shape>

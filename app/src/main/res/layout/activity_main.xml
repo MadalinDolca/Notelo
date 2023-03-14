@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/main_fragments" />
+        app:navGraph="@navigation/main_navigation" />
 
     <!-- add button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -38,7 +38,7 @@
         android:layout_margin="@dimen/margin_element"
         android:background="@drawable/background_rounded"
         app:backgroundTint="@color/background_alt"
-        app:itemIconTint="@drawable/selector_bottom_navigation"
+        app:itemIconTint="@drawable/bottom_navigation_item_color"
         app:itemTextColor="@color/primary"
         app:labelVisibilityMode="selected"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
@@ -48,6 +48,7 @@
         android:id="@+id/buttonSignOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end"
         android:text="Sign Out"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />

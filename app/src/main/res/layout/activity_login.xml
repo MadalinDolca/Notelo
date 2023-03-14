@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
-    tools:context=".authentication.LoginActivity">
+    tools:context=".screens.authentication.LoginActivity">
 
     <!-- container -->
     <LinearLayout
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical"
-        android:padding="@dimen/padding_sole_screen">
+        android:padding="@dimen/padding_container">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -34,35 +34,40 @@
             <!-- email address -->
             <EditText
                 android:id="@+id/editTextEmail"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_element"
                 android:hint="@string/email_address"
                 android:inputType="textEmailAddress"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lottie" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lottie"
+                app:layout_constraintWidth_max="@dimen/width_element" />
 
             <!-- password -->
             <EditText
                 android:id="@+id/editTextPassword"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_element"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/editTextEmail"
-                app:layout_constraintWidth_max="300dp" />
+                app:layout_constraintWidth_max="@dimen/width_element" />
 
             <!-- login button -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/buttonLogin"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_element"
                 android:text="@string/login"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/editTextPassword" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+                app:layout_constraintWidth_max="@dimen/width_element" />
 
             <!-- don't have an account -->
             <TextView
