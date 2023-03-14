@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- navigation for the fragments used in MainActivity -->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_fragments"
+    app:startDestination="@id/categoriesFragment">
+
+    <!-- CategoriesFragment -->
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.madalin.notelo.screens.notes.categories.CategoriesFragment"
+        android:label="fragment_categories"
+        tools:layout="@layout/fragment_categories">
+        <action
+            android:id="@+id/action_categoriesFragment_to_categoryNotesFragment"
+            app:destination="@id/categoryNotesFragment" />
+    </fragment>
+
+    <!-- AddFragment -->
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="com.madalin.notelo.screens.add.AddFragment"
+        android:label="fragment_add"
+        tools:layout="@layout/fragment_add">
+        <action
+            android:id="@+id/action_addFragment_to_categoriesFragment"
+            app:destination="@id/categoriesFragment" />
+    </fragment>
+
+    <!-- DiscoverFragment -->
+    <fragment
+        android:id="@+id/discoverFragment"
+        android:name="com.madalin.notelo.screens.discover.DiscoverFragment"
+        android:label="fragment_discover"
+        tools:layout="@layout/fragment_discover">
+        <action
+            android:id="@+id/action_discoverFragment_to_categoriesFragment"
+            app:destination="@id/categoriesFragment" />
+    </fragment>
+
+    <!-- CategoryNotesFragment -->
+    <fragment
+        android:id="@+id/categoryNotesFragment"
+        android:name="com.madalin.notelo.screens.notes.categorynotes.CategoryNotesFragment"
+        android:label="fragment_category_notes"
+        tools:layout="@layout/fragment_category_notes">
+        <action
+            android:id="@+id/action_categoryNotesFragment_to_categoriesFragment"
+            app:destination="@id/categoriesFragment" />
+        <argument
+            android:name="categoryData"
+            app:argType="com.madalin.notelo.models.Category" />
+    </fragment>
+
+</navigation>
