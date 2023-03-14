@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Text style used in layouts -->
+    <!--    <style name="TextStyle" parent="android:TextAppearance">-->
+    <!--        <item name="android:textColor">@color/text</item>-->
+    <!--        <item name="android:textSize">@dimen/text_standard</item>-->
+    <!--    </style>-->
+
     <!-- EditText -->
-    <style name="EditText" parent="Widget.AppCompat.EditText">
+    <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:background">@drawable/background_rounded</item>
         <item name="android:backgroundTint">@color/background_alt</item>
         <item name="android:padding">@dimen/padding_container</item>
@@ -16,26 +22,50 @@
     </style>
 
     <!-- Button -->
-    <style name="Button" parent="Widget.AppCompat.Button">
+    <style name="ButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/background_rounded</item>
         <item name="android:backgroundTint">@color/primary</item>
         <item name="android:padding">@dimen/padding_container</item>
         <item name="android:textColor">@color/text_on_primary</item>
     </style>
 
-    <!-- Splash Screen -->
-    <style name="SplashScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:windowBackground">@drawable/background_splashscreen</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+    <!-- RadioButton -->
+    <style name="RadioButtonFlatStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:background">@drawable/radio_button_selector_background</item>
+        <item name="android:textColor">@drawable/radio_button_selector_text_selector</item>
+        <item name="android:padding">@dimen/padding_small</item>
+    </style>
+
+    <!-- Spinner -->
+    <style name="SpinnerStyle" parent="Widget.AppCompat.Spinner">
+        <item name="android:background">@drawable/spinner_background</item>
+        <item name="android:popupBackground">@drawable/spinner_popup_background</item>
+    </style>
+
+    <!-- TabLayout -->
+    <style name="TabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabGravity">fill</item>
+        <item name="tabIndicator">@drawable/background_rounded</item>
+        <item name="tabIndicatorAnimationMode">elastic</item>
+        <item name="tabIndicatorColor">@color/primary</item>
+        <item name="tabIndicatorGravity">stretch</item>
+        <item name="tabMode">scrollable</item>
+        <item name="tabSelectedTextColor">@color/text_on_primary</item>
+        <item name="tabTextColor">@color/text</item>
     </style>
 
     <!-- Bottom Sheet Dialog -->
-    <style name="BottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
+    <style name="BottomSheetDialogStyle">
         <item name="android:windowIsFloating">false</item>
-        <item name="android:colorBackground">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@color/background_alt</item>
+        <item name="android:colorBackground">@null</item>
+        <!--        <item name="android:layout_margin">2dp</item>-->
 
+        <!-- components -->
+        <!--        <item name="buttonStyle">@style/ButtonStyle</item>-->
+        <!--        <item name="radioButtonStyle">@style/RadioButtonFlatStyle</item>-->
+        <!--        <item name="spinnerStyle">@style/SpinnerStyle</item>-->
+
+        <!--<item name="android:navigationBarColor">@color/background_alt</item>-->
         <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
         <!--<item name="android:windowCloseOnTouchOutside">false</item>-->
         <!--<item name="android:windowIsTranslucent">true</item>-->
@@ -43,6 +73,13 @@
         <!--<item name="android:backgroundDimEnabled">true</item>-->
         <!--<item name="android:backgroundDimAmount">0.3</item>-->
         <!--<item name="android:windowFrame">@null</item>-->
+    </style>
+
+    <!-- Splash Screen -->
+    <style name="SplashScreenStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@drawable/background_splashscreen</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <!-- PopupBanner Top Animation -->

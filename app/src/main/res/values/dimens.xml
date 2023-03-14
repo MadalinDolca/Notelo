@@ -1,7 +1,7 @@
 <resources>
     <!-- radius size -->
     <dimen name="radius10">10dp</dimen>
-    <dimen name="radius20">20dp</dimen>
+    <dimen name="radius17">17dp</dimen>
 
     <!-- text size -->
     <dimen name="text_small">15sp</dimen>
@@ -9,12 +9,14 @@
     <dimen name="text_big">30sp</dimen>
 
     <!-- padding size -->
-    <dimen name="padding_container">15dp</dimen>
-    <dimen name="padding_sole_screen">25dp</dimen>
+    <dimen name="padding_small">7dp</dimen>
+    <dimen name="padding_container">13dp</dimen>
 
     <!-- margin size -->
-    <dimen name="margin_container">10dp</dimen>
-    <dimen name="margin_element">15dp</dimen>
+    <dimen name="margin_element">13dp</dimen>
     <dimen name="margin_separator">30dp</dimen>
+
+    <!-- width size -->
+    <dimen name="width_element">370dp</dimen>
 
 </resources>

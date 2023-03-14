@@ -31,5 +31,26 @@
     <string name="check_your_email_to_reset_your_password">Verifică-ți email-ul pentru a-ți reseta parola</string>
     <string name="something_went_wrong_please_try_again">Ceva nu a mers bine, te rog să încearci din nou</string>
     <string name="recover_your_account">Recuperează-ți contul</string>
+    <string name="collection">Colecție</string>
+    <string name="discover">Descoperă</string>
+    <string name="message">Mesaj</string>
+    <string name="collections">Colecții</string>
+    <string name="collection_name">Numele colecției</string>
+    <string name="categories">Categorii</string>
+    <string name="category_name">Numele categoriei</string>
+    <string name="untagged">Neetichetat</string>
+    <string name="all_notes">Toate notele</string>
+    <string name="tag">Etichetă</string>
+    <string name="edit">Editează</string>
+    <string name="uncategorized">Necategorizat</string>
+    <string name="edited">Editat</string>
+    <string name="category">Categorie</string>
+    <string name="tags">Etichete</string>
+    <string name="visibility">Vizibilitate</string>
+    <string name="detele_note">Șterge nota</string>
+    <string name="save_changes">Salvează schimbările</string>
+    <string name="private_note">Notă privată</string>
+    <string name="public_note">Notă publică</string>
+    <string name="done">Terminat</string>
 
 </resources>
