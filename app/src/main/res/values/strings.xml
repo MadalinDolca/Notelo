@@ -55,5 +55,7 @@
     <string name="public_note">Public note</string>
     <string name="done">Done</string>
     <string name="properties">Properties</string>
+    <string name="save">Save</string>
+    <string name="note_updated_successfully">Note updated successfully!</string>
 
 </resources>
