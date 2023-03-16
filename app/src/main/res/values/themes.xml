@@ -26,7 +26,7 @@
         <item name="radioButtonStyle">@style/RadioButtonFlatStyle</item>
         <item name="spinnerStyle">@style/SpinnerStyle</item>
         <item name="tabStyle">@style/TabLayoutStyle</item>
-<!--        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogStyle</item>-->
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogStyle</item>
     </style>
 
 </resources>
