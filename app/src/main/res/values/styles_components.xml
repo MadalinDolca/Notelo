@@ -54,27 +54,6 @@
         <item name="tabTextColor">@color/text</item>
     </style>
 
-    <!-- Bottom Sheet Dialog -->
-    <style name="BottomSheetDialogStyle">
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:colorBackground">@null</item>
-        <!--        <item name="android:layout_margin">2dp</item>-->
-
-        <!-- components -->
-        <!--        <item name="buttonStyle">@style/ButtonStyle</item>-->
-        <!--        <item name="radioButtonStyle">@style/RadioButtonFlatStyle</item>-->
-        <!--        <item name="spinnerStyle">@style/SpinnerStyle</item>-->
-
-        <!--<item name="android:navigationBarColor">@color/background_alt</item>-->
-        <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
-        <!--<item name="android:windowCloseOnTouchOutside">false</item>-->
-        <!--<item name="android:windowIsTranslucent">true</item>-->
-        <!--<item name="android:windowContentOverlay">@null</item>-->
-        <!--<item name="android:backgroundDimEnabled">true</item>-->
-        <!--<item name="android:backgroundDimAmount">0.3</item>-->
-        <!--<item name="android:windowFrame">@null</item>-->
-    </style>
-
     <!-- Splash Screen -->
     <style name="SplashScreenStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splashscreen</item>
@@ -82,16 +61,18 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
-    <!-- PopupBanner Top Animation -->
-    <style name="PopupBannerTopAnimation" parent="android:Animation">
-        <item name="android:windowEnterAnimation">@anim/popupbanner_top_enter</item>
-        <item name="android:windowExitAnimation">@anim/popupbanner_top_exit</item>
-    </style>
+    <!-- Bottom Sheet Dialog -->
+    <style name="BottomSheetDialogStyle" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:colorBackground">@null</item>
+        <item name="android:layout_marginStart">2dp</item>
+        <item name="android:layout_marginEnd">2dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
 
-    <!-- PopupBanner Bottom Animation -->
-    <style name="PopupBannerBottomAnimation" parent="android:Animation">
-        <item name="android:windowEnterAnimation">@anim/popupbanner_bottom_enter</item>
-        <item name="android:windowExitAnimation">@anim/popupbanner_bottom_exit</item>
+        <!-- components -->
+        <item name="buttonStyle">@style/ButtonStyle</item>
+        <item name="radioButtonStyle">@style/RadioButtonFlatStyle</item>
+        <item name="spinnerStyle">@style/SpinnerStyle</item>
     </style>
 
 </resources>
