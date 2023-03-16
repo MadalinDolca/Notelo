@@ -8,7 +8,7 @@ import com.madalin.notelo.databinding.LayoutSpinnerItemBinding
 import com.madalin.notelo.models.Category
 
 /**
- * Adapter used for the categories shown in the category spinner.
+ * Adapter used for the categories shown in the Category Spinner.
  */
 class SpinnerCategoryAdapter : BaseAdapter() {
     private lateinit var binding: LayoutSpinnerItemBinding
@@ -16,12 +16,13 @@ class SpinnerCategoryAdapter : BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         if (convertView == null) {
-            binding = LayoutSpinnerItemBinding.inflate(LayoutInflater.from(parent?.context), parent, false)
+            binding = LayoutSpinnerItemBinding.inflate(LayoutInflater.from(parent?.context))
             binding.root.tag = binding
         } else {
             binding = convertView.tag as LayoutSpinnerItemBinding
         }
 
+        // sets the data
         binding.textViewCategoryName.text = categoriesList[position].name
 
         return binding.root
