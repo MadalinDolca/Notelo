@@ -10,23 +10,24 @@ import androidx.lifecycle.get
 import androidx.recyclerview.widget.GridLayoutManager
 import com.madalin.notelo.R
 import com.madalin.notelo.components.PopupBanner
+import com.madalin.notelo.components.categoryproperties.CategoryPropertiesDialog
 import com.madalin.notelo.databinding.FragmentCategoriesBinding
 import com.madalin.notelo.util.GridSpacingItemDecoration
 
 class CategoriesFragment : Fragment() {
     private lateinit var binding: FragmentCategoriesBinding
-    private lateinit var categoriesViewModel: CategoriesViewModel
+    private lateinit var viewModel: CategoriesViewModel
     private lateinit var categoriesAdapter: CategoriesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        categoriesAdapter = CategoriesAdapter()
-        categoriesViewModel = ViewModelProvider(this).get() // gets the associated ViewModels
+        categoriesAdapter = CategoriesAdapter(context)
+        viewModel = ViewModelProvider(this).get() // gets the associated ViewModels
 
         // checks if the user's categories have been fetched and gets them otherwise
-        if (categoriesViewModel.getCategoriesListLiveData.value == null) {
-            categoriesViewModel.getCategoriesFromFirestore()
+        if (viewModel.categoriesListLiveData.value == null) {
+            viewModel.getCategoriesFromFirestore()
         }
     }
 
@@ -46,7 +47,7 @@ class CategoriesFragment : Fragment() {
         }
 
         // user's categories fetching observer
-        categoriesViewModel.getCategoriesListLiveData.observe(viewLifecycleOwner) {
+        viewModel.categoriesListLiveData.observe(viewLifecycleOwner) {
             if (it != null) {
                 categoriesAdapter.setCategoriesList(it) // updates the categories from the adapter
                 categoriesAdapter.notifyDataSetChanged()
@@ -56,14 +57,19 @@ class CategoriesFragment : Fragment() {
         }
 
         // user's categories failed fetching observer
-        categoriesViewModel.getErrorMessageLiveData.observe(viewLifecycleOwner) {
+        viewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
             PopupBanner.make(context, PopupBanner.TYPE_FAILURE, it).show()
         }
 
         // swipe refresh
         binding.swipeRefreshLayout.setOnRefreshListener {
-            categoriesViewModel.getCategoriesFromFirestore()
+            viewModel.getCategoriesFromFirestore()
             binding.swipeRefreshLayout.isRefreshing = false // hide the refresh indicator when the data has been fetched
+        }
+
+        // FAB that triggers the category creation dialog
+        binding.floatingActionButton.setOnClickListener {
+            CategoryPropertiesDialog(requireContext(), CategoryPropertiesDialog.MODE_CREATE).show()
         }
     }
 }

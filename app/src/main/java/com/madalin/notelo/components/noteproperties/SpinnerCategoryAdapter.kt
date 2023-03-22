@@ -1,4 +1,4 @@
-package com.madalin.notelo.components.notesproperties
+package com.madalin.notelo.components.noteproperties
 
 import android.view.LayoutInflater
 import android.view.View

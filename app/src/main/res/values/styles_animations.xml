@@ -11,4 +11,5 @@
         <item name="android:windowEnterAnimation">@anim/popupbanner_bottom_enter</item>
         <item name="android:windowExitAnimation">@anim/popupbanner_bottom_exit</item>
     </style>
+
 </resources>

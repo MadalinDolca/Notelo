@@ -57,5 +57,23 @@
     <string name="properties">Properties</string>
     <string name="save">Save</string>
     <string name="note_updated_successfully">Note updated successfully!</string>
+    <string name="select_tags">Select tags</string>
+    <string name="note_deleted_successfully">Note deleted successfully!</string>
+    <string name="you_don_t_have_any_notes_in_this_category">You don\'t have any notes in this category</string>
+    <string name="action">Action</string>
+    <string name="create_category">Create category</string>
+    <string name="private_category">Private category</string>
+    <string name="public_category">Public category</string>
+    <string name="create">Create</string>
+    <string name="cancel">Cancel</string>
+    <string name="category_created_successfully">Category created successfully!</string>
+    <string name="_private">Private</string>
+    <string name="_public">Public</string>
+    <string name="pick_a_color">Pick a color</string>
+    <string name="confirm">Confirm</string>
+    <string name="category_name_is_too_short">Category name is too short</string>
+    <string name="category_updated_successfully">Category updated successfully!</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
 
 </resources>

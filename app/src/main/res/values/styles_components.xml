@@ -8,38 +8,83 @@
 
     <!-- EditText -->
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:padding">@dimen/padding_container</item>
         <item name="android:background">@drawable/background_rounded</item>
         <item name="android:backgroundTint">@color/background_alt</item>
-        <item name="android:padding">@dimen/padding_container</item>
     </style>
 
     <!-- Clickable TextView -->
     <style name="TextViewClickable">
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
-        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
         <item name="android:textColor">@color/primary</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
     </style>
 
     <!-- Button -->
     <style name="ButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/text_on_primary</item>
+        <item name="android:padding">@dimen/padding_container</item>
         <item name="android:background">@drawable/background_rounded</item>
         <item name="android:backgroundTint">@color/primary</item>
+    </style>
+
+    <!-- Button Alternative -->
+    <style name="ButtonAltStyle" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@color/text</item>
         <item name="android:padding">@dimen/padding_container</item>
-        <item name="android:textColor">@color/text_on_primary</item>
+        <item name="android:background">@drawable/background_rounded</item>
+        <item name="android:backgroundTint">@color/background_alt</item>
     </style>
 
     <!-- RadioButton -->
     <style name="RadioButtonFlatStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
-        <item name="android:background">@drawable/radio_button_selector_background</item>
         <item name="android:textColor">@drawable/radio_button_selector_text_selector</item>
         <item name="android:padding">@dimen/padding_small</item>
+        <item name="android:background">@drawable/radio_button_selector_background</item>
     </style>
 
     <!-- Spinner -->
     <style name="SpinnerStyle" parent="Widget.AppCompat.Spinner">
         <item name="android:background">@drawable/spinner_background</item>
         <item name="android:popupBackground">@drawable/spinner_popup_background</item>
+    </style>
+
+    <!-- Dialog -->
+    <style name="DialogStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/transparent</item>
+        <!--<item name="android:windowMinWidthMajor">@dimen/dialog_min_width_major</item>-->
+        <!--<item name="android:windowMinWidthMinor">@dimen/dialog_min_width_minor</item>-->
+    </style>
+
+    <!-- AlertDialog -->
+    <style name="AlertDialogStyle" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <item name="android:textColor">@color/text</item>
+        <item name="android:colorControlNormal">@color/primary</item> <!-- unchecked checkbox color -->
+        <item name="android:colorControlActivated">@color/primary</item> <!-- checked checkbox color -->
+        <item name="android:windowBackground">@drawable/background_rounded</item>
+        <item name="android:backgroundTint">@color/background</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
+        <!-- components -->
+        <item name="android:buttonBarButtonStyle">@style/AlertDialogButtonStyle</item>
+    </style>
+
+    <!-- AlertDialog Button -->
+    <style name="AlertDialogButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/primary</item>
+    </style>
+
+    <!-- Bottom Sheet Dialog -->
+    <style name="BottomSheetDialogStyle" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:colorBackground">@null</item>
+        <item name="android:layout_marginStart">@dimen/margin_dialog</item>
+        <item name="android:layout_marginEnd">@dimen/margin_dialog</item>
+        <item name="android:layout_marginBottom">@dimen/margin_dialog</item>
+        <!-- components -->
+        <item name="buttonStyle">@style/ButtonStyle</item>
+        <item name="radioButtonStyle">@style/RadioButtonFlatStyle</item>
+        <item name="spinnerStyle">@style/SpinnerStyle</item>
     </style>
 
     <!-- TabLayout -->
@@ -59,20 +104,6 @@
         <item name="android:windowBackground">@drawable/background_splashscreen</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
-    </style>
-
-    <!-- Bottom Sheet Dialog -->
-    <style name="BottomSheetDialogStyle" parent="Theme.Design.BottomSheetDialog">
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:colorBackground">@null</item>
-        <item name="android:layout_marginStart">2dp</item>
-        <item name="android:layout_marginEnd">2dp</item>
-        <item name="android:layout_marginBottom">2dp</item>
-
-        <!-- components -->
-        <item name="buttonStyle">@style/ButtonStyle</item>
-        <item name="radioButtonStyle">@style/RadioButtonFlatStyle</item>
-        <item name="spinnerStyle">@style/SpinnerStyle</item>
     </style>
 
 </resources>

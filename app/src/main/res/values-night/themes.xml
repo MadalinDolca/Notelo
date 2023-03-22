@@ -27,6 +27,8 @@
         <item name="spinnerStyle">@style/SpinnerStyle</item>
         <item name="tabStyle">@style/TabLayoutStyle</item>
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialogStyle</item>
+        <item name="alertDialogStyle">@style/AlertDialogStyle</item>
+        <item name="android:dialogTheme">@style/DialogStyle</item>
     </style>
 
 </resources>
