@@ -45,11 +45,16 @@
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/spinnerCategory" />
 
-    <Spinner
-        android:id="@+id/spinnerTags"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonTags"
+        style="@style/ButtonAltStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_element"
+        android:gravity="start"
+        android:text="@string/select_tags"
+        android:textAllCaps="false"
+        android:textStyle="normal"
         app:layout_constraintTop_toBottomOf="@id/textViewTags" />
 
     <!-- visibility -->
@@ -60,7 +65,7 @@
         android:layout_marginVertical="@dimen/margin_element"
         android:text="@string/visibility"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/spinnerTags" />
+        app:layout_constraintTop_toBottomOf="@id/buttonTags" />
 
     <RadioGroup
         android:id="@+id/radioGroupVisibility"
@@ -107,13 +112,12 @@
     <!-- delete button -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonDelete"
+        style="@style/ButtonAltStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_element"
         android:layout_marginTop="@dimen/margin_separator"
-        android:backgroundTint="@color/background_alt"
         android:text="@string/detele_note"
-        android:textColor="@color/text_alt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonSave"
         app:layout_constraintTop_toBottomOf="@id/radioGroupVisibility" />

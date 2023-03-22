@@ -80,4 +80,7 @@ dependencies {
 
     // SwipeRefreshLayout
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+
+    // Color Picker
+    implementation 'com.github.skydoves:colorpickerview:2.2.4'
 }

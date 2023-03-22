@@ -7,20 +7,20 @@ import java.util.*
 
 @Parcelize
 data class Note(
-    var id: String = "",
-    var userId: String = "",
-    var categoryId: String = "",
-    var title: String = "",
-    var content: String = "",
-    var color: String = "",
-    var tags: MutableList<String> = mutableListOf(), // tag IDs
+    var id: String? = null,
+    var userId: String? = null,
+    var categoryId: String? = null,
+    var title: String? = null,
+    var content: String? = null,
+    var color: String? = null,
+    var tags: MutableList<String?> = mutableListOf(), // tag IDs
     var tagsData: MutableList<Tag> = mutableListOf(), // complete tag data
-    var visible: Boolean = PRIVATE,
+    var visible: Boolean = VISIBLE_PRIVATE,
     @ServerTimestamp var createdAt: Date? = null,
     @ServerTimestamp var updatedAt: Date? = null
 ) : Parcelable {
     companion object {
-        const val PRIVATE = false
-        const val PUBLIC = true
+        const val VISIBLE_PRIVATE = false // used to set the visibility of the note as private
+        const val VISIBLE_PUBLIC = true // used to set the visibility of the note as public
     }
 }

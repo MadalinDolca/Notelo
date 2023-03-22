@@ -1,4 +1,4 @@
-package com.madalin.notelo.screens.notes.categorynotes.tagnotes
+package com.madalin.notelo.screens.notes.categoryviewer.tagnotes
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -19,6 +19,9 @@ class TagNotesFragment : Fragment() {
 
     private var tag: Tag? = null
     private var notesList = mutableListOf<Note>()
+
+    // gets the CategoryNotesFragment's ViewModel instance once
+    //private val categoryNotesViewModel by lazy { ViewModelProvider(requireParentFragment())[CategoryNotesViewModel::class.java] }
 
     companion object {
         // the fragment initialization parameters

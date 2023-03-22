@@ -1,4 +1,4 @@
-package com.madalin.notelo.screens.notes.categorynotes.tagnotes
+package com.madalin.notelo.screens.notes.categoryviewer.tagnotes
 
 import android.content.Context
 import android.content.Intent
@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.madalin.notelo.components.categoryproperties.CategoryPropertiesDialog
+import com.madalin.notelo.components.noteproperties.NotePropertiesBottomSheetDialog
 import com.madalin.notelo.databinding.LayoutNoteCardBinding
 import com.madalin.notelo.models.Note
 import com.madalin.notelo.screens.notes.noteviewer.NoteViewerActivity
@@ -35,7 +37,7 @@ class TagNotesAdapter(
                 binding.imageViewTag.visibility = View.GONE
                 binding.textViewTags.visibility = View.GONE
             } else { // if the note has tags, those will be added to the layout
-                binding.textViewTags.text = notesList[position].tagsData.joinToString(" • ") { it.name }
+                binding.textViewTags.text = notesList[position].tagsData.joinToString(" • ") { it.name ?: "" }
             }
 
             // opens the note with the given data
@@ -43,6 +45,12 @@ class TagNotesAdapter(
                 val intent = Intent(context, NoteViewerActivity::class.java)
                 intent.putExtra(Extra.NOTE, notesList[position])
                 context?.startActivity(intent)
+            }
+
+            // open the properties dialog on long click
+            binding.root.setOnLongClickListener {
+                NotePropertiesBottomSheetDialog(context!!, notesList[position]).show()
+                return@setOnLongClickListener true
             }
         }
     }

@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.madalin.notelo.R
-import com.madalin.notelo.components.notesproperties.NotePropertiesBottomSheetDialog
+import com.madalin.notelo.components.noteproperties.NotePropertiesBottomSheetDialog
 import com.madalin.notelo.util.EdgeToEdge.DIRECTION_BOTTOM
 import com.madalin.notelo.util.EdgeToEdge.DIRECTION_TOP
 import com.madalin.notelo.util.EdgeToEdge.edgeToEdge
@@ -49,7 +49,6 @@ class NoteViewerActivity : AppCompatActivity() {
                 binding.editTextTitle.isEnabled = true
                 binding.editTextContent.isEnabled = true
                 binding.editTextContent.requestFocus()
-                binding.textViewProperties.visibility = View.VISIBLE // shows the properties button
             }
             // if in editable state, disables editing
             else {
@@ -57,7 +56,6 @@ class NoteViewerActivity : AppCompatActivity() {
                 binding.textViewEditSave.text = getString(R.string.edit)
                 binding.editTextTitle.isEnabled = false
                 binding.editTextContent.isEnabled = false
-                binding.textViewProperties.visibility = View.GONE // hides the properties button
             }
         }
 
