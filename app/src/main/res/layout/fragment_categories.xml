@@ -7,36 +7,47 @@
     android:layout_height="match_parent"
     tools:context=".screens.notes.categories.CategoriesFragment">
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/padding_container"
-        android:scrollbars="none">
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/padding_container">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- categories text -->
+        <TextView
+            android:id="@+id/textViewCategories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/categories"
+            android:textSize="@dimen/text_big"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- RecyclerView of categories -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCategories"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_element"
+            android:clipToPadding="false"
+            android:paddingBottom="80dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewCategories" />
 
-            <!-- categories -->
-            <TextView
-                android:id="@+id/textViewCategories"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/categories"
-                android:textSize="@dimen/text_big"
-                android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <!-- RecyclerView of categories -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewCategories"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_element"
-                app:layout_constraintTop_toBottomOf="@id/textViewCategories" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
+        <!-- create category button -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="80dp"
+            android:backgroundTint="@color/primary"
+            android:contentDescription="@string/create_category"
+            android:elevation="0dp"
+            android:src="@drawable/ic_add"
+            app:borderWidth="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/text_on_primary" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

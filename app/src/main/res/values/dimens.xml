@@ -13,6 +13,7 @@
     <dimen name="padding_container">13dp</dimen>
 
     <!-- margin size -->
+    <dimen name="margin_dialog">2dp</dimen>
     <dimen name="margin_element">13dp</dimen>
     <dimen name="margin_separator">30dp</dimen>
 

@@ -5,12 +5,15 @@
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/padding_container"
-    tools:context=".screens.notes.categorynotes.CategoryNotesFragment">
+    android:paddingHorizontal="@dimen/padding_container"
+    tools:context=".screens.notes.categoryviewer.CategoryViewerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <include layout="@layout/layout_toolbar" />
 
         <!-- category name -->
         <TextView
