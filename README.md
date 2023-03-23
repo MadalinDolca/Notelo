@@ -27,7 +27,7 @@ group them by tags, making it easy to manage and find the notes you need.
 - **Kotlin Parcelize** as a `Parcelable` implementation generator
 - Other nice things
 
-## 🏃🏻‍♂️Getting started
+## 🚀 Getting started
 
 To get started with Notelo, follow these steps:
 
