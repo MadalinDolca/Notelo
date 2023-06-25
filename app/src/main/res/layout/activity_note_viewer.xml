@@ -11,6 +11,8 @@
         android:id="@+id/scrollViewContent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:paddingHorizontal="@dimen/padding_container"
+        android:paddingTop="@dimen/padding_container"
         app:layout_constraintBottom_toTopOf="@id/layoutOptions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,13 +23,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!-- title -->
+            <!-- note title -->
             <EditText
                 android:id="@+id/editTextTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:enabled="false"
                 android:gravity="top|start"
                 android:hint="@string/note_title"
                 android:paddingHorizontal="@dimen/padding_container"
@@ -38,13 +38,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- content -->
+            <!-- note content -->
             <EditText
                 android:id="@+id/editTextContent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@null"
-                android:enabled="false"
+                android:layout_marginVertical="@dimen/margin_element"
                 android:gravity="top|start"
                 android:hint="@string/note_content"
                 android:inputType="textMultiLine"
@@ -63,7 +62,8 @@
         android:id="@+id/layoutOptions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background_alt"
+        android:background="@drawable/background_rounded_top"
+        android:backgroundTint="@color/background_alt"
         android:padding="@dimen/padding_container"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -92,9 +92,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- edit & save button -->
+        <!-- edit/save/create button -->
         <TextView
-            android:id="@+id/textViewEditSave"
+            android:id="@+id/textViewAction"
             style="@style/TextViewClickable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
