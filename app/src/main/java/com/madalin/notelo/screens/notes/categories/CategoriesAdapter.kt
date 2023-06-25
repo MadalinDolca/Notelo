@@ -1,6 +1,7 @@
 package com.madalin.notelo.screens.notes.categories
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.madalin.notelo.components.categoryproperties.CategoryPropertiesDialog
 import com.madalin.notelo.databinding.LayoutCategoryCardBinding
 import com.madalin.notelo.models.Category
+import com.madalin.notelo.screens.notes.categoryviewer.CategoryViewerActivity
 import com.madalin.notelo.util.DynamicColor.getDynamicColor
+import com.madalin.notelo.util.Extra
 
 class CategoriesAdapter(
     var context: Context?
@@ -50,8 +53,11 @@ class CategoriesAdapter(
 
             // opens the fragment containing the notes from the selected category by giving the needed data
             binding.root.setOnClickListener {
-                val action = CategoriesFragmentDirections.actionCategoriesFragmentToCategoryViewerFragment(thisCategory)
-                itemView.findNavController().navigate(action)
+                //val action = CategoriesFragmentDirections.actionCategoriesFragmentToCategoryViewerFragment(thisCategory)
+                //itemView.findNavController().navigate(action)
+                val intent = Intent(context, CategoryViewerActivity::class.java)
+                intent.putExtra(Extra.CATERGORY, thisCategory)
+                context?.startActivity(intent)
             }
 
             // open the modification dialog on long click
