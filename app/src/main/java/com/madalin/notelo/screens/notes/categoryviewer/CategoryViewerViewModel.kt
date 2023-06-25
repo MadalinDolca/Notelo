@@ -57,6 +57,13 @@ class CategoryViewerViewModel : ViewModel() {
             }
         }
 
+        // removes the entries that have no notes associated with a tag
+        /*for (entry in notesByTag) {
+            if (entry.value.isEmpty()) {
+                notesByTag.remove(entry.key)
+            }
+        }*/
+
         notesByTag // assigns this value to this LiveData
     }
 
@@ -65,8 +72,6 @@ class CategoryViewerViewModel : ViewModel() {
      * Once every data item has been added the value of [notesListLiveData] is set to [categoryNotesList].
      */
     fun getNotesByCategoryFromFirestore(categoryId: String?) {
-        //categoryNotesList.clear() // clears the current notes list
-
         firestore.collection(DBCollection.NOTES)
             .whereEqualTo("categoryId", categoryId)
             .addSnapshotListener { snapshots, error ->
@@ -75,7 +80,7 @@ class CategoryViewerViewModel : ViewModel() {
                     return@addSnapshotListener
                 }
 
-                categoryNotesList.clear()
+                categoryNotesList.clear() // clears the current notes list
 
                 for (snapshot in snapshots!!) {
                     val note = snapshot.toObject<Note>()
@@ -85,19 +90,6 @@ class CategoryViewerViewModel : ViewModel() {
 
                 notesListLiveData.value = categoryNotesList // sets the value and dispatches it to the active observers
             }
-        /*.get()
-                .addOnSuccessListener { snapshots ->
-                    for (snapshot in snapshots) {
-                        val note = snapshot.toObject<Note>()
-                        note.id = snapshot.id
-                        categoryNotesList.add(note)
-                    }
-
-                    notesListLiveData.value = categoryNotesList // sets the value and dispatches it to the active observers //notesListLiveData.postValue(notesList)
-                }
-                .addOnFailureListener {
-                    errorMessageLiveData.value = it.message
-                }*/
     }
 
     /**
@@ -105,8 +97,6 @@ class CategoryViewerViewModel : ViewModel() {
      * Once every tag has been added the value of [tagsListLiveData] is set to [categoryTagsList].
      */
     fun getTagsByCategoryFromFirestore(categoryId: String?) {
-        //categoryTagsList.clear() // clears the current tags list
-
         firestore.collection(DBCollection.TAGS)
             .whereEqualTo("categoryId", categoryId)
             .addSnapshotListener { snapshots, error ->
@@ -115,7 +105,7 @@ class CategoryViewerViewModel : ViewModel() {
                     return@addSnapshotListener
                 }
 
-                categoryTagsList.clear()
+                categoryTagsList.clear() // clears the current tags list
 
                 for (snapshot in snapshots!!) {
                     val tag = snapshot.toObject<Tag>()
@@ -125,18 +115,5 @@ class CategoryViewerViewModel : ViewModel() {
 
                 tagsListLiveData.value = categoryTagsList // sets the value and dispatches it to the active observers
             }
-        /*.get()
-        .addOnSuccessListener { snapshots ->
-            for (snapshot in snapshots) {
-                val tag = snapshot.toObject<Tag>()
-                tag.id = snapshot.id
-                categoryTagsList.add(tag)
-            }
-
-            tagsListLiveData.value = categoryTagsList // sets the value and dispatches it to the active observers
-        }
-        .addOnFailureListener {
-            errorMessageLiveData.value = it.message
-        }*/
     }
 }
