@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/padding_container"
+    tools:context=".screens.discover.articleviewer.ArticleViewerActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- article title -->
+        <TextView
+            android:id="@+id/textViewArticleTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/padding_small"
+            android:text="@string/article_title"
+            android:textSize="@dimen/text_big"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- article author -->
+        <TextView
+            android:id="@+id/textViewArticleAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/author"
+            android:textSize="@dimen/text_small"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/textViewPublicationDate"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewArticleTitle" />
+
+        <!-- publication date -->
+        <TextView
+            android:id="@+id/textViewPublicationDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/publication_date"
+            android:textSize="@dimen/text_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textViewArticleAuthor"
+            app:layout_constraintTop_toBottomOf="@id/textViewArticleTitle" />
+
+        <!-- article image -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewArticleImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_element"
+            app:cardCornerRadius="@dimen/radius17"
+            app:layout_constraintTop_toBottomOf="@id/textViewArticleAuthor">
+
+            <ImageView
+                android:id="@+id/imageViewArticleImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </androidx.cardview.widget.CardView>
+
+        <!-- button save article as note -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonSaveAsNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_element"
+            android:text="@string/save_article_as_note"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardViewArticleImage" />
+
+        <!-- article content -->
+        <TextView
+            android:id="@+id/textViewArticleContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_element"
+            android:text="@string/article_content"
+            app:layout_constraintTop_toBottomOf="@id/buttonSaveAsNote" />
+
+        <!-- source text -->
+        <TextView
+            android:id="@+id/textViewArticleSource"
+            style="@style/TextViewClickable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/padding_small"
+            android:text="@string/read_the_whole_article"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewArticleContent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

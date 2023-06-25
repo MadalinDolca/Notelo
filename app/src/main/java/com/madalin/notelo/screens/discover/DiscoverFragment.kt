@@ -1,32 +1,62 @@
 package com.madalin.notelo.screens.discover
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.madalin.notelo.R
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.madalin.notelo.components.PopupBanner
+import com.madalin.notelo.databinding.FragmentDiscoverBinding
 
 class DiscoverFragment : Fragment() {
+    private val viewModel by viewModels<DiscoverViewModel>()
 
-    companion object {
-        fun newInstance() = DiscoverFragment()
+    private lateinit var binding: FragmentDiscoverBinding
+    private lateinit var articlesAdapter: ArticleAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        articlesAdapter = ArticleAdapter(context)
+
+        // checks if the articles have been fetched and gets them otherwise
+        if (viewModel.articlesListLiveData.value == null) {
+            viewModel.fetchArticles()
+        }
     }
 
-    private lateinit var viewModel: DiscoverViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_discover, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = FragmentDiscoverBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(DiscoverViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        // recycler view preparations
+        with(binding) {
+            recyclerViewArticles.layoutManager = LinearLayoutManager(context)
+            recyclerViewArticles.adapter = articlesAdapter
+        }
+
+        // articles list observer
+        viewModel.articlesListLiveData.observe(viewLifecycleOwner) {
+            articlesAdapter.setArticlesList(it)
+            articlesAdapter.notifyDataSetChanged()
+        }
+
+        // error message observer
+        viewModel.errorMessageLiveData.observe(viewLifecycleOwner) {
+            PopupBanner.make(context, PopupBanner.TYPE_FAILURE, it.toString()).show()
+        }
+
+        // swipe refresh to fetch for articles
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.fetchArticles()
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
+    }
 }
