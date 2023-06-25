@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_margin="@dimen/margin_element"
-        android:background="@drawable/background_rounded"
+        android:background="@drawable/background_rounded_stroke"
         app:backgroundTint="@color/background_alt"
         app:itemIconTint="@drawable/bottom_navigation_item_color"
         app:itemTextColor="@color/primary"
