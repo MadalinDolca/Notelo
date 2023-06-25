@@ -75,5 +75,19 @@
     <string name="category_updated_successfully">Category updated successfully!</string>
     <string name="update">Update</string>
     <string name="delete">Delete</string>
+    <string name="note_title_cant_be_empty">Note title can\'t be empty</string>
+    <string name="note_content_cant_be_empty">Note content can\'t be empty</string>
+    <string name="note_created_successfully">Note created successfully</string>
+    <string name="title_is_too_short">Title is too short</string>
+    <string name="search_through_your_notes">Search through your notes</string>
+    <string name="couldn_t_find_any_notes_that_contain_the_searched_term">Couldn\'t find any notes that contain the searched term</string>
+    <string name="create_note">Create note</string>
+    <string name="article_title">Article\'s title</string>
+    <string name="article_description">Article\'s description</string>
+    <string name="article_content">Article\'s content</string>
+    <string name="author">Author</string>
+    <string name="publication_date">Publication date</string>
+    <string name="read_the_whole_article">Read the whole article</string>
+    <string name="save_article_as_note">Save article as note</string>
 
 </resources>

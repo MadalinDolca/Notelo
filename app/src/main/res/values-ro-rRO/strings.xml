@@ -52,5 +52,22 @@
     <string name="private_note">Notă privată</string>
     <string name="public_note">Notă publică</string>
     <string name="done">Terminat</string>
+    <string name="properties">Proprietăți</string>
+    <string name="save">Salvează</string>
+    <string name="note_updated_successfully">Notă actualizată cu succes!</string>
+    <string name="select_tags">Selectează etichetele</string>
+    <string name="note_deleted_successfully">Notă ștearsă cu succes!</string>
+    <string name="action">Acțiune</string>
+    <string name="create_category">Crează categorie</string>
+    <string name="private_category">Categorie privată</string>
+    <string name="public_category">Categorie publică</string>
+    <string name="create">Crează</string>
+    <string name="pick_a_color">Alege o culoare</string>
+    <string name="confirm">Confirmă</string>
+    <string name="update">Actualizează</string>
+    <string name="delete">Șterge</string>
+    <string name="create_note">Crează nota</string>
+    <string name="article_title">Titlu articol</string>
+    <string name="article_description">Descriere articol</string>
 
 </resources>
