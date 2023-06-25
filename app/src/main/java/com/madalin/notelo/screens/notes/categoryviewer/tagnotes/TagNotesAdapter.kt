@@ -32,6 +32,8 @@ class TagNotesAdapter(
         with(holder) {
             binding.textViewTitle.text = notesList[position].title
             binding.textViewContent.text = notesList[position].content
+            binding.imageViewCategory.visibility = View.GONE
+            binding.textViewCategoryName.visibility = View.GONE
 
             if (notesList[position].tags.isEmpty()) { // if the note doesn't have any tag, the views are hidden
                 binding.imageViewTag.visibility = View.GONE
