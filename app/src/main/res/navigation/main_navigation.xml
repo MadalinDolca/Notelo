@@ -4,19 +4,15 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_fragments"
-    app:startDestination="@id/categoriesFragment">
+    android:id="@+id/main_navigation_fragments"
+    app:startDestination="@id/notesFragment">
 
-    <!-- CategoriesFragment -->
+    <!-- NotesFragment -->
     <fragment
-        android:id="@+id/categoriesFragment"
-        android:name="com.madalin.notelo.screens.notes.categories.CategoriesFragment"
-        android:label="fragment_categories"
-        tools:layout="@layout/fragment_categories">
-        <action
-            android:id="@+id/action_categoriesFragment_to_categoryViewerFragment"
-            app:destination="@id/categoryViewerFragment" />
-    </fragment>
+        android:id="@+id/notesFragment"
+        android:name="com.madalin.notelo.screens.notes.NotesFragment"
+        android:label="fragment_notes"
+        tools:layout="@layout/fragment_notes"/>
 
     <!-- AddFragment -->
     <fragment
@@ -25,8 +21,8 @@
         android:label="fragment_add"
         tools:layout="@layout/fragment_add">
         <action
-            android:id="@+id/action_addFragment_to_categoriesFragment"
-            app:destination="@id/categoriesFragment" />
+            android:id="@+id/action_addFragment_to_notesFragment"
+            app:destination="@id/notesFragment" />
     </fragment>
 
     <!-- DiscoverFragment -->
@@ -36,22 +32,19 @@
         android:label="fragment_discover"
         tools:layout="@layout/fragment_discover">
         <action
-            android:id="@+id/action_discoverFragment_to_categoriesFragment"
-            app:destination="@id/categoriesFragment" />
+            android:id="@+id/action_discoverFragment_to_notesFragment"
+            app:destination="@id/notesFragment" />
     </fragment>
 
-    <!-- CategoryViewerFragment -->
+    <!-- CategoriesFragment -->
     <fragment
-        android:id="@+id/categoryViewerFragment"
-        android:name="com.madalin.notelo.screens.notes.categoryviewer.CategoryViewerFragment"
-        android:label="fragment_category_notes"
-        tools:layout="@layout/fragment_category_viewer">
+        android:id="@+id/categoriesFragment"
+        android:name="com.madalin.notelo.screens.notes.categories.CategoriesFragment"
+        android:label="fragment_categories"
+        tools:layout="@layout/fragment_categories">
         <action
-            android:id="@+id/action_categoryViewerFragment_to_categoriesFragment"
-            app:destination="@id/categoriesFragment" />
-        <argument
-            android:name="categoryData"
-            app:argType="com.madalin.notelo.models.Category" />
+            android:id="@+id/action_categoriesFragment_to_notesFragment"
+            app:destination="@id/notesFragment" />
     </fragment>
 
 </navigation>

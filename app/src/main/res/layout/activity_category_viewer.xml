@@ -6,14 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="@dimen/padding_container"
-    tools:context=".screens.notes.categoryviewer.CategoryViewerFragment">
+    android:paddingTop="@dimen/padding_container"
+    tools:context=".screens.notes.categoryviewer.CategoryViewerActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/layout_toolbar" />
+        <!--        <include layout="@layout/layout_toolbar" />-->
 
         <!-- category name -->
         <TextView
@@ -29,6 +30,18 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- more options -->
+        <ImageView
+            android:id="@+id/imageViewMore"
+            style="@style/ImageViewClickable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_small"
+            android:src="@drawable/ic_more_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/text" />
 
         <!-- tab layout -->
         <com.google.android.material.tabs.TabLayout

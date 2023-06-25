@@ -15,6 +15,7 @@
 
             <!-- arrow icon -->
             <item android:drawable="@drawable/ic_arrow_drop_down" android:gravity="center_vertical|end" android:right="@dimen/margin_element" />
+
         </layer-list>
     </item>
 </selector>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- rounded background -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/background">
+    <item>
+        <shape android:shape="rectangle">
+            <corners
+                android:topLeftRadius="@dimen/radius17"
+                android:topRightRadius="@dimen/radius17" />
+        </shape>
+    </item>
+</ripple>
