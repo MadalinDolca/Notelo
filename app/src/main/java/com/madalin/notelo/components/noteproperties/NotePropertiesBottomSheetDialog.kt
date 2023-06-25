@@ -126,7 +126,7 @@ class NotePropertiesBottomSheetDialog(
         }
 
         override fun onNothingSelected(parent: AdapterView<*>?) {
-            TODO("Not yet implemented")
+
         }
     }
 
@@ -237,6 +237,5 @@ class NotePropertiesBottomSheetDialog(
                     ).show()
                 }
         }
-        TODO("Add confirmation dialog")
     }
 }
