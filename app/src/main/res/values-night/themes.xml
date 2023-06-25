@@ -17,6 +17,7 @@
         <item name="android:windowBackground">@color/background</item> <!-- window background color -->
 
         <!-- Text -->
+        <item name="fontFamily">@font/sohne</item>
         <item name="android:textSize">@dimen/text_standard</item>
         <item name="android:textColor">@color/text</item>
 
