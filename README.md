@@ -12,7 +12,7 @@ group them by tags, making it easy to manage and find the notes you need.
 
 ## 🔜 Coming soon
 
-- Create notes with rich text formatting and attachments (soon)
+- Create notes with rich text formatting and attachments
 - Search for notes using keywords or tags
 - Discover new notes with a curated feed of popular notes
 
@@ -29,7 +29,7 @@ group them by tags, making it easy to manage and find the notes you need.
 - **Glide** for the image loading 
 - Other nice things
 
-## 🏃🏻‍♂️Getting started
+## 🚀 Getting started
 
 To get started with Notelo, follow these steps:
 
