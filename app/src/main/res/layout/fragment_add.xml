@@ -1,14 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/padding_container"
+    android:paddingTop="@dimen/padding_container"
     tools:context=".screens.add.AddFragment">
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Add" />
+        android:layout_height="wrap_content"
+        android:text="WIP. The notes won't be added from here"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <!--    &lt;!&ndash; note title &ndash;&gt;-->
+    <!--    <EditText-->
+    <!--        android:id="@+id/editTextTitle"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:gravity="top|start"-->
+    <!--        android:hint="@string/note_title"-->
+    <!--        android:textStyle="bold"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--    &lt;!&ndash; note content &ndash;&gt;-->
+    <!--    <EditText-->
+    <!--        android:id="@+id/editTextContent"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_marginTop="@dimen/margin_element"-->
+    <!--        android:gravity="top|start"-->
+    <!--        android:hint="@string/note_content"-->
+    <!--        app:layout_constraintBottom_toTopOf="@id/layoutProperties"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/editTextTitle" />-->
+
+    <!--    &lt;!&ndash; properties layout &ndash;&gt;-->
+    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--        android:id="@+id/layoutProperties"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:padding="@dimen/padding_container"-->
+    <!--        android:layout_marginBottom="100dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent">-->
+
+    <!--        &lt;!&ndash; properties button &ndash;&gt;-->
+    <!--        <TextView-->
+    <!--            android:id="@+id/textViewProperties"-->
+    <!--            style="@style/TextViewClickable"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="@string/properties"-->
+    <!--            android:textStyle="bold"-->
+    <!--            app:layout_constraintStart_toStartOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--        &lt;!&ndash; save button &ndash;&gt;-->
+    <!--        <TextView-->
+    <!--            android:id="@+id/textViewSave"-->
+    <!--            style="@style/TextViewClickable"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="@string/save"-->
+    <!--            android:textStyle="bold"-->
+    <!--            app:layout_constraintEnd_toEndOf="parent"-->
+    <!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
