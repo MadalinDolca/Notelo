@@ -25,6 +25,8 @@ group them by tags, making it easy to manage and find the notes you need.
 - **Navigation Component** to allow users to navigate across, into, and back out from the different pieces of content within the app
 - **Safe Args** to attach data to a navigation operation by defining arguments for a destination
 - **Kotlin Parcelize** as a `Parcelable` implementation generator
+- **Retrofit** for the API calls
+- **Glide** for the image loading 
 - Other nice things
 
 ## 🏃🏻‍♂️Getting started
