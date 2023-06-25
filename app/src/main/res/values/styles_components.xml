@@ -21,8 +21,16 @@
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
     </style>
 
+    <!-- Clickable ImageView -->
+    <style name="ImageViewClickable">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
     <!-- Button -->
     <style name="ButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/text_on_primary</item>
         <item name="android:padding">@dimen/padding_container</item>
         <item name="android:background">@drawable/background_rounded</item>
@@ -31,6 +39,7 @@
 
     <!-- Button Alternative -->
     <style name="ButtonAltStyle" parent="Widget.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/text</item>
         <item name="android:padding">@dimen/padding_container</item>
         <item name="android:background">@drawable/background_rounded</item>
