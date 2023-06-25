@@ -12,6 +12,7 @@ import com.madalin.notelo.screens.authentication.LoginActivity
 import com.madalin.notelo.databinding.ActivityMainBinding
 import com.madalin.notelo.util.EdgeToEdge.DIRECTION_BOTTOM
 import com.madalin.notelo.util.EdgeToEdge.DIRECTION_TOP
+import com.madalin.notelo.util.EdgeToEdge.SPACING_MARGIN
 import com.madalin.notelo.util.EdgeToEdge.SPACING_PADDING
 import com.madalin.notelo.util.EdgeToEdge.edgeToEdge
 
@@ -23,8 +24,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater) // binds this activity's views
         setContentView(binding.root) // setContentView(R.layout.activity_main)
-        edgeToEdge(this, binding.coordinatorLayoutContainer, SPACING_PADDING, DIRECTION_TOP)
-        edgeToEdge(this, binding.coordinatorLayoutContainer, SPACING_PADDING, DIRECTION_BOTTOM)
+        edgeToEdge(this, binding.fragmentContainerView, SPACING_PADDING, DIRECTION_TOP)
+        edgeToEdge(this, binding.bottomNavigationView, SPACING_MARGIN, DIRECTION_BOTTOM)
 
         navigationController = (supportFragmentManager.findFragmentById(binding.fragmentContainerView.id) as NavHostFragment).navController
         // navigationController = findNavController(binding.fragmentContainerView.id) //navigationController = findNavController(R.id.fragmentContainerView)
