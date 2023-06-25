@@ -33,10 +33,10 @@ class LayoutMessage {
 
             // gets the layout and binds to it
             val inflater = LayoutInflater.from(context)
-            inflater.inflate(R.layout.layout_message, null)
+            instance!!.binding = LayoutMessageBinding.inflate(inflater, parentView, false)
+            //inflater.inflate(R.layout.layout_message, null)
 
             // instantiates the variables
-            instance!!.binding = LayoutMessageBinding.inflate(inflater)
             instance!!.binding.buttonAction.visibility = View.INVISIBLE // hides the button for now
             instance!!.parent = parentView
 
@@ -89,6 +89,20 @@ class LayoutMessage {
      * Adds the created layout as a child view to the given [parent] with the specified layout parameters.
      */
     fun show() {
-        instance!!.parent.addView(binding.root, layoutParams)
+        val rootView = binding.root
+
+        // checks if the view is already the child of this parent
+        if (rootView.parent == null) {
+            instance!!.parent.addView(rootView, layoutParams)
+        }
+    }
+
+    /**
+     * Removes the view containing the message from its parent.
+     */
+    fun hide() {
+        if (instance != null && instance!!.binding.root.parent != null) {
+            instance!!.parent.removeView(instance!!.binding.root)
+        }
     }
 }
