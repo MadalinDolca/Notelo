@@ -45,7 +45,7 @@
     <string name="tag">Tag</string>
     <string name="edit">Edit</string>
     <string name="uncategorized">Uncategorized</string>
-    <string name="edited">Edited</string>
+    <string name="edited_date">Edited %1$s</string>
     <string name="category">Category</string>
     <string name="tags">Tags</string>
     <string name="visibility">Visibility</string>
@@ -89,5 +89,21 @@
     <string name="publication_date">Publication date</string>
     <string name="read_the_whole_article">Read the whole article</string>
     <string name="save_article_as_note">Save article as note</string>
+    <string name="notelo">Notelo</string>
+    <string name="user_not_found">User not found</string>
+    <string name="invalid_password">Invalid password</string>
+    <string name="invalid_credentials">Invalid credentials</string>
+    <string name="user_already_exists">User already exists</string>
+    <string name="data_fetching_error">Data fetching error</string>
+    <string name="could_not_get_the_user_id">Could not get the user ID</string>
+    <string name="user_data_not_found">User data not found</string>
+    <string name="could_not_get_the_categories">Could not get the categories</string>
+    <string name="could_not_get_the_tags_for_this_category">Could not get tags for this category</string>
+    <string name="could_not_update_the_note">Could not update the note</string>
+    <string name="could_not_delete_the_note">Could not delete note</string>
+    <string name="could_not_create_the_category">Could not create the category</string>
+    <string name="could_not_update_the_category">Could not update the category</string>
+    <string name="could_not_delete_the_category">Could not delete the category</string>
+    <string name="the_password_must_be_at_least_x_characters_long">The password must be at least %1$d characters long</string>
 
 </resources>

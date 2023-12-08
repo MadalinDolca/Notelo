@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Splash Screen -->
+    <style name="SplashScreenStyle" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
+        <!--<item name="windowSplashScreenAnimationDuration">1000</item>-->
+        <item name="postSplashScreenTheme">@style/Theme.Notelo</item>
+    </style>
+
+    <!-- Old Splash Screen style used without the API -->
+    <!--<style name="SplashScreenStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">-->
+    <!--    <item name="android:windowBackground">@drawable/background_splashscreen</item>-->
+    <!--    <item name="android:statusBarColor">@android:color/transparent</item>-->
+    <!--    <item name="android:navigationBarColor">@android:color/transparent</item>-->
+    <!--</style>-->
+
     <!-- Text style used in layouts -->
-    <!--    <style name="TextStyle" parent="android:TextAppearance">-->
-    <!--        <item name="android:textColor">@color/text</item>-->
-    <!--        <item name="android:textSize">@dimen/text_standard</item>-->
-    <!--    </style>-->
+    <!--<style name="TextStyle" parent="android:TextAppearance">-->
+    <!--    <item name="android:textColor">@color/text</item>-->
+    <!--    <item name="android:textSize">@dimen/text_standard</item>-->
+    <!--</style>-->
 
     <!-- EditText -->
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
@@ -106,13 +121,6 @@
         <item name="tabMode">scrollable</item>
         <item name="tabSelectedTextColor">@color/text_on_primary</item>
         <item name="tabTextColor">@color/text</item>
-    </style>
-
-    <!-- Splash Screen -->
-    <style name="SplashScreenStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:windowBackground">@drawable/background_splashscreen</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
 </resources>

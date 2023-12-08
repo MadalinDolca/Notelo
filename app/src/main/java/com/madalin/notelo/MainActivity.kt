@@ -1,42 +1,56 @@
 package com.madalin.notelo
 
-import android.content.Intent
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import com.madalin.notelo.screens.authentication.LoginActivity
+import com.madalin.notelo.component.PopupBanner
 import com.madalin.notelo.databinding.ActivityMainBinding
-import com.madalin.notelo.util.EdgeToEdge.DIRECTION_BOTTOM
-import com.madalin.notelo.util.EdgeToEdge.DIRECTION_TOP
-import com.madalin.notelo.util.EdgeToEdge.SPACING_MARGIN
-import com.madalin.notelo.util.EdgeToEdge.SPACING_PADDING
+import com.madalin.notelo.user.UserData
 import com.madalin.notelo.util.EdgeToEdge.edgeToEdge
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
+    private val viewModel: MainViewModel by viewModel()
     private lateinit var binding: ActivityMainBinding
-    private lateinit var navigationController: NavController
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
+
         binding = ActivityMainBinding.inflate(layoutInflater) // binds this activity's views
         setContentView(binding.root) // setContentView(R.layout.activity_main)
-        edgeToEdge(this, binding.fragmentContainerView, SPACING_PADDING, DIRECTION_TOP)
-        edgeToEdge(this, binding.bottomNavigationView, SPACING_MARGIN, DIRECTION_BOTTOM)
+        edgeToEdge(this)
 
-        navigationController = (supportFragmentManager.findFragmentById(binding.fragmentContainerView.id) as NavHostFragment).navController
-        // navigationController = findNavController(binding.fragmentContainerView.id) //navigationController = findNavController(R.id.fragmentContainerView)
-        binding.bottomNavigationView.setupWithNavController(navigationController) // sets the BottomNavigationView's NavController
+        navController = (supportFragmentManager.findFragmentById(binding.mainActivityFragmentContainerView.id) as NavHostFragment).navController
 
-        binding.buttonSignOut.setOnClickListener {
-            Firebase.auth.signOut()
-            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-            finish()
+        // navigates to MainFragment if the user has singed in, otherwise to SignInFragment (default)
+        if (UserData.isUserSignedIn()) {
+            navController.navigate(R.id.mainFragment)
+            UserData.startListeningForUserData(this)
         }
+
+        setupObservers()
     }
 
+    private fun setupObservers() {
+        // pop-up message observer
+        viewModel.popupMessageLiveData.observe(this) {
+            PopupBanner.make(this, it.first, getString(it.second)).show()
+        }
 
+        // application login state observer
+        /*ApplicationState.isUserSignedIn.observe(this) {
+            if (it) {
+                val navOptions = NavOptions.Builder()
+                    .setPopUpTo(R.id.mainFragment, false)
+                    .build()
+
+                navController.navigate(R.id.mainFragment, null, navOptions)
+            }
+        }*/
+    }
 }

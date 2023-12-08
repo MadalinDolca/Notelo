@@ -1,5 +1,7 @@
 # 📝 Notelo
 
+This is the second Android app I've made, and the first one that uses the Kotlin programming language. It follows the Single-Activity and Clean architecture.
+
 Notelo is a note-taking app that helps you stay organized by allowing you to create and categorize notes in a way that makes sense to you. With Notelo you can create notes, put them in categories and
 group them by tags, making it easy to manage and find the notes you need.
 
@@ -22,6 +24,8 @@ group them by tags, making it easy to manage and find the notes you need.
 - **Firebase** as the backend
 - **ViewModel**s to manage the UI's data in a lifecycle-aware fashion
 - **LiveData** to handle data in a lifecycle-aware fashion
+- **Kotlin Coroutines**
+- **Koin** for dependency injection
 - **Navigation Component** to allow users to navigate across, into, and back out from the different pieces of content within the app
 - **Safe Args** to attach data to a navigation operation by defining arguments for a destination
 - **Kotlin Parcelize** as a `Parcelable` implementation generator

@@ -1,57 +1,60 @@
 package com.madalin.notelo.user
 
-import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
-import com.madalin.notelo.ApplicationClass
-import com.madalin.notelo.util.SharedPrefKey
-import com.madalin.notelo.components.PopupBanner
-import com.madalin.notelo.util.DBCollection
+import android.content.Context
+import android.util.Log
+import com.madalin.notelo.R
+import com.madalin.notelo.component.PopupBanner
+import com.madalin.notelo.model.User
+import com.madalin.notelo.repository.FirebaseAuthRepository
+import com.madalin.notelo.repository.FirebaseContentRepository
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-object UserData {
-    private val sharedPreferences = ApplicationClass.context.getSharedPreferences(SharedPrefKey.USER_DATA, MODE_PRIVATE)
-
-    val id get() = sharedPreferences.getString(SharedPrefKey.USER_DATA_ID, null).toString()
-    val name get() = sharedPreferences.getString(SharedPrefKey.USER_DATA_NAME, null).toString()
-    val email get() = sharedPreferences.getString(SharedPrefKey.USER_DATA_EMAIL, null).toString()
-    val role get() = sharedPreferences.getString(SharedPrefKey.USER_DATA_ROLE, null).toString()
+/**
+ * Object used to share user information across the app.
+ */
+object UserData : KoinComponent {
+    private val authRepository: FirebaseAuthRepository by inject()
+    private val contentRepository: FirebaseContentRepository by inject()
 
     /**
-     * If the user is logged in, gets the current user's data from [Firestore][Firebase.firestore]
-     * every time the data has changed and calls [storeUserData] to store it in [SharedPreferences].
+     * Used to hold and share the data of the current user.
      */
-    fun getUserData() {
-        Firebase.auth.currentUser?.let { it ->
-            Firebase.firestore.collection(DBCollection.USERS).document(it.uid)
-                .addSnapshotListener { snapshot, exception ->
-                    if (exception != null) {
-                        PopupBanner.make(ApplicationClass.context, PopupBanner.TYPE_FAILURE, exception.message.toString()).show()
-                        return@addSnapshotListener
-                    }
+    var currentUser = User()
 
-                    if (snapshot != null && snapshot.exists()) {
-                        storeUserData(snapshot.toObject<User>()!!) // converts the data snapshot to User and stores it
-                    }
-                }
+    /**
+     * Checks if the current user is signed in and obtains the stored user ID.
+     * @return `true` if signed in and has ID, `false` otherwise
+     */
+    fun isUserSignedIn(): Boolean {
+        if (authRepository.isSignedIn()) {
+            val userId = authRepository.getCurrentUserId()
+
+            if (userId != null) {
+                currentUser.id = userId
+                return true
+            }
         }
+
+        return false
     }
 
     /**
-     * Stores the provided user's data in [SharedPreferences].
-     * @param user data to store
+     * Starts listening for user data changes and updates [currentUser].
      */
-    fun storeUserData(user: User) {
-        val editor: SharedPreferences.Editor = sharedPreferences.edit()
-
-        with(editor) {
-            putString(SharedPrefKey.USER_DATA_ID, user.id)
-            putString(SharedPrefKey.USER_DATA_NAME, user.name)
-            putString(SharedPrefKey.USER_DATA_EMAIL, user.email)
-            putString(SharedPrefKey.USER_DATA_ROLE, user.role)
-            apply()
-        }
+    fun startListeningForUserData(context: Context) {
+        contentRepository.startListeningForUserData(
+            onSuccess = {
+                currentUser = it
+                Log.d("UserData", "Obtained new user data")
+            },
+            onFailure = {
+                when (it) {
+                    UserFailure.DataFetchingError -> PopupBanner.make(context, PopupBanner.TYPE_FAILURE, context.getString(R.string.data_fetching_error))
+                    UserFailure.NoUserId -> PopupBanner.make(context, PopupBanner.TYPE_FAILURE, context.getString(R.string.could_not_get_the_user_id))
+                    UserFailure.UserDataNotFound -> PopupBanner.make(context, PopupBanner.TYPE_INFO, context.getString(R.string.user_data_not_found))
+                }
+            }
+        )
     }
 }

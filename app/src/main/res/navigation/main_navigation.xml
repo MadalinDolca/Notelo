@@ -1,50 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!-- navigation for the fragments used in MainActivity -->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_navigation_fragments"
-    app:startDestination="@id/notesFragment">
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/signInFragment">
 
-    <!-- NotesFragment -->
+    <action
+        android:id="@+id/action_global_noteViewerFragment"
+        app:destination="@id/noteViewerFragment"
+        app:enterAnim="@android:anim/slide_in_left"
+        app:exitAnim="@android:anim/slide_out_right" />
     <fragment
-        android:id="@+id/notesFragment"
-        android:name="com.madalin.notelo.screens.notes.NotesFragment"
-        android:label="fragment_notes"
-        tools:layout="@layout/fragment_notes"/>
-
-    <!-- AddFragment -->
-    <fragment
-        android:id="@+id/addFragment"
-        android:name="com.madalin.notelo.screens.add.AddFragment"
-        android:label="fragment_add"
-        tools:layout="@layout/fragment_add">
-        <action
-            android:id="@+id/action_addFragment_to_notesFragment"
-            app:destination="@id/notesFragment" />
+        android:id="@+id/noteViewerFragment"
+        android:name="com.madalin.notelo.feature.notesandcategories.noteviewer.NoteViewerFragment"
+        android:label="fragment_note_viewer"
+        tools:layout="@layout/fragment_note_viewer" >
+        <argument
+            android:name="noteData"
+            app:argType="com.madalin.notelo.model.Note"
+            app:nullable="true" />
     </fragment>
-
-    <!-- DiscoverFragment -->
     <fragment
-        android:id="@+id/discoverFragment"
-        android:name="com.madalin.notelo.screens.discover.DiscoverFragment"
-        android:label="fragment_discover"
-        tools:layout="@layout/fragment_discover">
+        android:id="@+id/signInFragment"
+        android:name="com.madalin.notelo.feature.auth.signin.SingInFragment"
+        android:label="Sign In Fragment"
+        tools:layout="@layout/fragment_sign_in">
         <action
-            android:id="@+id/action_discoverFragment_to_notesFragment"
-            app:destination="@id/notesFragment" />
+            android:id="@+id/action_signInFragment_to_mainFragment"
+            app:destination="@id/mainFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/signInFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_signInFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/signInFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_signInFragment_to_passwordResetFragment"
+            app:destination="@id/passwordResetFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/signInFragment"
+            app:popUpToInclusive="true" />
     </fragment>
-
-    <!-- CategoriesFragment -->
     <fragment
-        android:id="@+id/categoriesFragment"
-        android:name="com.madalin.notelo.screens.notes.categories.CategoriesFragment"
-        android:label="fragment_categories"
-        tools:layout="@layout/fragment_categories">
+        android:id="@+id/signUpFragment"
+        android:name="com.madalin.notelo.feature.auth.signup.SignUpFragment"
+        android:label="Sign Up Fragment"
+        tools:layout="@layout/fragment_sign_up">
         <action
-            android:id="@+id/action_categoriesFragment_to_notesFragment"
-            app:destination="@id/notesFragment" />
+            android:id="@+id/action_signUpFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/signUpFragment"
+            app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.madalin.notelo.MainFragment"
+        android:label="Fragment used to display note related fragments"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_notes_navigation"
+            app:destination="@id/notes_navigation" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordResetFragment"
+        android:name="com.madalin.notelo.feature.auth.passwordreset.PasswordResetFragment"
+        android:label="fragment_password_reset"
+        tools:layout="@layout/fragment_password_reset" >
+        <action
+            android:id="@+id/action_passwordResetFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/passwordResetFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <include app:graph="@navigation/notes_navigation" />
+    <fragment
+        android:id="@+id/categoryViewerFragment"
+        android:name="com.madalin.notelo.feature.notesandcategories.categoryviewer.CategoryViewerFragment"
+        android:label="fragment_category_viewer"
+        tools:layout="@layout/fragment_category_viewer" >
+        <argument
+            android:name="categoryData"
+            app:argType="com.madalin.notelo.model.Category" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_categoryViewerFragment"
+        app:destination="@id/categoryViewerFragment"
+        app:enterAnim="@android:anim/slide_in_left"
+        app:exitAnim="@android:anim/slide_out_right" />
+
+    <!--    <navigation-->
+    <!--        android:id="@+id/notes_navigation"-->
+    <!--        android:label="Graph that contains note related fragments"-->
+    <!--        app:startDestination="@id/notesAndCategoriesFragment">-->
+    <!--        -->
+    <!--    </navigation>-->
 
 </navigation>

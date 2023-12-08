@@ -1,23 +1,20 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
-    id 'com.google.gms.google-services'
-
-    // Safe Args
-    //id 'androidx.navigation.safeargs' // Java or mixed Java and Kotlin modules
-    id 'androidx.navigation.safeargs.kotlin' // Kotlin-only modules
-
-    // @Parcelize
-    id 'kotlin-parcelize'
+    id "com.android.application"
+    id "org.jetbrains.kotlin.android"
+    id "com.google.gms.google-services" // Google Services
+    //id "androidx.navigation.safeargs" // Safe Args for Java or mixed Java and Kotlin modules
+    id "androidx.navigation.safeargs.kotlin" // Safe Args for Kotlin-only modules
+    id "kotlin-parcelize" // Kotlin Parcelize
 }
 
 android {
-    compileSdk 33
+    namespace "com.madalin.notelo"
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.madalin.notelo"
         minSdk 23
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -27,7 +24,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
 
@@ -37,58 +34,67 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = "1.8"
     }
 
     buildFeatures {
         viewBinding true
     }
-
-    namespace 'com.madalin.notelo'
 }
 
 dependencies {
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.core:core-ktx:1.12.0"
+    implementation "androidx.appcompat:appcompat:1.6.1"
+    //implementation "androidx.fragment:fragment-ktx:1.6.1" // ?
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
+    implementation "androidx.legacy:legacy-support-v4:1.0.0"
 
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    testImplementation "junit:junit:4.13.2"
+    androidTestImplementation "androidx.test.ext:junit:1.1.5"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
 
-    // Firebase Auth & Firestore
-    implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.3'
+    // Firebase
+    implementation platform("com.google.firebase:firebase-bom:32.3.1")
+    implementation "com.google.firebase:firebase-auth-ktx"
+    implementation "com.google.firebase:firebase-firestore-ktx"
 
     // Material Components
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation "com.google.android.material:material:1.10.0"
+
+    // Splash Screen
+    implementation "androidx.core:core-splashscreen:1.0.1"
 
     // Navigation component
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
-
-    // Lottie
-    implementation 'com.airbnb.android:lottie:5.2.0'
+    def navigationVersion = "2.7.5"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
     // LiveData & ViewModel
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.2"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"
 
     // Palette
-    implementation 'androidx.palette:palette:1.0.0'
+    implementation "androidx.palette:palette-ktx:1.0.0"
 
     // SwipeRefreshLayout
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
-
-    // Color Picker
-    implementation 'com.github.skydoves:colorpickerview:2.2.4'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    def retrofitVersion = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
+    // Lottie
+    implementation "com.airbnb.android:lottie:5.2.0"
 
     // Glide
-    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    implementation "com.github.bumptech.glide:glide:4.15.1"
+
+    // Color Picker
+    implementation "com.github.skydoves:colorpickerview:2.2.4"
+
+    // Koin
+    def koinVersion = "3.5.0"
+    implementation "io.insert-koin:koin-android:$koinVersion"
+    testImplementation "io.insert-koin:koin-test-junit4:$koinVersion"
 }
