@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.firestore.FirebaseFirestore
 import com.madalin.notelo.auth.domain.repository.FirebaseAuthRepository
 import com.madalin.notelo.auth.domain.result.AccountDataStorageResult
+import com.madalin.notelo.auth.domain.result.PasswordResetResult
 import com.madalin.notelo.auth.domain.result.SignInResult
 import com.madalin.notelo.auth.domain.result.SignUpResult
 import com.madalin.notelo.core.domain.model.User
@@ -51,15 +52,13 @@ class FirebaseAuthRepositoryImpl(
         }
     }
 
-    override fun resetPassword(email: String, onSuccess: () -> Unit, onFailure: () -> Unit) {
-        auth.sendPasswordResetEmail(email)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    onSuccess()
-                } else {
-                    onFailure()
-                }
-            }
+    override suspend fun resetPassword(email: String): PasswordResetResult {
+        try {
+            auth.sendPasswordResetEmail(email).await()
+            return PasswordResetResult.Success
+        } catch (e: Exception) {
+            return PasswordResetResult.Error
+        }
     }
 
     override fun signInWithEmailAndPassword(

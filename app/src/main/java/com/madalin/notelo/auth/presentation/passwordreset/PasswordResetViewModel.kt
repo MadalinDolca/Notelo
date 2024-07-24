@@ -1,12 +1,16 @@
 package com.madalin.notelo.auth.presentation.passwordreset
 
-import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.madalin.notelo.R
-import com.madalin.notelo.core.presentation.components.PopupBanner
 import com.madalin.notelo.auth.domain.repository.FirebaseAuthRepository
+import com.madalin.notelo.auth.domain.result.PasswordResetResult
+import com.madalin.notelo.auth.domain.validation.AuthValidator
+import com.madalin.notelo.core.presentation.components.PopupBanner
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class PasswordResetViewModel(
     private val repository: FirebaseAuthRepository
@@ -23,16 +27,17 @@ class PasswordResetViewModel(
     fun resetPassword(email: String) {
         val _email = email.trim()
 
-        // if given data is not valid
+        // if given data is not valid the operation fails
         if (!validateField(email)) return
 
-        repository.resetPassword(_email,
-            onSuccess = {
-                _popupMessageLiveData.value = Pair(PopupBanner.TYPE_INFO, R.string.check_your_email_to_reset_your_password)
-            },
-            onFailure = {
-                _popupMessageLiveData.value = Pair(PopupBanner.TYPE_FAILURE, R.string.something_went_wrong_please_try_again)
-            })
+        // proceeds to reset password
+        viewModelScope.launch {
+            val result = async { repository.resetPassword(_email) }.await()
+            when (result) {
+                PasswordResetResult.Success -> _popupMessageLiveData.value = Pair(PopupBanner.TYPE_INFO, R.string.check_your_email_to_reset_your_password)
+                PasswordResetResult.Error -> _popupMessageLiveData.value = Pair(PopupBanner.TYPE_FAILURE, R.string.something_went_wrong_please_try_again)
+            }
+        }
     }
 
     /**
@@ -40,20 +45,19 @@ class PasswordResetViewModel(
      * @return `true` if valid, `false` otherwise
      */
     private fun validateField(email: String): Boolean {
-        when {
-            // email is empty
-            email.isEmpty() -> {
+        val validationResult = AuthValidator.validateEmail(email)
+        when (validationResult) {
+            AuthValidator.EmailResult.Valid -> return true
+
+            AuthValidator.EmailResult.Empty -> {
                 _emailErrorMessageLiveData.value = R.string.email_cant_be_empty
                 return false
             }
 
-            // not email format
-            !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+            AuthValidator.EmailResult.InvalidFormat -> {
                 _emailErrorMessageLiveData.value = R.string.email_is_invalid
                 return false
             }
         }
-
-        return true
     }
 }

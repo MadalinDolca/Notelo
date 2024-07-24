@@ -3,6 +3,7 @@ package com.madalin.notelo.auth.domain.repository
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.madalin.notelo.auth.domain.result.AccountDataStorageResult
+import com.madalin.notelo.auth.domain.result.PasswordResetResult
 import com.madalin.notelo.auth.domain.result.SignInResult
 import com.madalin.notelo.auth.domain.result.SignUpResult
 import com.madalin.notelo.core.domain.model.User
@@ -23,11 +24,9 @@ interface FirebaseAuthRepository {
     suspend fun storeAccountDataToFirestore(user: User): AccountDataStorageResult
 
     /**
-     * Resets the user password associated with the given [email].
-     * @param onSuccess callback function that will be invoked when the reset process succeeded
-     * @param onFailure callback function that will be invoked when the reset process failed
+     * Resets the user password associated with the given [email] and returns a [PasswordResetResult].
      */
-    fun resetPassword(email: String, onSuccess: () -> Unit, onFailure: () -> Unit)
+    suspend fun resetPassword(email: String): PasswordResetResult
 
     /**
      * Signs in the user with the given [email] and [password].
