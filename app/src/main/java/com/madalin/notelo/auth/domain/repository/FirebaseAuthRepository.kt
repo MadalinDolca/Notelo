@@ -29,15 +29,9 @@ interface FirebaseAuthRepository {
     suspend fun resetPassword(email: String): PasswordResetResult
 
     /**
-     * Signs in the user with the given [email] and [password].
-     * @param onSuccess callback function that will be invoked when the authentication process succeeded
-     * @param onFailure callback function that will be invoked when the authentication process failed
-     * - [SignInResult] parameter contains the failure type
+     * Signs in the user with the given [email] and [password] and returns a [SignInResult].
      */
-    fun signInWithEmailAndPassword(
-        email: String, password: String,
-        onSuccess: () -> Unit, onFailure: (SignInResult) -> Unit
-    )
+    suspend fun signInWithEmailAndPassword(email: String, password: String): SignInResult
 
     /**
      * Obtains the current user [Firebase] ID and returns it if it's not null.
@@ -55,6 +49,11 @@ interface FirebaseAuthRepository {
      * @return `true` if verified, `false` otherwise
      */
     fun isEmailVerified(): Boolean
+
+    /**
+     * Sends an email verification to the currently logged in account email.
+     */
+    fun sendEmailVerification()
 
     /**
      * Signs out the currently authenticated user.

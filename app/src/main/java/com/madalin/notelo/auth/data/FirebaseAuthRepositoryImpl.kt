@@ -61,22 +61,17 @@ class FirebaseAuthRepositoryImpl(
         }
     }
 
-    override fun signInWithEmailAndPassword(
-        email: String, password: String,
-        onSuccess: () -> Unit, onFailure: (SignInResult) -> Unit
-    ) {
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    onSuccess.invoke()
-                } else {
-                    when (task.exception) {
-                        is FirebaseAuthInvalidUserException -> onFailure(SignInResult.UserNotFound)
-                        is FirebaseAuthInvalidCredentialsException -> onFailure(SignInResult.InvalidPassword)
-                        else -> onFailure(SignInResult.Error)
-                    }
-                }
-            }
+    override suspend fun signInWithEmailAndPassword(email: String, password: String): SignInResult {
+        try {
+            auth.signInWithEmailAndPassword(email, password).await()
+            return SignInResult.Success
+        } catch (e: FirebaseAuthInvalidUserException) {
+            return SignInResult.UserNotFound
+        } catch (e: FirebaseAuthInvalidCredentialsException) {
+            return SignInResult.InvalidPassword
+        } catch (e: Exception) {
+            return SignInResult.Error
+        }
     }
 
     override fun getCurrentUserId() = auth.currentUser?.uid
@@ -87,6 +82,10 @@ class FirebaseAuthRepositoryImpl(
     }
 
     override fun isEmailVerified() = auth.currentUser?.isEmailVerified == true
+
+    override fun sendEmailVerification() {
+        auth.currentUser?.sendEmailVerification()
+    }
 
     override fun signOut(onComplete: (Boolean, String?) -> Unit) {
         externalScope.launch {
