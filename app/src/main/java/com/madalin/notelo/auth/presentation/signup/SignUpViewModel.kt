@@ -1,18 +1,18 @@
 package com.madalin.notelo.auth.presentation.signup
 
-import android.util.Log
-import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.madalin.notelo.R
+import com.madalin.notelo.auth.domain.repository.FirebaseAuthRepository
+import com.madalin.notelo.auth.domain.result.AccountDataStorageResult
 import com.madalin.notelo.auth.domain.result.SignUpResult
+import com.madalin.notelo.auth.domain.validation.AuthValidator
+import com.madalin.notelo.core.domain.model.User
 import com.madalin.notelo.core.presentation.components.AppProgressDialog
 import com.madalin.notelo.core.presentation.components.PopupBanner
-import com.madalin.notelo.core.domain.model.User
-import com.madalin.notelo.auth.domain.repository.FirebaseAuthRepository
-import com.madalin.notelo.core.domain.util.LengthConstraint
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -50,22 +50,26 @@ class SignUpViewModel(
         val _password = password.trim()
         val _confirmPassword = confirmPassword.trim()
 
-        // if given data is not valid
+        // if given data is not valid the registration fails
         if (!validateFields(_email, _password, _confirmPassword)) return
 
-        _isProgressDialogVisibleLiveData.value = true // shows the progress dialog
-
         // proceeds to registration
-        repository.createUserWithEmailAndPassword(_email, _password,
-            onSuccess = { firebaseUser ->
-                firebaseUser?.let { // if the current user is not null
+        viewModelScope.launch {
+            _isProgressDialogVisibleLiveData.value = true // shows the progress dialog
+
+            val result = async { repository.createUserWithEmailAndPassword(email, password) }.await()
+            when (result) {
+                // TODO handle null firebase user
+                is SignUpResult.Success -> result.firebaseUser?.let {
                     storeUserToFirestore(User(id = it.uid, email = _email))
                 }
-            },
-            onFailure = {
-                handleAccountCreationFailure(it)
-                _isProgressDialogVisibleLiveData.value = false // dismiss the progress dialog
-            })
+
+                SignUpResult.InvalidEmail -> updateStateUponFailure(R.string.email_is_invalid)
+                SignUpResult.InvalidCredentials -> updateStateUponFailure(R.string.invalid_credentials)
+                SignUpResult.UserAlreadyExists -> updateStateUponFailure(R.string.user_already_exists)
+                is SignUpResult.Error -> updateStateUponFailure(R.string.error_creating_account)
+            }
+        }
     }
 
     /**
@@ -74,99 +78,77 @@ class SignUpViewModel(
      * @return `true` if valid, `false` otherwise
      */
     private fun validateFields(email: String, password: String, confirmPassword: String): Boolean {
-        when {
-            // email is empty
-            email.isEmpty() -> {
+        val validationResult = AuthValidator.validateSignUpFields(email, password, confirmPassword)
+        when (validationResult) {
+            AuthValidator.SignUpResult.Valid -> return true
+
+            AuthValidator.SignUpResult.EmptyEmail -> {
                 _emailErrorMessageLiveData.value = R.string.email_cant_be_empty
                 return false
             }
 
-            // not email format
-            !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+            AuthValidator.SignUpResult.InvalidEmail -> {
                 _emailErrorMessageLiveData.value = R.string.email_is_invalid
                 return false
             }
 
-            // password is empty
-            password.isEmpty() -> {
+            AuthValidator.SignUpResult.EmptyPassword -> {
                 _passwordErrorMessageLiveData.value = R.string.password_cant_be_empty
                 return false
             }
 
-            // password is too short
-            password.length < LengthConstraint.MIN_PASSWORD_LEGTH -> {
+            AuthValidator.SignUpResult.InvalidPasswordLength -> {
                 _passwordErrorMessageLiveData.value = R.string.password_is_too_short
                 return false
             }
 
-            // confirm password is empty
-            confirmPassword.isEmpty() -> {
+            AuthValidator.SignUpResult.EmptyConfirmPassword -> {
                 _confirmPasswordErrorMessageLiveData.value = R.string.password_cant_be_empty
                 return false
             }
 
-            // passwords don't match
-            password != confirmPassword -> {
+            AuthValidator.SignUpResult.PasswordsNotMatching -> {
                 _confirmPasswordErrorMessageLiveData.value = R.string.passwords_dont_match
                 return false
             }
         }
-
-        return true
     }
 
     /**
      * Stores the given [user] data to Firestore and updates the data holders.
      */
     private fun storeUserToFirestore(user: User) {
-        repository.storeAccountDataToFirestore(user,
-            onSuccess = {
-                _progressDialogMessageLiveData.value = Pair(AppProgressDialog.TYPE_SUCCESS, R.string.you_have_successfully_registered) // updates the dialog
-                viewModelScope.launch {
+        viewModelScope.launch {
+            val result = async { repository.storeAccountDataToFirestore(user) }.await()
+            when (result) {
+                AccountDataStorageResult.Success -> {
+                    _progressDialogMessageLiveData.value = Pair(AppProgressDialog.TYPE_SUCCESS, R.string.you_have_successfully_registered) // updates the dialog
                     delay(3000)
                     _isProgressDialogVisibleLiveData.value = false // dismiss the progress dialog
                     _isSignUpSuccessLiveData.value = true // registered successfully
                 }
-            },
-            onFailure = { errorMessage ->
-                errorMessage?.let { Log.e("SignUpViewModel", it) }
-                _popupMessageLiveData.value = Pair(PopupBanner.TYPE_FAILURE, R.string.data_recording_error)
-                _isProgressDialogVisibleLiveData.value = false // dismiss the progress dialog
-            })
-    }
 
-    /**
-     * Determines the [failureType] of the account creation and handles it by updating the data holders.
-     */
-    private fun handleAccountCreationFailure(failureType: SignUpResult) {
-        when (failureType) {
-            SignUpResult.InvalidEmail -> {
-                _isSignUpSuccessLiveData.value = false
-                _popupMessageLiveData.value = Pair(PopupBanner.TYPE_FAILURE, R.string.email_is_invalid)
-            }
-
-            SignUpResult.InvalidCredentials -> {
-                _isSignUpSuccessLiveData.value = false
-                _popupMessageLiveData.value = Pair(PopupBanner.TYPE_FAILURE, R.string.invalid_credentials)
-            }
-
-            SignUpResult.UserAlreadyExists -> {
-                _isSignUpSuccessLiveData.value = false
-                _popupMessageLiveData.value = Pair(PopupBanner.TYPE_FAILURE, R.string.user_already_exists)
-            }
-
-            SignUpResult.Error -> {
-                _isSignUpSuccessLiveData.value = false
-                _popupMessageLiveData.value = Pair(PopupBanner.TYPE_FAILURE, R.string.error_creating_account)
+                is AccountDataStorageResult.Error -> {
+                    _popupMessageLiveData.value = Pair(PopupBanner.TYPE_FAILURE, R.string.data_recording_error)
+                    _isProgressDialogVisibleLiveData.value = false // dismiss the progress dialog
+                }
             }
         }
     }
 
     /**
-     * Sets the user sign up status to [status].
-     * @param status `true` if user has signed up, `false` otherwise
+     * Updates the state holders upon a registration failure with the given [message].
      */
-    fun setSignUpStatus(status: Boolean) {
-        _isSignUpSuccessLiveData.value = status
+    private fun updateStateUponFailure(message: Int) {
+        _isProgressDialogVisibleLiveData.value = false // dismisses the progress dialog
+        _isSignUpSuccessLiveData.value = false // marks registration as failed
+        _popupMessageLiveData.value = Pair(PopupBanner.TYPE_FAILURE, message)
+    }
+
+    /**
+     * Sets the user sign up status to [isSignedUp].
+     */
+    fun setSignUpStatus(isSignedUp: Boolean) {
+        _isSignUpSuccessLiveData.value = isSignedUp
     }
 }

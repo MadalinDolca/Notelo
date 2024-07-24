@@ -4,10 +4,6 @@ package com.madalin.notelo.core.domain.util
  * Holds constant values representing string length constraints used across the application.
  */
 object LengthConstraint {
-    // password
-    val MIN_PASSWORD_LEGTH = 6
-    val MAX_PASSWORD_LEGTH = 40
-
     // note
     val MIN_NOTE_TITLE_LENGTH = 3
     val MAX_NOTE_TITLE_LENGTH = 50

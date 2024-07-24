@@ -1,8 +1,8 @@
 package com.madalin.notelo.auth.domain.repository
 
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.madalin.notelo.auth.domain.result.AccountDataStorageResult
 import com.madalin.notelo.auth.domain.result.SignInResult
 import com.madalin.notelo.auth.domain.result.SignUpResult
 import com.madalin.notelo.core.domain.model.User
@@ -12,24 +12,15 @@ import com.madalin.notelo.core.domain.model.User
  */
 interface FirebaseAuthRepository {
     /**
-     * Signs up the user with the given [email] and [password] and store their data to [Firestore][Firebase.firestore].
-     * @param onSuccess callback function that will be invoked when the registration process succeeded
-     * - [FirebaseUser] parameter contains the stored user's profile information in Firebase
-     * @param onFailure callback function that will be invoked when the registration process failed
-     * - [SignUpResult] parameter contains the failure type
+     * Signs up the user with the given [email] and [password] and stores their data to
+     * [Firestore][Firebase.firestore]. Returns the result as a [SignUpResult].
      */
-    fun createUserWithEmailAndPassword(
-        email: String, password: String,
-        onSuccess: (FirebaseUser?) -> Unit, onFailure: (SignUpResult) -> Unit
-    )
+    suspend fun createUserWithEmailAndPassword(email: String, password: String): SignUpResult
 
     /**
-     * Stores the user data into Firestore.
-     * @param onSuccess callback function that will be invoked when the storage process succeeded
-     * @param onFailure callback function that will be invoked when the storage process failed
-     * - [String] parameter contains the error message
+     * Stores the given [user data][user] into Firestore and returns a [AccountDataStorageResult].
      */
-    fun storeAccountDataToFirestore(user: User, onSuccess: () -> Unit, onFailure: (String?) -> Unit)
+    suspend fun storeAccountDataToFirestore(user: User): AccountDataStorageResult
 
     /**
      * Resets the user password associated with the given [email].
