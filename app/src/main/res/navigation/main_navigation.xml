@@ -17,12 +17,12 @@
         tools:layout="@layout/fragment_note_viewer" >
         <argument
             android:name="noteData"
-            app:argType="com.madalin.notelo.model.Note"
+            app:argType="com.madalin.notelo.core.domain.model.Note"
             app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.madalin.notelo.feature.auth.signin.SingInFragment"
+        android:name="com.madalin.notelo.auth.presentation.signin.SingInFragment"
         android:label="Sign In Fragment"
         tools:layout="@layout/fragment_sign_in">
         <action
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.madalin.notelo.feature.auth.signup.SignUpFragment"
+        android:name="com.madalin.notelo.auth.presentation.signup.SignUpFragment"
         android:label="Sign Up Fragment"
         tools:layout="@layout/fragment_sign_up">
         <action
@@ -66,7 +66,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.madalin.notelo.MainFragment"
+        android:name="com.madalin.notelo.core.presentation.MainFragment"
         android:label="Fragment used to display note related fragments"
         tools:layout="@layout/fragment_main" >
         <action
@@ -75,7 +75,7 @@
     </fragment>
     <fragment
         android:id="@+id/passwordResetFragment"
-        android:name="com.madalin.notelo.feature.auth.passwordreset.PasswordResetFragment"
+        android:name="com.madalin.notelo.auth.presentation.passwordreset.PasswordResetFragment"
         android:label="fragment_password_reset"
         tools:layout="@layout/fragment_password_reset" >
         <action
@@ -95,7 +95,7 @@
         tools:layout="@layout/fragment_category_viewer" >
         <argument
             android:name="categoryData"
-            app:argType="com.madalin.notelo.model.Category" />
+            app:argType="com.madalin.notelo.core.domain.model.Category" />
     </fragment>
     <action
         android:id="@+id/action_global_categoryViewerFragment"

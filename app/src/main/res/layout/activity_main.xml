@@ -10,7 +10,7 @@
     android:layout_height="match_parent"
     app:defaultNavHost="true"
     app:navGraph="@navigation/main_navigation"
-    tools:context=".MainActivity">
+    tools:context=".core.presentation.MainActivity">
     <!-- NavHost that intercepts and works as the back button on the device -->
 
 </androidx.fragment.app.FragmentContainerView>

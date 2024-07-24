@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="@dimen/padding_container"
     android:paddingTop="@dimen/padding_container"
-    tools:context=".feature.add.AddFragment">
+    tools:context=".add.presentation.AddFragment">
 
     <TextView
         android:layout_width="match_parent"

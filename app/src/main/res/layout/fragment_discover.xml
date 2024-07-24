@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:paddingHorizontal="@dimen/padding_container"
-    tools:context=".feature.discover.DiscoverFragment">
+    tools:context=".discover.presentation.DiscoverFragment">
 
     <!-- articles RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView

@@ -12,12 +12,12 @@
         tools:layout="@layout/fragment_notes_and_categories" />
     <fragment
         android:id="@+id/addFragment"
-        android:name="com.madalin.notelo.feature.add.AddFragment"
+        android:name="com.madalin.notelo.add.presentation.AddFragment"
         android:label="fragment_add"
         tools:layout="@layout/fragment_add" />
     <fragment
         android:id="@+id/discoverFragment"
-        android:name="com.madalin.notelo.feature.discover.DiscoverFragment"
+        android:name="com.madalin.notelo.discover.presentation.DiscoverFragment"
         android:label="Fragment used to discover notes"
         tools:layout="@layout/fragment_discover" />
 
