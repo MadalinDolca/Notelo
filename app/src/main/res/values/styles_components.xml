@@ -24,6 +24,7 @@
     <!-- EditText -->
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:padding">@dimen/padding_container</item>
+        <item name="android:textColor">@color/text</item>
         <item name="android:background">@drawable/background_rounded</item>
         <item name="android:backgroundTint">@color/background_alt</item>
     </style>

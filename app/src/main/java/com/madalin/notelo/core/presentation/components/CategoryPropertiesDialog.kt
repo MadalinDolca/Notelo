@@ -5,13 +5,13 @@ import android.content.Context
 import android.graphics.Color
 import android.view.ViewGroup
 import com.madalin.notelo.R
+import com.madalin.notelo.core.domain.model.Category
+import com.madalin.notelo.core.domain.repository.FirebaseContentRepository
+import com.madalin.notelo.core.domain.validation.CategoryValidator
+import com.madalin.notelo.core.presentation.GlobalDriver
 import com.madalin.notelo.core.presentation.components.CategoryPropertiesDialog.Companion.MODE_CREATE
 import com.madalin.notelo.core.presentation.components.CategoryPropertiesDialog.Companion.MODE_UPDATE
 import com.madalin.notelo.databinding.LayoutCategoryPropertiesDialogBinding
-import com.madalin.notelo.core.domain.model.Category
-import com.madalin.notelo.core.domain.repository.FirebaseContentRepository
-import com.madalin.notelo.core.presentation.user.UserData
-import com.madalin.notelo.core.domain.util.LengthConstraint
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -27,7 +27,10 @@ class CategoryPropertiesDialog(
     private var givenCategory: Category? = null
 ) : Dialog(ownerContext), KoinComponent {
     private val binding = LayoutCategoryPropertiesDialogBinding.inflate(layoutInflater)
+
+    private val globalDriver: GlobalDriver by inject()
     private val repository: FirebaseContentRepository by inject()
+
     private var newColor: String? = null
 
     /**
@@ -106,47 +109,51 @@ class CategoryPropertiesDialog(
      * Builds a new [Category] with the provided data in this [Dialog] and stores it in the database.
      */
     private fun createCategory() {
+        val userId = globalDriver.currentUser.value?.id
+        if (userId == null) {
+            globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.could_not_create_a_new_category_because_the_user_id_is_null)
+            return
+        }
+
         val name = binding.editTextCategoryName.text.toString()
         val visible = if (binding.radioButtonPrivate.isChecked) Category.VISIBLE_PRIVATE else Category.VISIBLE_PUBLIC
 
         // validates the category name
-        if (!validateField(name)) {
-            binding.editTextCategoryName.error = context.getString(R.string.category_name_is_too_short)
-            binding.editTextCategoryName.requestFocus()
+        if (!validateName(name)) {
             return
         }
 
         // creates the new category object to store
-        val newCategory = Category(userId = UserData.currentUser.id, name = name, color = newColor, visible = visible)
+        val newCategory = Category(userId = userId, name = name, color = newColor, visible = visible)
 
         // adds the new category to the database
-        repository.createCategory(newCategory,
+        repository.createCategory(
+            newCategory,
             onSuccess = {
-                PopupBanner.make(
-                    ownerContext, PopupBanner.TYPE_SUCCESS,
-                    ownerContext.getString(R.string.category_created_successfully)
-                )
-
+                globalDriver.showPopupBanner(PopupBanner.TYPE_SUCCESS, ownerContext.getString(R.string.category_created_successfully))
                 this.dismiss()
             },
             onFailure = {
-                val errorMessage = it ?: context.getString(R.string.could_not_create_the_category)
-                PopupBanner.make(ownerContext, PopupBanner.TYPE_FAILURE, errorMessage)
-            })
+                globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, it ?: context.getString(R.string.could_not_create_the_category))
+            }
+        )
     }
 
     /**
      * Updates the given [givenCategory] with the provided data in the [Dialog].
      */
     private fun updateCategory() {
-        val categoryId = givenCategory?.id ?: return
+        val categoryId = givenCategory?.id
+        if (categoryId == null) {
+            globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.could_not_update_the_category_because_the_category_id_is_null)
+            return
+        }
+
         val newName = binding.editTextCategoryName.text.toString()
         val newVisibility = if (binding.radioButtonPrivate.isChecked) Category.VISIBLE_PRIVATE else Category.VISIBLE_PUBLIC
 
         // validates the category name
-        if (!validateField(newName)) {
-            binding.editTextCategoryName.error = context.getString(R.string.category_name_is_too_short)
-            binding.editTextCategoryName.requestFocus()
+        if (!validateName(newName)) {
             return
         }
 
@@ -157,7 +164,8 @@ class CategoryPropertiesDialog(
             "visible" to newVisibility
         )
 
-        repository.updateCategory(categoryId, newData,
+        repository.updateCategory(
+            categoryId, newData,
             onSuccess = {
                 // applies the data to the local category
                 givenCategory?.apply {
@@ -166,42 +174,58 @@ class CategoryPropertiesDialog(
                     visible = newVisibility
                 }
 
-                PopupBanner.make(
-                    ownerContext, PopupBanner.TYPE_SUCCESS,
-                    ownerContext.getString(R.string.category_created_successfully)
-                )
-
+                globalDriver.showPopupBanner(PopupBanner.TYPE_SUCCESS, ownerContext.getString(R.string.category_created_successfully))
                 this.dismiss() // dismisses the dialog
             },
             onFailure = {
-                val errorMessage = it ?: context.getString(R.string.could_not_update_the_category)
-                PopupBanner.make(ownerContext, PopupBanner.TYPE_FAILURE, errorMessage)
-            })
+                globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, it ?: context.getString(R.string.could_not_update_the_category))
+            }
+        )
     }
 
     /**
-     * Deletes the given [givenCategory] from the database.
+     * Deletes the current [givenCategory] from the database.
      */
     private fun deleteCategory() {
-        val categoryId = givenCategory?.id ?: return
+        val categoryId = givenCategory?.id
+        if (categoryId == null) {
+            globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.could_not_delete_the_category_because_the_category_id_is_null)
+            return
+        }
 
-        repository.deleteCategory(categoryId,
+        repository.deleteCategory(
+            categoryId,
             onSuccess = {
-                PopupBanner.make(
-                    ownerContext, PopupBanner.TYPE_SUCCESS,
-                    ownerContext.getString(R.string.category_updated_successfully)
-                )
-
+                globalDriver.showPopupBanner(PopupBanner.TYPE_SUCCESS, ownerContext.getString(R.string.category_updated_successfully))
                 this.dismiss() // dismisses the dialog
             },
             onFailure = {
-                val errorMessage = it ?: context.getString(R.string.could_not_delete_the_category)
-                PopupBanner.make(ownerContext, PopupBanner.TYPE_FAILURE, errorMessage)
-            })
+                globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, it ?: context.getString(R.string.could_not_delete_the_category))
+            }
+        )
     }
 
     /**
-     * Returns `True` if [name] is valid, `False` otherwise.
+     * Validates the given category [name] and returns `true` if valid, `false` otherwise.
      */
-    private fun validateField(name: String) = name.length >= LengthConstraint.MIN_CATEGORY_NAME_LENGTH
+    private fun validateName(name: String): Boolean {
+        val result = CategoryValidator.validateName(name)
+        when (result) {
+            CategoryValidator.NameResult.Valid -> return true
+            CategoryValidator.NameResult.Empty -> {
+                binding.editTextCategoryName.error = context.getString(R.string.category_name_can_not_be_empty)
+                binding.editTextCategoryName.requestFocus()
+                return false
+            }
+
+            CategoryValidator.NameResult.InvalidLength -> {
+                binding.editTextCategoryName.error = context.getString(
+                    R.string.category_name_must_be_between_x_and_y_characters,
+                    CategoryValidator.MIN_CATEGORY_NAME_LENGTH, CategoryValidator.MAX_CATEGORY_NAME_LENGTH
+                )
+                binding.editTextCategoryName.requestFocus()
+                return false
+            }
+        }
+    }
 }

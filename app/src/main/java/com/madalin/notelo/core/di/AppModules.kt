@@ -52,7 +52,7 @@ val viewModelModule = module {
     viewModel { PasswordResetViewModel(get(), get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { NotesViewModel(get(), get()) }
-    viewModel { CategoriesViewModel(get()) }
+    viewModel { CategoriesViewModel(get(), get()) }
     viewModel { NoteViewerViewModel(get()) }
     viewModel { CategoryViewerViewModel(get()) }
 }

@@ -11,10 +11,6 @@ object LengthConstraint {
     val MIN_NOTE_CONTENT_LENGTH = 1
     val MAX_NOTE_CONTENT_LENGTH = 1000
 
-    // category
-    val MIN_CATEGORY_NAME_LENGTH = 3
-    val MAX_CATEGORY_NAME_LENGTH = 30
-
     // tag
     val MIN_TAG_NAME_LENGTH = 2
     val MAX_TAG_NAME_LENGTH = 15

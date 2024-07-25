@@ -10,11 +10,9 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.madalin.notelo.R
-import com.madalin.notelo.core.presentation.components.PopupBanner
+import com.madalin.notelo.core.domain.util.GridSpacingItemDecoration
 import com.madalin.notelo.core.presentation.components.CategoryPropertiesDialog
 import com.madalin.notelo.databinding.FragmentCategoriesBinding
-import com.madalin.notelo.core.presentation.user.UserData
-import com.madalin.notelo.core.domain.util.GridSpacingItemDecoration
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CategoriesFragment : Fragment() {
@@ -22,15 +20,6 @@ class CategoriesFragment : Fragment() {
     private lateinit var binding: FragmentCategoriesBinding
     private lateinit var categoriesAdapter: CategoriesAdapter
     private lateinit var activityNavController: NavController
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // checks if the user's categories have been fetched and gets them otherwise
-        if (viewModel.categoriesListLiveData.value == null) {
-            viewModel.getCategoriesFromFirestore(UserData.currentUser.id)
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentCategoriesBinding.inflate(inflater, container, false) // inflate the layout
@@ -62,17 +51,12 @@ class CategoriesFragment : Fragment() {
                 categoriesAdapter.notifyDataSetChanged()
             }
         }
-
-        // error message observer
-        viewModel.popupMessageLiveData.observe(viewLifecycleOwner) {
-            PopupBanner.make(activity, it.first, it.second).show()
-        }
     }
 
     private fun setupListeners() {
         // obtains the categories on swipe refresh
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getCategoriesFromFirestore(UserData.currentUser.id)
+            viewModel.getCategoriesFromFirestore()
             binding.swipeRefreshLayout.isRefreshing = false // hide the refresh indicator when the data has been fetched
         }
 

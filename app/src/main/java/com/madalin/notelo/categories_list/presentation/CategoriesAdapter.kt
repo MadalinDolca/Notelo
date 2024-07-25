@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.madalin.notelo.MainFragmentDirections
-import com.madalin.notelo.core.presentation.components.CategoryPropertiesDialog
-import com.madalin.notelo.databinding.LayoutCategoryCardBinding
 import com.madalin.notelo.core.domain.model.Category
 import com.madalin.notelo.core.domain.util.DynamicColor.getDynamicColor
+import com.madalin.notelo.core.presentation.components.CategoryPropertiesDialog
+import com.madalin.notelo.databinding.LayoutCategoryCardBinding
+import com.madalin.notelo.home.presentation.HomeFragmentDirections
 
 class CategoriesAdapter(
     var context: Context?,
@@ -51,15 +51,17 @@ class CategoriesAdapter(
 
             // opens the fragment containing the notes from the selected category by giving the needed data
             binding.root.setOnClickListener {
-                val action = MainFragmentDirections.actionGlobalCategoryViewerFragment(thisCategory)
+                val action = HomeFragmentDirections.actionGlobalCategoryViewerFragment(thisCategory)
                 navController.navigate(action)
             }
 
-            // open the modification dialog on long click
-            binding.root.setOnLongClickListener {
-                val context = context ?: return@setOnLongClickListener true
-                CategoryPropertiesDialog(context, CategoryPropertiesDialog.MODE_UPDATE, thisCategory).show()
-                return@setOnLongClickListener true
+            // opens the modification dialog on long click if the category is not the uncategorized one
+            if (position != 0) {
+                binding.root.setOnLongClickListener {
+                    val context = context ?: return@setOnLongClickListener true
+                    CategoryPropertiesDialog(context, CategoryPropertiesDialog.MODE_UPDATE, thisCategory).show()
+                    return@setOnLongClickListener true
+                }
             }
         }
     }
