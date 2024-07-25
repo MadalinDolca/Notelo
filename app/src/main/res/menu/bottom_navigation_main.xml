@@ -3,10 +3,10 @@
 <!-- Bottom Navigation menu buttons having the same IDs as @navigation/main_fragments -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/notesAndCategoriesFragment"
+        android:id="@+id/contentFragment"
         android:enabled="true"
         android:icon="@drawable/ic_collection"
-        android:title="@string/notes" />
+        android:title="@string/content" />
 
     <item
         android:id="@+id/addFragment"

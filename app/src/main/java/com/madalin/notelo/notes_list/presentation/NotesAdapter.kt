@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.madalin.notelo.MainFragmentDirections
+import com.madalin.notelo.core.domain.model.Note
 import com.madalin.notelo.core.presentation.components.noteproperties.NotePropertiesBottomSheetDialog
 import com.madalin.notelo.databinding.LayoutNoteCardBinding
-import com.madalin.notelo.core.domain.model.Note
+import com.madalin.notelo.home.presentation.HomeFragmentDirections
 
 class NotesAdapter(
     var context: Context?,
@@ -43,7 +43,7 @@ class NotesAdapter(
 
             // opens the note with the given data
             binding.root.setOnClickListener {
-                val action = MainFragmentDirections.actionGlobalNoteViewerFragment(thisNote)
+                val action = HomeFragmentDirections.actionGlobalNoteViewerFragment(thisNote)
                 navController.navigate(action) //navController.navigate(R.id.noteViewerFragment)
             }
 

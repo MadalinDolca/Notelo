@@ -105,5 +105,9 @@
     <string name="could_not_update_the_category">Could not update the category</string>
     <string name="could_not_delete_the_category">Could not delete the category</string>
     <string name="the_password_must_be_at_least_x_characters_long">The password must be at least %1$d characters long</string>
+    <string name="could_not_get_the_notes_because_the_user_id_is_null">Could not get the notes because the user ID is null</string>
+    <string name="could_not_get_the_notes">Could not get the notes</string>
+    <string name="could_not_sign_out">Could not sign out</string>
+    <string name="content">Content</string>
 
 </resources>

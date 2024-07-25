@@ -11,12 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.madalin.notelo.MainFragmentDirections
 import com.madalin.notelo.R
 import com.madalin.notelo.core.presentation.components.LayoutMessage
-import com.madalin.notelo.core.presentation.components.PopupBanner
 import com.madalin.notelo.databinding.FragmentNotesBinding
-import com.madalin.notelo.core.presentation.user.UserData
+import com.madalin.notelo.home.presentation.HomeFragmentDirections
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class NotesFragment : Fragment() {
@@ -24,15 +22,6 @@ class NotesFragment : Fragment() {
     private lateinit var binding: FragmentNotesBinding
     private lateinit var notesAdapter: NotesAdapter
     private lateinit var activityNavController: NavController
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // checks if the user's notes have been fetched and gets them otherwise
-        if (viewModel.notesListLiveData.value == null) {
-            viewModel.getNotesFromFirestore(UserData.currentUser.id)
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentNotesBinding.inflate(inflater, container, false)
@@ -43,8 +32,7 @@ class NotesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activityNavController = (activity as AppCompatActivity).findNavController(R.id.mainActivityFragmentContainerView)
-        notesAdapter =
-            NotesAdapter(context, activityNavController)
+        notesAdapter = NotesAdapter(context, activityNavController)
 
         // recycler view preparations
         with(binding) {
@@ -58,16 +46,11 @@ class NotesFragment : Fragment() {
 
     private fun setupObservers() {
         // notes list observer
-        viewModel.notesListLiveData.observe(viewLifecycleOwner) {
+        viewModel.notesListState.observe(viewLifecycleOwner) {
             if (it != null) {
                 notesAdapter.setNotesList(it)
                 notesAdapter.notifyDataSetChanged()
             }
-        }
-
-        // error message observer
-        viewModel.popupMessageLiveData.observe(viewLifecycleOwner) {
-            PopupBanner.make(activity, it.first, it.second).show()
         }
     }
 
@@ -107,13 +90,13 @@ class NotesFragment : Fragment() {
 
         // obtains the notes on swipe refresh
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getNotesFromFirestore(UserData.currentUser.id)
+            viewModel.getAndObserveUserNotes()
             binding.swipeRefreshLayout.isRefreshing = false
         }
 
         // FAB that triggers the note creation activity
         binding.floatingActionButton.setOnClickListener {
-            val action = MainFragmentDirections.actionGlobalNoteViewerFragment(null)
+            val action = HomeFragmentDirections.actionGlobalNoteViewerFragment(null)
             activityNavController.navigate(action)
         }
     }

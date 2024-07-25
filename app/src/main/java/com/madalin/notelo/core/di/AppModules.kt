@@ -16,6 +16,7 @@ import com.madalin.notelo.core.domain.repository.FirebaseContentRepository
 import com.madalin.notelo.core.domain.repository.FirebaseUserRepository
 import com.madalin.notelo.core.presentation.GlobalDriver
 import com.madalin.notelo.core.presentation.MainViewModel
+import com.madalin.notelo.home.presentation.HomeViewModel
 import com.madalin.notelo.note_viewer.presentation.NoteViewerViewModel
 import com.madalin.notelo.notes_list.presentation.NotesViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -49,7 +50,8 @@ val viewModelModule = module {
     viewModel { SignInViewModel(get(), get()) } // injects LoginViewModel with the above dependencies
     viewModel { SignUpViewModel(get(), get()) }
     viewModel { PasswordResetViewModel(get(), get()) }
-    viewModel { NotesViewModel(get()) }
+    viewModel { HomeViewModel(get()) }
+    viewModel { NotesViewModel(get(), get()) }
     viewModel { CategoriesViewModel(get()) }
     viewModel { NoteViewerViewModel(get()) }
     viewModel { CategoryViewerViewModel(get()) }

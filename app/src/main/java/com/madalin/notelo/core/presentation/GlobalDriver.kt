@@ -7,6 +7,7 @@ import com.madalin.notelo.R
 import com.madalin.notelo.core.domain.model.User
 import com.madalin.notelo.core.domain.repository.FirebaseUserRepository
 import com.madalin.notelo.core.domain.result.UserResult
+import com.madalin.notelo.core.presentation.components.PopupBanner
 import com.madalin.notelo.core.presentation.util.UiText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -98,6 +99,16 @@ class GlobalDriver(
      */
     fun setLoginStatus(isLoggedIn: Boolean) {
         _isUserSignedIn.value = isLoggedIn
+    }
+
+    /**
+     * Signs out the current user and updates the state.
+     */
+    fun signOut() {
+        userRepository.signOut(
+            onSuccess = { _isUserSignedIn.value = false },
+            onFailure = { showPopupBanner(PopupBanner.TYPE_FAILURE, it ?: R.string.could_not_sign_out) }
+        )
     }
 
     /**

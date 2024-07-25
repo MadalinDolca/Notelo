@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/notes_navigation"
-    app:startDestination="@id/notesAndCategoriesFragment">
+    app:startDestination="@id/contentFragment">
 
     <fragment
-        android:id="@+id/notesAndCategoriesFragment"
+        android:id="@+id/contentFragment"
         android:name="com.madalin.notelo.content.presentation.ContentFragment"
         android:label="Fragment that contains NotesFragment and CategoriesFragment"
         tools:layout="@layout/fragment_notes_and_categories" />
