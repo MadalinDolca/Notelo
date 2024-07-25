@@ -110,5 +110,9 @@
     <string name="could_not_sign_out">Could not sign out</string>
     <string name="content">Content</string>
     <string name="current_user_is_null">Current user is null</string>
+    <string name="could_not_get_the_categories_because_the_user_id_is_null">Could not get the categories because the user ID is null</string>
+    <string name="could_not_get_the_tags_because_the_category_id_is_null">Could not get the tags because the category ID is null</string>
+    <string name="could_not_update_the_note_because_the_note_id_is_null">Could not update the note because the note ID is null</string>
+    <string name="could_not_delete_the_note_because_the_note_id_is_null">Could not delete the note because the note ID is null</string>
 
 </resources>

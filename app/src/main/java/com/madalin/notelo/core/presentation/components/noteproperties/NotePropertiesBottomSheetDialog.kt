@@ -8,13 +8,13 @@ import android.widget.AdapterView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.madalin.notelo.R
-import com.madalin.notelo.core.presentation.components.PopupBanner
-import com.madalin.notelo.databinding.LayoutNotePropertiesBottomsheetdialogBinding
 import com.madalin.notelo.core.domain.model.Category
 import com.madalin.notelo.core.domain.model.Note
 import com.madalin.notelo.core.domain.model.Tag
 import com.madalin.notelo.core.domain.repository.FirebaseContentRepository
-import com.madalin.notelo.core.presentation.user.UserData
+import com.madalin.notelo.core.presentation.GlobalDriver
+import com.madalin.notelo.core.presentation.components.PopupBanner
+import com.madalin.notelo.databinding.LayoutNotePropertiesBottomsheetdialogBinding
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -27,7 +27,9 @@ class NotePropertiesBottomSheetDialog(
 ) : BottomSheetDialog(ownerContext), KoinComponent {
     lateinit var binding: LayoutNotePropertiesBottomsheetdialogBinding
 
+    private val globalDriver: GlobalDriver by inject()
     private val repository: FirebaseContentRepository by inject()
+
     private var categoryAdapter = SpinnerCategoryAdapter()
     private var categoriesList = mutableListOf<Category>()
     private var tagsList = mutableListOf<Tag>() // list to store the selected category's tags
@@ -62,8 +64,14 @@ class NotePropertiesBottomSheetDialog(
      * [categoriesList] is later used to update the [categoryAdapter].
      */
     private fun populateCategoriesSpinner() {
+        val userId = globalDriver.currentUser.value?.id
+        if (userId == null) {
+            globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.could_not_get_the_categories_because_the_user_id_is_null)
+            return
+        }
+
         repository.getCategoriesByUserId(
-            UserData.currentUser.id,
+            userId,
             onSuccess = { categories ->
                 categoriesList.clear()
                 // adds an "uncategorized" entry; used when the user wants to remove the note from any category
@@ -78,9 +86,9 @@ class NotePropertiesBottomSheetDialog(
                 binding.spinnerCategory.setSelection(position)
             },
             onFailure = {
-                val errorMessage = it ?: context.getString(R.string.could_not_get_the_categories)
-                PopupBanner.make(ownerContext, PopupBanner.TYPE_FAILURE, errorMessage).show()
-            })
+                globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, it ?: R.string.could_not_get_the_categories)
+            }
+        )
     }
 
     /**
@@ -89,9 +97,14 @@ class NotePropertiesBottomSheetDialog(
      * @param category used to query the database
      */
     fun getCategoryTags(category: Category) {
-        val categoryId = category.id ?: return
+        val categoryId = category.id
+        if (categoryId == null) {
+            globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.could_not_get_the_tags_because_the_category_id_is_null)
+            return
+        }
 
-        repository.getTagsByCategoryId(categoryId,
+        repository.getTagsByCategoryId(
+            categoryId,
             onSuccess = { tags ->
                 tagsList.clear()
                 tagsList.addAll(tags)
@@ -106,9 +119,9 @@ class NotePropertiesBottomSheetDialog(
                 }
             },
             onFailure = {
-                val errorMessage = it ?: context.getString(R.string.could_not_get_the_tags_for_this_category)
-                PopupBanner.make(ownerContext, PopupBanner.TYPE_FAILURE, errorMessage).show()
-            })
+                globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, it ?: context.getString(R.string.could_not_get_the_tags_for_this_category))
+            }
+        )
     }
 
     /**
@@ -168,6 +181,12 @@ class NotePropertiesBottomSheetDialog(
      * Updates the [selectedNote]'s data with the selected data of this dialog.
      */
     private fun updateNote() {
+        val noteId = selectedNote.id
+        if (noteId == null) {
+            globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.could_not_update_the_note_because_the_note_id_is_null)
+            return
+        }
+
         val categoryFromSpinner = categoryAdapter.getItem(binding.spinnerCategory.selectedItemPosition)
         val newCategoryId = if (categoryFromSpinner.id != Category.ID_UNCATEGORIZED) categoryFromSpinner.id else Category.ID_UNCATEGORIZED
         val newVisibility = if (binding.radioButtonPrivate.isChecked) Note.VISIBLE_PRIVATE else Note.VISIBLE_PUBLIC // gets the visibility from the radio buttons
@@ -180,10 +199,9 @@ class NotePropertiesBottomSheetDialog(
             "updatedAt" to null
         )
 
-        val noteId = selectedNote.id ?: return
-
         // update the note in the database
-        repository.updateNote(noteId, newData,
+        repository.updateNote(
+            noteId, newData,
             onSuccess = {
                 // update the local note
                 selectedNote.apply {
@@ -193,39 +211,34 @@ class NotePropertiesBottomSheetDialog(
                     visible = newVisibility
                 }
 
-                PopupBanner.make(
-                    ownerContext,
-                    PopupBanner.TYPE_SUCCESS,
-                    context.getString(R.string.note_updated_successfully)
-                ).show()
-
+                globalDriver.showPopupBanner(PopupBanner.TYPE_SUCCESS, context.getString(R.string.note_updated_successfully))
                 this@NotePropertiesBottomSheetDialog.dismiss() // dismiss the dialog
             },
             onFailure = {
-                val errorMessage = it ?: context.getString(R.string.could_not_update_the_note)
-                PopupBanner.make(ownerContext, PopupBanner.TYPE_FAILURE, errorMessage).show()
-            })
+                globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, it ?: context.getString(R.string.could_not_update_the_note))
+            }
+        )
     }
 
     /**
      * Deletes the [selectedNote] from the database and closes the dialog.
      */
     private fun deleteNoteAndClose() {
-        val noteId = selectedNote.id ?: return
+        val noteId = selectedNote.id
+        if (noteId == null) {
+            globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.could_not_delete_the_note_because_the_note_id_is_null)
+            return
+        }
 
-        repository.deleteNote(noteId,
+        repository.deleteNote(
+            noteId,
             onSuccess = {
-                PopupBanner.make(
-                    ownerContext,
-                    PopupBanner.TYPE_SUCCESS,
-                    context.getString(R.string.note_deleted_successfully)
-                ).show()
-
+                globalDriver.showPopupBanner(PopupBanner.TYPE_SUCCESS, context.getString(R.string.note_deleted_successfully))
                 this@NotePropertiesBottomSheetDialog.dismiss() // dismiss the dialog
             },
             onFailure = {
-                val errorMessage = it ?: context.getString(R.string.could_not_delete_the_note)
-                PopupBanner.make(ownerContext, PopupBanner.TYPE_FAILURE, errorMessage).show()
-            })
+                globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, it ?: context.getString(R.string.could_not_delete_the_note))
+            }
+        )
     }
 }
