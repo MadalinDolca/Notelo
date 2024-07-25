@@ -26,9 +26,12 @@ sealed class UiText {
 
     /**
      * Converts this [UiText] to a standard [String] representation and returns it.
-     * @param context the [Context] used for retrieving string resources
+     * @param context The [Context] used for retrieving string resources. If `null` it returns an
+     * empty string.
      */
-    fun asString(context: Context): String {
+    fun asString(context: Context?): String {
+        if (context == null) return ""
+
         return when (this) {
             is Dynamic -> value
             is Resource -> context.getString(resId, *args)

@@ -53,6 +53,6 @@ val viewModelModule = module {
     viewModel { HomeViewModel(get()) }
     viewModel { NotesViewModel(get(), get()) }
     viewModel { CategoriesViewModel(get(), get()) }
-    viewModel { NoteViewerViewModel(get()) }
+    viewModel { NoteViewerViewModel(get(), get()) }
     viewModel { CategoryViewerViewModel(get()) }
 }

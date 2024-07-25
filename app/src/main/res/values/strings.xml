@@ -119,5 +119,8 @@
     <string name="could_not_delete_the_category_because_the_category_id_is_null">Could not delete the category because the category ID is null</string>
     <string name="category_name_can_not_be_empty">Category name can not be empty</string>
     <string name="category_name_must_be_between_x_and_y_characters">Category name must be between %d and %d characters</string>
+    <string name="could_not_create_a_new_note_because_the_user_id_is_null">Could not create a new note because the user ID is null</string>
+    <string name="note_title_must_be_between_x_and_y_characters">Note title must be between %d and %d characters</string>
+    <string name="note_content_must_be_between_x_and_y_characters">Note content must be between %d and %d characters</string>
 
 </resources>

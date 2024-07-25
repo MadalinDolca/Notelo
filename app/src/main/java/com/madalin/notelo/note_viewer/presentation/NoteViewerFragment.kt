@@ -8,17 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.madalin.notelo.R
-import com.madalin.notelo.core.presentation.components.PopupBanner
-import com.madalin.notelo.core.presentation.components.noteproperties.NotePropertiesBottomSheetDialog
-import com.madalin.notelo.databinding.FragmentNoteViewerBinding
 import com.madalin.notelo.core.domain.util.EdgeToEdge.DIRECTION_BOTTOM
 import com.madalin.notelo.core.domain.util.EdgeToEdge.DIRECTION_TOP
 import com.madalin.notelo.core.domain.util.EdgeToEdge.SPACING_MARGIN
-import com.madalin.notelo.core.domain.util.EdgeToEdge.SPACING_PADDING
 import com.madalin.notelo.core.domain.util.EdgeToEdge.edgeToEdge
+import com.madalin.notelo.core.presentation.components.noteproperties.NotePropertiesBottomSheetDialog
+import com.madalin.notelo.databinding.FragmentNoteViewerBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 /**
  * Fragment used to view, update and create a note.
@@ -41,7 +40,7 @@ class NoteViewerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         edgeToEdge(activity, binding.editTextTitle, SPACING_MARGIN, DIRECTION_TOP)
-        edgeToEdge(activity, binding.layoutOptions, SPACING_PADDING, DIRECTION_BOTTOM)
+        edgeToEdge(activity, binding.textViewLastEdited, SPACING_MARGIN, DIRECTION_BOTTOM)
 
         // determines the mode
         // if no note has been passed, then the creation layout will be shown
@@ -112,7 +111,8 @@ class NoteViewerFragment : Fragment() {
      */
     private fun isToday(date: Date): Boolean {
         val now = Date()
-        return SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(now) == SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
+        return SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(now) ==
+                SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
     }
 
     private fun enableEditing() {
@@ -147,13 +147,13 @@ class NoteViewerFragment : Fragment() {
     private fun setupObservers() {
         // note title error observer
         viewModel.titleErrorMessageLiveData.observe(viewLifecycleOwner) {
-            binding.editTextTitle.error = getString(it)
+            binding.editTextTitle.error = it.asString(context)
             binding.editTextTitle.requestFocus()
         }
 
         // note content error observer
         viewModel.contentErrorMessageLiveData.observe(viewLifecycleOwner) {
-            binding.editTextContent.error = getString(it)
+            binding.editTextContent.error = it.asString(context)
             binding.editTextContent.requestFocus()
         }
 
@@ -173,11 +173,6 @@ class NoteViewerFragment : Fragment() {
                 //findNavController().popBackStack() // pops the fragment only from the app backstack
                 viewModel.setNoteCreationStatus(false)
             }
-        }
-
-        // pop-up message observer
-        viewModel.popupMessageLiveData.observe(viewLifecycleOwner) {
-            PopupBanner.make(activity, it.first, getString(it.second)).show()
         }
     }
 }

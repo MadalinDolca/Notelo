@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature.notesandcategories.noteviewer.NoteViewerFragment">
+    tools:context=".note_viewer.presentation.NoteViewerFragment">
 
     <!-- ScrollView of title and content -->
     <ScrollView
