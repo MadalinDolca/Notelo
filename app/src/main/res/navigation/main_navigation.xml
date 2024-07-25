@@ -12,9 +12,9 @@
         app:exitAnim="@android:anim/slide_out_right" />
     <fragment
         android:id="@+id/noteViewerFragment"
-        android:name="com.madalin.notelo.feature.notesandcategories.noteviewer.NoteViewerFragment"
+        android:name="com.madalin.notelo.note_viewer.presentation.NoteViewerFragment"
         android:label="fragment_note_viewer"
-        tools:layout="@layout/fragment_note_viewer" >
+        tools:layout="@layout/fragment_note_viewer">
         <argument
             android:name="noteData"
             app:argType="com.madalin.notelo.core.domain.model.Note"
@@ -68,7 +68,7 @@
         android:id="@+id/mainFragment"
         android:name="com.madalin.notelo.core.presentation.MainFragment"
         android:label="Fragment used to display note related fragments"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_notes_navigation"
             app:destination="@id/notes_navigation" />
@@ -77,7 +77,7 @@
         android:id="@+id/passwordResetFragment"
         android:name="com.madalin.notelo.auth.presentation.passwordreset.PasswordResetFragment"
         android:label="fragment_password_reset"
-        tools:layout="@layout/fragment_password_reset" >
+        tools:layout="@layout/fragment_password_reset">
         <action
             android:id="@+id/action_passwordResetFragment_to_signInFragment"
             app:destination="@id/signInFragment"
@@ -90,9 +90,9 @@
     <include app:graph="@navigation/notes_navigation" />
     <fragment
         android:id="@+id/categoryViewerFragment"
-        android:name="com.madalin.notelo.feature.notesandcategories.categoryviewer.CategoryViewerFragment"
+        android:name="com.madalin.notelo.category_viewer.presentation.CategoryViewerFragment"
         android:label="fragment_category_viewer"
-        tools:layout="@layout/fragment_category_viewer" >
+        tools:layout="@layout/fragment_category_viewer">
         <argument
             android:name="categoryData"
             app:argType="com.madalin.notelo.core.domain.model.Category" />

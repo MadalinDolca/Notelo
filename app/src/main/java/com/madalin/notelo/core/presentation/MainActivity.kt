@@ -6,10 +6,9 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.madalin.notelo.R
+import com.madalin.notelo.core.domain.util.EdgeToEdge.edgeToEdge
 import com.madalin.notelo.core.presentation.components.PopupBanner
 import com.madalin.notelo.databinding.ActivityMainBinding
-import com.madalin.notelo.core.presentation.user.UserData
-import com.madalin.notelo.core.domain.util.EdgeToEdge.edgeToEdge
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -27,19 +26,25 @@ class MainActivity : AppCompatActivity() {
 
         navController = (supportFragmentManager.findFragmentById(binding.mainActivityFragmentContainerView.id) as NavHostFragment).navController
 
-        // navigates to MainFragment if the user has singed in, otherwise to SignInFragment (default)
-        if (UserData.isUserSignedIn()) {
-            navController.navigate(R.id.mainFragment)
-            UserData.startListeningForUserData(this)
-        }
-
         setupObservers()
     }
 
     private fun setupObservers() {
+        // sign in state observer
+        viewModel.isSignedIn.observe(this) {
+            if (it) { // navigates to MainFragment if the user has singed in
+                navController.navigate(R.id.mainFragment)
+                //viewModel.listenForUserData() // TODO this is not working
+            } else { // otherwise to SignInFragment if elsewhere
+                if (navController.currentDestination?.id != R.id.signInFragment) {
+                    navController.navigate(R.id.signInFragment)
+                }
+            }
+        }
+
         // pop-up message observer
-        viewModel.popupMessageLiveData.observe(this) {
-            PopupBanner.make(this, it.first, getString(it.second)).show()
+        viewModel.popupBannerMessage.observe(this) {
+            PopupBanner.make(this, it.first, it.second.asString(this)).show()
         }
 
         // application login state observer

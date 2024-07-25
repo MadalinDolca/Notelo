@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/notesAndCategoriesFragment"
-        android:name="com.madalin.notelo.feature.notesandcategories.NotesAndCategoriesFragment"
+        android:name="com.madalin.notelo.content.presentation.ContentFragment"
         android:label="Fragment that contains NotesFragment and CategoriesFragment"
         tools:layout="@layout/fragment_notes_and_categories" />
     <fragment

@@ -8,18 +8,17 @@ import com.madalin.notelo.R
 import com.madalin.notelo.auth.domain.repository.FirebaseAuthRepository
 import com.madalin.notelo.auth.domain.result.PasswordResetResult
 import com.madalin.notelo.auth.domain.validation.AuthValidator
+import com.madalin.notelo.core.presentation.GlobalDriver
 import com.madalin.notelo.core.presentation.components.PopupBanner
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class PasswordResetViewModel(
+    private val globalDriver: GlobalDriver,
     private val repository: FirebaseAuthRepository
 ) : ViewModel() {
     private val _emailErrorMessageLiveData = MutableLiveData<Int>()
     val emailErrorMessageLiveData: LiveData<Int> get() = _emailErrorMessageLiveData
-
-    private val _popupMessageLiveData = MutableLiveData<Pair<Int, Int>>()
-    val popupMessageLiveData: LiveData<Pair<Int, Int>> get() = _popupMessageLiveData
 
     /**
      * Resets the user password associated with the given [email] and updates the data holder.
@@ -34,8 +33,8 @@ class PasswordResetViewModel(
         viewModelScope.launch {
             val result = async { repository.resetPassword(_email) }.await()
             when (result) {
-                PasswordResetResult.Success -> _popupMessageLiveData.value = Pair(PopupBanner.TYPE_INFO, R.string.check_your_email_to_reset_your_password)
-                PasswordResetResult.Error -> _popupMessageLiveData.value = Pair(PopupBanner.TYPE_FAILURE, R.string.something_went_wrong_please_try_again)
+                PasswordResetResult.Success -> globalDriver.showPopupBanner(PopupBanner.TYPE_INFO, R.string.check_your_email_to_reset_your_password)
+                PasswordResetResult.Error -> globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.something_went_wrong_please_try_again)
             }
         }
     }

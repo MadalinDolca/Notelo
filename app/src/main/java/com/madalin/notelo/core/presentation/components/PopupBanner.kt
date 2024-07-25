@@ -61,7 +61,7 @@ class PopupBanner {
             }
 
             instance?.context = context
-            instance?.rootView =  (context as Activity).window.decorView.rootView // gets the context's root view
+            instance?.rootView = (context as Activity).window.decorView.rootView // gets the context's root view
             instance?.setLayout(type)
             instance?.setText(message)
             instance?.setGravity() // default Gravity is TOP

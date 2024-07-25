@@ -8,12 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.madalin.notelo.R
-import com.madalin.notelo.core.presentation.components.PopupBanner
-import com.madalin.notelo.databinding.FragmentSignInBinding
 import com.madalin.notelo.core.domain.util.EdgeToEdge.DIRECTION_BOTTOM
 import com.madalin.notelo.core.domain.util.EdgeToEdge.DIRECTION_TOP
 import com.madalin.notelo.core.domain.util.EdgeToEdge.SPACING_MARGIN
 import com.madalin.notelo.core.domain.util.EdgeToEdge.edgeToEdge
+import com.madalin.notelo.databinding.FragmentSignInBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SingInFragment : Fragment() {
@@ -38,14 +37,6 @@ class SingInFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        // login success observer
-        viewModel.isSignInSuccessLiveData.observe(viewLifecycleOwner) {
-            if (it) {
-                navController.navigate(R.id.action_signInFragment_to_mainFragment)
-                viewModel.setSignInStatus(false)
-            }
-        }
-
         // email error observer
         viewModel.emailErrorMessageLiveData.observe(viewLifecycleOwner) {
             binding.editTextEmail.error = getString(it)
@@ -57,18 +48,13 @@ class SingInFragment : Fragment() {
             binding.editTextPassword.error = getString(it)
             binding.editTextPassword.requestFocus()
         }
-
-        // pop-up message observer
-        viewModel.popupMessageLiveData.observe(viewLifecycleOwner) {
-            PopupBanner.make(activity, it.first, getString(it.second)).show()
-        }
     }
 
     private fun setupListeners() {
         // calls the signIn() method with the given email and password
         binding.buttonLogin.setOnClickListener {
-            val email = binding.editTextEmail.text.toString().trim()
-            val password = binding.editTextPassword.text.toString().trim()
+            val email = binding.editTextEmail.text.toString()
+            val password = binding.editTextPassword.text.toString()
             viewModel.signIn(email, password)
         }
 

@@ -8,24 +8,20 @@ import com.madalin.notelo.R
 import com.madalin.notelo.auth.domain.repository.FirebaseAuthRepository
 import com.madalin.notelo.auth.domain.result.SignInResult
 import com.madalin.notelo.auth.domain.validation.AuthValidator
+import com.madalin.notelo.core.presentation.GlobalDriver
 import com.madalin.notelo.core.presentation.components.PopupBanner
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class SignInViewModel(
+    private val globalDriver: GlobalDriver,
     private val repository: FirebaseAuthRepository
 ) : ViewModel() {
-    private val _isSignInSuccessLiveData = MutableLiveData<Boolean>()
-    val isSignInSuccessLiveData: LiveData<Boolean> get() = _isSignInSuccessLiveData
-
     private val _emailErrorMessageLiveData = MutableLiveData<Int>()
     val emailErrorMessageLiveData: LiveData<Int> get() = _emailErrorMessageLiveData
 
     private val _passwordErrorMessageLiveData = MutableLiveData<Int>()
     val passwordErrorMessageLiveData: LiveData<Int> get() = _passwordErrorMessageLiveData
-
-    private val _popupMessageLiveData = MutableLiveData<Pair<Int, Int>>()
-    val popupMessageLiveData: LiveData<Pair<Int, Int>> get() = _popupMessageLiveData
 
     /**
      * Signs in the user with the given [email] and [password] if they are valid. Checks if the
@@ -42,10 +38,10 @@ class SignInViewModel(
         viewModelScope.launch {
             val result = async { repository.signInWithEmailAndPassword(_email, _password) }.await()
             when (result) {
-                SignInResult.Success -> handleSignInSuccessResult()
-                SignInResult.UserNotFound -> updateStateUponFailure(R.string.user_not_found)
-                SignInResult.InvalidPassword -> updateStateUponFailure(R.string.invalid_password)
-                SignInResult.Error -> updateStateUponFailure(R.string.login_error)
+                SignInResult.Success -> handleSignInSuccess()
+                SignInResult.UserNotFound -> handleSignInFailure(R.string.user_not_found)
+                SignInResult.InvalidPassword -> handleSignInFailure(R.string.invalid_password)
+                is SignInResult.Error -> handleSignInFailure(result.message ?: R.string.login_error)
             }
         }
     }
@@ -86,28 +82,21 @@ class SignInViewModel(
      * Sends a verification email if the email is not verified, otherwise sets the login status
      * to `true`.
      */
-    private fun handleSignInSuccessResult() {
+    private fun handleSignInSuccess() {
         if (repository.isEmailVerified()) {
-            _isSignInSuccessLiveData.value = true
+            globalDriver.setLoginStatus(true)
         } else {
             repository.sendEmailVerification()
-            _popupMessageLiveData.value = Pair(PopupBanner.TYPE_INFO, R.string.check_your_email_to_confirm_your_account)
+            globalDriver.setLoginStatus(false)
+            globalDriver.showPopupBanner(PopupBanner.TYPE_INFO, R.string.check_your_email_to_confirm_your_account)
         }
     }
 
     /**
      * Updates the state holders upon a sign in failure with the given [message].
      */
-    private fun updateStateUponFailure(message: Int) {
-        _isSignInSuccessLiveData.value = false
-        _popupMessageLiveData.value = Pair(PopupBanner.TYPE_FAILURE, message)
-    }
-
-    /**
-     * Sets the user sign in data holder status to [status].
-     * @param status `true` if user is signed in, `false` otherwise
-     */
-    fun setSignInStatus(status: Boolean) {
-        _isSignInSuccessLiveData.value = status
+    private fun handleSignInFailure(message: Any) {
+        globalDriver.setLoginStatus(false)
+        globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, message)
     }
 }

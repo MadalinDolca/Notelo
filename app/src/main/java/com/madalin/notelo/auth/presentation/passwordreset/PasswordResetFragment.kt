@@ -8,12 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.madalin.notelo.R
-import com.madalin.notelo.core.presentation.components.PopupBanner
-import com.madalin.notelo.databinding.FragmentPasswordResetBinding
 import com.madalin.notelo.core.domain.util.EdgeToEdge.DIRECTION_BOTTOM
 import com.madalin.notelo.core.domain.util.EdgeToEdge.DIRECTION_TOP
 import com.madalin.notelo.core.domain.util.EdgeToEdge.SPACING_MARGIN
 import com.madalin.notelo.core.domain.util.EdgeToEdge.edgeToEdge
+import com.madalin.notelo.databinding.FragmentPasswordResetBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PasswordResetFragment : Fragment() {
@@ -43,17 +42,12 @@ class PasswordResetFragment : Fragment() {
             binding.editTextEmail.error = getString(it)
             binding.editTextEmail.requestFocus()
         }
-
-        // pop-up message observer
-        viewModel.popupMessageLiveData.observe(viewLifecycleOwner) {
-            PopupBanner.make(activity, it.first, getString(it.second)).show()
-        }
     }
 
     private fun setupListeners() {
         // calls resetPassword() method with the given email
         binding.buttonResetPassword.setOnClickListener {
-            val email = binding.editTextEmail.text.toString().trim()
+            val email = binding.editTextEmail.text.toString()
             viewModel.resetPassword(email)
         }
 

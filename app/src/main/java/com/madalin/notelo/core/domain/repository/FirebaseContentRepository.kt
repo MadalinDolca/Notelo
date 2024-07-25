@@ -1,23 +1,13 @@
 package com.madalin.notelo.core.domain.repository
 
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.madalin.notelo.core.domain.model.Category
 import com.madalin.notelo.core.domain.model.Note
 import com.madalin.notelo.core.domain.model.Tag
-import com.madalin.notelo.core.domain.model.User
-import com.madalin.notelo.core.domain.result.UserResult
 
 /**
  * Repository interface that contains content related methods for Firestore.
  */
 interface FirebaseContentRepository {
-    /**
-     * Obtains the current user data from [Firestore][Firebase.firestore] and starts listening for updates.
-     * @param onSuccess function invoked when data fetching succeeds with the data inside [User]
-     * @param onFailure function invoked when data fetching fails with [UserResult] as the error type
-     */
-    fun startListeningForUserData(onSuccess: (User) -> Unit, onFailure: (UserResult) -> Unit)
 
     /**
      * Obtains the notes associated with the given [userId] and starts listening for changes.

@@ -34,17 +34,6 @@ interface FirebaseAuthRepository {
     suspend fun signInWithEmailAndPassword(email: String, password: String): SignInResult
 
     /**
-     * Obtains the current user [Firebase] ID and returns it if it's not null.
-     */
-    fun getCurrentUserId(): String?
-
-    /**
-     * Checks if the current Firebase user is signed in.
-     * @return `true` if signed in, `false` otherwise
-     */
-    fun isSignedIn(): Boolean
-
-    /**
      * Checks if the current Firebase user email is verified.
      * @return `true` if verified, `false` otherwise
      */
@@ -54,12 +43,4 @@ interface FirebaseAuthRepository {
      * Sends an email verification to the currently logged in account email.
      */
     fun sendEmailVerification()
-
-    /**
-     * Signs out the currently authenticated user.
-     * @param onComplete callback function invoked upon completion of the sign-out operation
-     * - `Boolean` parameter indicates the success or failure of the sign-out operation
-     * - `String` parameter contains the error message in case of failure
-     */
-    fun signOut(onComplete: (Boolean, String?) -> Unit)
 }

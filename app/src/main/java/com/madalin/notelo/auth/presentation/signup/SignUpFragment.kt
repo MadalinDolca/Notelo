@@ -13,7 +13,6 @@ import com.madalin.notelo.core.domain.util.EdgeToEdge.DIRECTION_TOP
 import com.madalin.notelo.core.domain.util.EdgeToEdge.SPACING_MARGIN
 import com.madalin.notelo.core.domain.util.EdgeToEdge.edgeToEdge
 import com.madalin.notelo.core.presentation.components.AppProgressDialog
-import com.madalin.notelo.core.presentation.components.PopupBanner
 import com.madalin.notelo.databinding.FragmentSignUpBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -77,11 +76,6 @@ class SignUpFragment : Fragment() {
         // progress dialog message observer
         viewModel.progressDialogMessageLiveData.observe(viewLifecycleOwner) {
             AppProgressDialog.update(it.first, getString(it.second))
-        }
-
-        // pop-up message observer
-        viewModel.popupMessageLiveData.observe(viewLifecycleOwner) {
-            PopupBanner.make(activity, it.first, getString(it.second)).show()
         }
     }
 

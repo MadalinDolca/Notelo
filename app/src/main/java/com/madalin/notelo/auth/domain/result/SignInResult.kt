@@ -4,5 +4,5 @@ sealed class SignInResult {
     data object Success : SignInResult()
     data object UserNotFound : SignInResult()
     data object InvalidPassword : SignInResult()
-    data object Error : SignInResult()
+    data class Error(val message: String?) : SignInResult()
 }

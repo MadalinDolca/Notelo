@@ -16,7 +16,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class FirebaseAuthRepositoryImpl(
@@ -70,31 +69,13 @@ class FirebaseAuthRepositoryImpl(
         } catch (e: FirebaseAuthInvalidCredentialsException) {
             return SignInResult.InvalidPassword
         } catch (e: Exception) {
-            return SignInResult.Error
+            return SignInResult.Error(e.message)
         }
-    }
-
-    override fun getCurrentUserId() = auth.currentUser?.uid
-
-    override fun isSignedIn(): Boolean {
-        auth.currentUser?.getIdToken(true) // refresh token
-        return auth.currentUser != null
     }
 
     override fun isEmailVerified() = auth.currentUser?.isEmailVerified == true
 
     override fun sendEmailVerification() {
         auth.currentUser?.sendEmailVerification()
-    }
-
-    override fun signOut(onComplete: (Boolean, String?) -> Unit) {
-        externalScope.launch {
-            try {
-                auth.signOut()
-                onComplete(true, null)
-            } catch (e: Exception) {
-                onComplete(false, e.message)
-            }
-        }
     }
 }

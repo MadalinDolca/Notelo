@@ -10,6 +10,7 @@ import com.madalin.notelo.auth.domain.result.AccountDataStorageResult
 import com.madalin.notelo.auth.domain.result.SignUpResult
 import com.madalin.notelo.auth.domain.validation.AuthValidator
 import com.madalin.notelo.core.domain.model.User
+import com.madalin.notelo.core.presentation.GlobalDriver
 import com.madalin.notelo.core.presentation.components.AppProgressDialog
 import com.madalin.notelo.core.presentation.components.PopupBanner
 import kotlinx.coroutines.async
@@ -17,6 +18,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(
+    private val globalDriver: GlobalDriver,
     private val repository: FirebaseAuthRepository
 ) : ViewModel() {
     private val _isSignUpSuccessLiveData = MutableLiveData<Boolean>()
@@ -36,9 +38,6 @@ class SignUpViewModel(
 
     private val _progressDialogMessageLiveData = MutableLiveData<Pair<Int, Int>>()
     val progressDialogMessageLiveData: LiveData<Pair<Int, Int>> get() = _progressDialogMessageLiveData
-
-    private val _popupMessageLiveData = MutableLiveData<Pair<Int, Int>>()
-    val popupMessageLiveData: LiveData<Pair<Int, Int>> get() = _popupMessageLiveData
 
     /**
      * Signs up the user with the given [email] and [password] if they are valid.
@@ -129,8 +128,8 @@ class SignUpViewModel(
                 }
 
                 is AccountDataStorageResult.Error -> {
-                    _popupMessageLiveData.value = Pair(PopupBanner.TYPE_FAILURE, R.string.data_recording_error)
                     _isProgressDialogVisibleLiveData.value = false // dismiss the progress dialog
+                    globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.data_recording_error)
                 }
             }
         }
@@ -142,7 +141,7 @@ class SignUpViewModel(
     private fun updateStateUponFailure(message: Int) {
         _isProgressDialogVisibleLiveData.value = false // dismisses the progress dialog
         _isSignUpSuccessLiveData.value = false // marks registration as failed
-        _popupMessageLiveData.value = Pair(PopupBanner.TYPE_FAILURE, message)
+        globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, message)
     }
 
     /**

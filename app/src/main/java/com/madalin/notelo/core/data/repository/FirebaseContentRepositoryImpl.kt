@@ -1,51 +1,18 @@
 package com.madalin.notelo.core.data.repository
 
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
-import com.madalin.notelo.core.domain.repository.FirebaseContentRepository
 import com.madalin.notelo.core.domain.model.Category
 import com.madalin.notelo.core.domain.model.Note
 import com.madalin.notelo.core.domain.model.Tag
-import com.madalin.notelo.core.domain.model.User
-import com.madalin.notelo.core.domain.result.UserResult
+import com.madalin.notelo.core.domain.repository.FirebaseContentRepository
 import com.madalin.notelo.core.domain.util.DBCollection
 
-class FirebaseContentRepositoryImpl : FirebaseContentRepository {
-    private val auth = Firebase.auth
-    private val firestore = Firebase.firestore
-
-    override fun startListeningForUserData(onSuccess: (User) -> Unit, onFailure: (UserResult) -> Unit) {
-        val userId = auth.currentUser?.uid
-
-        if (userId == null) {
-            onFailure(UserResult.NoUserId)
-            return
-        }
-
-        firestore.collection(DBCollection.USERS).document(userId)
-            .addSnapshotListener { snapshot, error ->
-                if (error != null) {
-                    onFailure(UserResult.DataFetchingError)
-                    return@addSnapshotListener
-                }
-
-                if (snapshot != null && snapshot.exists()) {
-                    val userData = snapshot.toObject<User>()
-
-                    if (userData == null) {
-                        onFailure(UserResult.UserDataNotFound)
-                        return@addSnapshotListener
-                    }
-
-                    userData.id = snapshot.id
-                    onSuccess(userData)
-                } else {
-                    onFailure(UserResult.UserDataNotFound)
-                }
-            }
-    }
+class FirebaseContentRepositoryImpl(
+    private val auth: FirebaseAuth,
+    private val firestore: FirebaseFirestore
+) : FirebaseContentRepository {
 
     override fun getNotesByUserIdListener(
         userId: String,
