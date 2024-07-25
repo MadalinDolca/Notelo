@@ -29,36 +29,43 @@ class GlobalDriver(
     val popupBannerMessage: LiveData<Pair<Int, UiText>> get() = _popupBannerMessage
 
     /**
-     * Checks if the current user is signed in and obtains the stored user ID.
-     * @return `true` if signed in and has ID, `false` otherwise
-     */
-    fun isUserSignedIn(): Boolean {
-        if (userRepository.isSignedIn()) {
-            val userId = userRepository.getCurrentUserId()
-
-            if (userId != null) {
-                _isUserSignedIn.value = true
-                _currentUser.value?.id = userId
-                return true
-            }
-        }
-
-        return false
-    }
-
-    /**
      * Starts listening for user data if the user is signed in.
      */
-    fun listenForUserData(/*context: Context*/) {
+    fun listenForUserData() {
         if (isUserSignedIn()) {
-            startListeningForUserData(/*context*/)
+            startListeningForUserData()
         }
     }
 
     /**
-     * Starts listening for user data changes and updates [_currentUser].
+     * Checks if the current user is signed in. If so, it obtains the stored user ID and marks the
+     * user as signed in.
+     * @return `true` if signed in and has ID, `false` otherwise
      */
-    private fun startListeningForUserData(/*context: Context*/) {
+    private fun isUserSignedIn(): Boolean {
+        if (!userRepository.isSignedIn()) return false
+
+        val userId = userRepository.getCurrentUserId()
+        if (userId == null) {
+            showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.could_not_get_the_user_id)
+            return false
+        }
+
+        val currentUser = _currentUser.value
+        if (currentUser == null) {
+            showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.current_user_is_null)
+            return false
+        }
+
+        _currentUser.value = currentUser.copy(id = userId)
+        _isUserSignedIn.value = true
+        return true
+    }
+
+    /**
+     * Starts listening for user data changes and updates current user state.
+     */
+    private fun startListeningForUserData() {
         scope.launch {
             val result = launch {
                 userRepository.observeUserData()
@@ -71,11 +78,7 @@ class GlobalDriver(
 
                             UserResult.NoUserId, UserResult.DataFetchingError, UserResult.UserDataNotFound -> {
                                 Log.d("GlobalDriver", "Could not get user data")
-                                /*PopupBanner.make(
-                                    context,
-                                    PopupBanner.TYPE_FAILURE,
-                                    context.getString(determineUserDataFetchingFailureMessage(result))
-                                )*/
+                                showPopupBanner(PopupBanner.TYPE_FAILURE, determineUserDataFetchingFailureMessage(result))
                             }
                         }
                     }
@@ -97,18 +100,16 @@ class GlobalDriver(
     /**
      * Sets the user login status to [isLoggedIn].
      */
-    fun setLoginStatus(isLoggedIn: Boolean) {
-        _isUserSignedIn.value = isLoggedIn
-    }
-
-    /**
-     * Signs out the current user and updates the state.
-     */
-    fun signOut() {
-        userRepository.signOut(
-            onSuccess = { _isUserSignedIn.value = false },
-            onFailure = { showPopupBanner(PopupBanner.TYPE_FAILURE, it ?: R.string.could_not_sign_out) }
-        )
+    fun toggleUserLoginStatus(isLoggedIn: Boolean) {
+        if (isLoggedIn) {
+            _isUserSignedIn.value = true
+            startListeningForUserData()
+        } else {
+            userRepository.signOut(
+                onSuccess = { _isUserSignedIn.value = false },
+                onFailure = { showPopupBanner(PopupBanner.TYPE_FAILURE, it ?: R.string.could_not_sign_out) }
+            )
+        }
     }
 
     /**
@@ -120,7 +121,6 @@ class GlobalDriver(
             is Int -> UiText.Resource(message)
             else -> UiText.Empty
         }
-
         _popupBannerMessage.value = Pair(type, text)
     }
 }

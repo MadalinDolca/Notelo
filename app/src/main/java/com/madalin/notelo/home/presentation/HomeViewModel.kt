@@ -11,6 +11,6 @@ class HomeViewModel(
      * Logs the user out via [GlobalDriver].
      */
     fun logout() {
-        globalDriver.signOut()
+        globalDriver.toggleUserLoginStatus(false)
     }
 }

@@ -9,14 +9,6 @@ class MainViewModel(
     val popupBannerMessage = globalDriver.popupBannerMessage
 
     init {
-        // starts listening for user data at launch if the user is signed in
-        listenForUserData()
-    }
-
-    /**
-     * Checks if the current user is signed in and obtains its data via [GlobalDriver].
-     */
-    fun listenForUserData() {
         globalDriver.listenForUserData()
     }
 }

@@ -109,5 +109,6 @@
     <string name="could_not_get_the_notes">Could not get the notes</string>
     <string name="could_not_sign_out">Could not sign out</string>
     <string name="content">Content</string>
+    <string name="current_user_is_null">Current user is null</string>
 
 </resources>

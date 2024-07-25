@@ -32,10 +32,11 @@ class MainActivity : AppCompatActivity() {
     private fun setupObservers() {
         // sign in state observer
         viewModel.isSignedIn.observe(this) {
-            if (it) { // navigates to MainFragment if the user has singed in
+            if (it) {
+                // navigates to MainFragment if the user has singed in
                 navController.navigate(R.id.homeFragment)
-                //viewModel.listenForUserData() // TODO this is not working
-            } else { // otherwise to SignInFragment if elsewhere
+            } else {
+                // otherwise to SignInFragment if elsewhere
                 if (navController.currentDestination?.id != R.id.signInFragment) {
                     navController.navigate(R.id.signInFragment)
                 }

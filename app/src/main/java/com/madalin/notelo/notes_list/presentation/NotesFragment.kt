@@ -47,10 +47,8 @@ class NotesFragment : Fragment() {
     private fun setupObservers() {
         // notes list observer
         viewModel.notesListState.observe(viewLifecycleOwner) {
-            if (it != null) {
-                notesAdapter.setNotesList(it)
-                notesAdapter.notifyDataSetChanged()
-            }
+            notesAdapter.setNotesList(it)
+            notesAdapter.notifyDataSetChanged()
         }
     }
 

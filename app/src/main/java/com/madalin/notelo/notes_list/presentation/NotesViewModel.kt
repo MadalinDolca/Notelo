@@ -13,14 +13,13 @@ class NotesViewModel(
     private val globalDriver: GlobalDriver,
     private val repository: FirebaseContentRepository
 ) : ViewModel() {
-    private val _notesListState by lazy { MutableLiveData<MutableList<Note>>() }
+    private val currentUser = globalDriver.currentUser
+
+    private val _notesListState = MutableLiveData(mutableListOf<Note>())
     val notesListState: LiveData<MutableList<Note>> get() = _notesListState
 
     init {
-        // checks if the user's notes have been fetched and gets them otherwise
-        if (_notesListState.value == null) {
-            getAndObserveUserNotes()
-        }
+        getAndObserveUserNotes()
     }
 
     /**
@@ -28,7 +27,7 @@ class NotesViewModel(
      * listening for changes.
      */
     fun getAndObserveUserNotes() {
-        val userId = globalDriver.currentUser.value?.id
+        val userId = currentUser.value?.id
         if (userId == null) {
             globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.could_not_get_the_notes_because_the_user_id_is_null)
             return
@@ -57,9 +56,9 @@ class NotesViewModel(
             return currentNotes
         } else {
             for (note in currentNotes) {
-                if (note.title?.contains(query) == true) {
+                if (note.title?.lowercase()?.contains(query.lowercase()) == true) {
                     foundNotes.add(note)
-                } else if (note.content?.contains(query) == true) {
+                } else if (note.content?.lowercase()?.contains(query.lowercase()) == true) {
                     foundNotes.add(note)
                 }
             }

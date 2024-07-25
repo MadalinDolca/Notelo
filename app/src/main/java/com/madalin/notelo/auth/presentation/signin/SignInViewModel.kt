@@ -84,10 +84,10 @@ class SignInViewModel(
      */
     private fun handleSignInSuccess() {
         if (repository.isEmailVerified()) {
-            globalDriver.setLoginStatus(true)
+            globalDriver.toggleUserLoginStatus(true)
         } else {
             repository.sendEmailVerification()
-            globalDriver.setLoginStatus(false)
+            globalDriver.toggleUserLoginStatus(false)
             globalDriver.showPopupBanner(PopupBanner.TYPE_INFO, R.string.check_your_email_to_confirm_your_account)
         }
     }
@@ -96,7 +96,7 @@ class SignInViewModel(
      * Updates the state holders upon a sign in failure with the given [message].
      */
     private fun handleSignInFailure(message: Any) {
-        globalDriver.setLoginStatus(false)
+        globalDriver.toggleUserLoginStatus(false)
         globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, message)
     }
 }
