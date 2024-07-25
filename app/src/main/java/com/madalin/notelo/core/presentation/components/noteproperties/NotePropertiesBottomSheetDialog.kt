@@ -98,8 +98,17 @@ class NotePropertiesBottomSheetDialog(
      */
     fun getCategoryTags(category: Category) {
         val categoryId = category.id
+
+        // cancels tags fetching if the category ID is null
         if (categoryId == null) {
             globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.could_not_get_the_tags_because_the_category_id_is_null)
+            return
+        }
+
+        // hides the "Tags button" and cancels fetching if the category is "uncategorized"
+        if (categoryId == Category.ID_UNCATEGORIZED) {
+            binding.textViewTags.visibility = View.GONE
+            binding.buttonTags.visibility = View.GONE
             return
         }
 

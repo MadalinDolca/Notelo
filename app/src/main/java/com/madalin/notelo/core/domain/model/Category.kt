@@ -18,7 +18,7 @@ data class Category(
     @ServerTimestamp var updatedAt: Date? = null
 ) : Parcelable {
     companion object {
-        val ID_UNCATEGORIZED: String? = null // used as an ID for the category that contains the uncategorized notes
+        val ID_UNCATEGORIZED: String = "uncategorizedId" // used as an ID for the category that contains the uncategorized notes
         val NAME_UNCATEGORIZED = NoteloApplication.context.getString(R.string.uncategorized) // used as the name for the category that contains the uncategorized notes
         const val VISIBLE_PRIVATE = false // used to set the visibility of the category as private
         const val VISIBLE_PUBLIC = true // used to set the visibility of the category as public
