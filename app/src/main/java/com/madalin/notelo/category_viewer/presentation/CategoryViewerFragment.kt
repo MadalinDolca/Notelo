@@ -17,7 +17,6 @@ import com.madalin.notelo.core.presentation.util.EdgeToEdge.edgeToEdge
 import com.madalin.notelo.core.presentation.components.LayoutMessage
 import com.madalin.notelo.core.presentation.components.PopupBanner
 import com.madalin.notelo.databinding.FragmentCategoryViewerBinding
-import com.madalin.notelo.tagnotes.presentation.TagNotesFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CategoryViewerFragment : Fragment() {
@@ -69,7 +68,7 @@ class CategoryViewerFragment : Fragment() {
      */
     inner class CategoryNotesStateAdapter(
         ownerFragment: Fragment,
-        private var fragmentsList: List<TagNotesFragment>
+        private var fragmentsList: List<TaggedNotesFragment>
     ) : FragmentStateAdapter(ownerFragment) {
         override fun getItemCount() = fragmentsList.size
         override fun createFragment(position: Int) = fragmentsList[position]
@@ -78,11 +77,11 @@ class CategoryViewerFragment : Fragment() {
     private fun setupObservers() {
         // grouped notes by tag observer
         viewModel.notesByTagLiveData.observe(viewLifecycleOwner) { notesByTagList ->
-            val fragmentsList = mutableListOf<TagNotesFragment>() // list of fragments that contain notes grouped by tags
+            val fragmentsList = mutableListOf<TaggedNotesFragment>() // list of fragments that contain notes grouped by tags
 
             // creates a Fragment for every Tag and passes its corresponding data
             for (noteMap in notesByTagList) {
-                fragmentsList.add(TagNotesFragment.newInstance(noteMap.key, noteMap.value))
+                fragmentsList.add(TaggedNotesFragment.newInstance(noteMap.key, noteMap.value))
             }
 
             // when requested, this adapter returns a TagNoteFragment representing the list of notes from a category tag

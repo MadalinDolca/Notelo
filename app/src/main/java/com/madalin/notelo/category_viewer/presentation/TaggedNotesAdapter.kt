@@ -1,4 +1,4 @@
-package com.madalin.notelo.tagnotes.presentation
+package com.madalin.notelo.category_viewer.presentation
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.madalin.notelo.MainFragmentDirections
+import com.madalin.notelo.core.domain.model.Note
 import com.madalin.notelo.core.presentation.components.noteproperties.NotePropertiesBottomSheetDialog
 import com.madalin.notelo.databinding.LayoutNoteCardBinding
-import com.madalin.notelo.core.domain.model.Note
+import com.madalin.notelo.home.presentation.HomeFragmentDirections
 
-class TagNotesAdapter(
+class TaggedNotesAdapter(
     var context: Context?,
     private var notesList: MutableList<Note>,
     private val navController: NavController
-) : RecyclerView.Adapter<TagNotesAdapter.TagNotesViewHolder>() {
+) : RecyclerView.Adapter<TaggedNotesAdapter.TagNotesViewHolder>() {
 
     inner class TagNotesViewHolder(var binding: LayoutNoteCardBinding) : ViewHolder(binding.root)
 
@@ -43,7 +43,7 @@ class TagNotesAdapter(
 
             // opens the note with the given data
             binding.root.setOnClickListener {
-                val action = MainFragmentDirections.actionGlobalNoteViewerFragment(thisNote)
+                val action = HomeFragmentDirections.actionGlobalNoteViewerFragment(thisNote)
                 navController.navigate(action)
             }
 

@@ -1,4 +1,4 @@
-package com.madalin.notelo.tagnotes.presentation
+package com.madalin.notelo.category_viewer.presentation
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -17,9 +17,9 @@ import com.madalin.notelo.core.domain.model.Tag
 /**
  * [Fragment] to display the list of [Note]s associated with a given [Tag].
  */
-class TagNotesFragment : Fragment() {
+class TaggedNotesFragment : Fragment() {
     private lateinit var binding: FragmentTagNotesBinding
-    private lateinit var tagNotesAdapter: TagNotesAdapter
+    private lateinit var taggedNotesAdapter: TaggedNotesAdapter
     private lateinit var activityNavController: NavController
 
     private var tag: Tag? = null
@@ -37,10 +37,10 @@ class TagNotesFragment : Fragment() {
          * Factory method to create an instance of this fragment and with a bundle with the given data.
          * @param tag [Tag] of the notes
          * @param notesList list of notes
-         * @return new instance of [TagNotesFragment]
+         * @return new instance of [TaggedNotesFragment]
          */
         fun newInstance(tag: Tag, notesList: List<Note>) =
-            TagNotesFragment().apply {
+            TaggedNotesFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_TAG, tag)
                     putParcelableArrayList(ARG_NOTES_LIST, ArrayList(notesList))
@@ -60,12 +60,12 @@ class TagNotesFragment : Fragment() {
         // obtains the arguments and creates an adapter
         tag = arguments?.getParcelable(ARG_TAG)
         notesList = arguments?.getParcelableArrayList(ARG_NOTES_LIST)!!
-        tagNotesAdapter = TagNotesAdapter(context, notesList, activityNavController)
+        taggedNotesAdapter = TaggedNotesAdapter(context, notesList, activityNavController)
 
         // recycler view preparations
         with(binding) {
             recyclerView.layoutManager = LinearLayoutManager(context)
-            recyclerView.adapter = tagNotesAdapter
+            recyclerView.adapter = taggedNotesAdapter
         }
     }
 }
