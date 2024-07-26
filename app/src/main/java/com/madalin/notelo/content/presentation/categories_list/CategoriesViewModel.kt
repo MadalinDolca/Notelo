@@ -1,4 +1,4 @@
-package com.madalin.notelo.categories_list.presentation
+package com.madalin.notelo.content.presentation.categories_list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

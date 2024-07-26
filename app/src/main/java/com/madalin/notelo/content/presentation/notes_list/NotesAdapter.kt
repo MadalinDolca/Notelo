@@ -1,4 +1,4 @@
-package com.madalin.notelo.notes_list.presentation
+package com.madalin.notelo.content.presentation.notes_list
 
 import android.content.Context
 import android.view.LayoutInflater

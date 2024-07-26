@@ -1,4 +1,4 @@
-package com.madalin.notelo.categories_list.presentation
+package com.madalin.notelo.content.presentation.categories_list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.madalin.notelo.R
-import com.madalin.notelo.categories_list.presentation.util.GridSpacingItemDecoration
+import com.madalin.notelo.content.presentation.categories_list.util.GridSpacingItemDecoration
 import com.madalin.notelo.core.presentation.components.CategoryPropertiesDialog
 import com.madalin.notelo.databinding.FragmentCategoriesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel

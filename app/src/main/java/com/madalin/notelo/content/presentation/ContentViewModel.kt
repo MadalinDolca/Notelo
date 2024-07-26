@@ -1,8 +1,8 @@
 package com.madalin.notelo.content.presentation
 
 import androidx.lifecycle.ViewModel
-import com.madalin.notelo.categories_list.presentation.CategoriesFragment
-import com.madalin.notelo.notes_list.presentation.NotesFragment
+import com.madalin.notelo.content.presentation.categories_list.CategoriesFragment
+import com.madalin.notelo.content.presentation.notes_list.NotesFragment
 
 class ContentViewModel : ViewModel() {
     val fragmentsList = listOf(NotesFragment(), CategoriesFragment())
