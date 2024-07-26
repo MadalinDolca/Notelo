@@ -1,4 +1,4 @@
-package com.madalin.notelo.core.domain.util
+package com.madalin.notelo.categories_list.presentation.util
 
 import android.graphics.Rect
 import android.view.View

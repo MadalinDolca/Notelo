@@ -11,9 +11,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.madalin.notelo.R
 import com.madalin.notelo.databinding.FragmentNotesAndCategoriesBinding
-import com.madalin.notelo.core.domain.util.EdgeToEdge.DIRECTION_TOP
-import com.madalin.notelo.core.domain.util.EdgeToEdge.SPACING_MARGIN
-import com.madalin.notelo.core.domain.util.EdgeToEdge.edgeToEdge
+import com.madalin.notelo.core.presentation.util.EdgeToEdge.DIRECTION_TOP
+import com.madalin.notelo.core.presentation.util.EdgeToEdge.SPACING_MARGIN
+import com.madalin.notelo.core.presentation.util.EdgeToEdge.edgeToEdge
 
 class ContentFragment : Fragment() {
     private val viewModel: ContentViewModel by viewModels()

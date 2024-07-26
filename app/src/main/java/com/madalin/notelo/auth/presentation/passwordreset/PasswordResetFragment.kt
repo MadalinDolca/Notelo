@@ -8,10 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.madalin.notelo.R
-import com.madalin.notelo.core.domain.util.EdgeToEdge.DIRECTION_BOTTOM
-import com.madalin.notelo.core.domain.util.EdgeToEdge.DIRECTION_TOP
-import com.madalin.notelo.core.domain.util.EdgeToEdge.SPACING_MARGIN
-import com.madalin.notelo.core.domain.util.EdgeToEdge.edgeToEdge
+import com.madalin.notelo.core.presentation.util.EdgeToEdge.DIRECTION_BOTTOM
+import com.madalin.notelo.core.presentation.util.EdgeToEdge.DIRECTION_TOP
+import com.madalin.notelo.core.presentation.util.EdgeToEdge.SPACING_MARGIN
+import com.madalin.notelo.core.presentation.util.EdgeToEdge.edgeToEdge
 import com.madalin.notelo.databinding.FragmentPasswordResetBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

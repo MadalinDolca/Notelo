@@ -6,7 +6,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.madalin.notelo.R
-import com.madalin.notelo.core.domain.util.EdgeToEdge.edgeToEdge
+import com.madalin.notelo.core.presentation.util.EdgeToEdge.edgeToEdge
 import com.madalin.notelo.core.presentation.components.PopupBanner
 import com.madalin.notelo.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel

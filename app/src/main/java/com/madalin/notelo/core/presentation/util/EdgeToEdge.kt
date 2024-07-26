@@ -1,4 +1,4 @@
-package com.madalin.notelo.core.domain.util
+package com.madalin.notelo.core.presentation.util
 
 import android.app.Activity
 import android.content.ContentResolver
