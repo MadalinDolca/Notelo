@@ -122,5 +122,17 @@
     <string name="could_not_create_a_new_note_because_the_user_id_is_null">Could not create a new note because the user ID is null</string>
     <string name="note_title_must_be_between_x_and_y_characters">Note title must be between %d and %d characters</string>
     <string name="note_content_must_be_between_x_and_y_characters">Note content must be between %d and %d characters</string>
+    <string name="could_not_get_this_category_notes">Could not get this category notes</string>
+    <string name="could_not_get_this_category_tags">Could not get this category tags</string>
+    <string name="could_not_get_this_category_notes_because_the_category_id_is_null">Could not get this category notes because the category ID is null</string>
+    <string name="could_not_get_this_category_tags_because_the_category_id_is_null">Could not get this category tags because the category ID is null</string>
+    <string name="could_not_publish_the_note_because_the_user_id_is_null">Could not publish the note because the user ID is null</string>
+    <string name="could_not_create_the_note">Could not create the note</string>
+    <string name="could_not_back_up_the_note_because_the_user_id_is_null">Could not back up the note because the user ID is null</string>
+    <string name="could_not_back_up_the_note">Could not back up the note</string>
+    <string name="could_not_update_the_note_because_the_note_is_null">Could not update the note because the note is null</string>
+    <string name="could_not_delete_the_note_because_the_note_is_null">Could not delete the note because the note is null</string>
+    <string name="could_not_delete_backed_up_note">Could not delete backed up note</string>
+    <string name="could_not_update_backed_up_note">Could not update backed up note</string>
 
 </resources>

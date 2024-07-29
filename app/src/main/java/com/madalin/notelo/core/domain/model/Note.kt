@@ -2,25 +2,19 @@ package com.madalin.notelo.core.domain.model
 
 import android.os.Parcelable
 import com.google.firebase.firestore.ServerTimestamp
+import com.madalin.notelo.core.domain.util.generateId
 import kotlinx.parcelize.Parcelize
-import java.util.*
+import java.util.Date
 
 @Parcelize
 data class Note(
-    var id: String? = null,
+    var id: String = generateId(),
     var userId: String? = null,
-    var categoryId: String? = null,
-    var title: String? = null,
-    var content: String? = null,
-    var color: String? = null,
-    var tags: MutableList<String?> = mutableListOf(), // tag IDs
-    var tagsData: MutableList<Tag> = mutableListOf(), // complete tag data
-    var visible: Boolean = VISIBLE_PRIVATE,
+    var title: String = "",
+    var content: String = "",
+    var public: Boolean = false,
     @ServerTimestamp var createdAt: Date? = null,
     @ServerTimestamp var updatedAt: Date? = null
 ) : Parcelable {
-    companion object {
-        const val VISIBLE_PRIVATE = false // used to set the visibility of the note as private
-        const val VISIBLE_PUBLIC = true // used to set the visibility of the note as public
-    }
+    var tags: List<Tag> = emptyList()
 }

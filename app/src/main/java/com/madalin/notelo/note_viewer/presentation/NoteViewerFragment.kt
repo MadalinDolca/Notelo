@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.madalin.notelo.R
+import com.madalin.notelo.core.presentation.components.noteproperties.NotePropertiesBottomSheetDialog
 import com.madalin.notelo.core.presentation.util.EdgeToEdge.DIRECTION_BOTTOM
 import com.madalin.notelo.core.presentation.util.EdgeToEdge.DIRECTION_TOP
 import com.madalin.notelo.core.presentation.util.EdgeToEdge.SPACING_MARGIN
 import com.madalin.notelo.core.presentation.util.EdgeToEdge.edgeToEdge
-import com.madalin.notelo.core.presentation.components.noteproperties.NotePropertiesBottomSheetDialog
 import com.madalin.notelo.databinding.FragmentNoteViewerBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -20,7 +20,7 @@ import java.util.Date
 import java.util.Locale
 
 /**
- * Fragment used to view, update and create a note.
+ * Fragment used to view, create, update and delete a note.
  */
 class NoteViewerFragment : Fragment() {
     private val viewModel: NoteViewerViewModel by viewModel()
@@ -88,7 +88,7 @@ class NoteViewerFragment : Fragment() {
         enableTitleAndContentField()
 
         binding.textViewAction.setOnClickListener { // creates a note when clicking on "Create note"
-            viewModel.createNote(binding.editTextTitle.text.toString(), binding.editTextContent.text.toString())
+            viewModel.saveNote(binding.editTextTitle.text.toString(), binding.editTextContent.text.toString())
         }
     }
 
@@ -106,8 +106,7 @@ class NoteViewerFragment : Fragment() {
     }
 
     /**
-     * Helper function to check if a [date] is today.
-     * @return `True` if today, `False` otherwise
+     * Returns `true` if the given [date] is today, `false` otherwise.
      */
     private fun isToday(date: Date): Boolean {
         val now = Date()
@@ -115,14 +114,18 @@ class NoteViewerFragment : Fragment() {
                 SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
     }
 
+    /**
+     * Enabled the editing layout.
+     */
     private fun enableEditing() {
-        // enables editing layout
         binding.textViewAction.text = getString(R.string.done)
         enableTitleAndContentField()
     }
 
+    /**
+     * Disabled the editing layout.
+     */
     private fun disableEditing() {
-        // disables editing
         binding.textViewAction.text = getString(R.string.edit)
         disableTitleAndContentField()
     }
@@ -146,32 +149,40 @@ class NoteViewerFragment : Fragment() {
 
     private fun setupObservers() {
         // note title error observer
-        viewModel.titleErrorMessageLiveData.observe(viewLifecycleOwner) {
+        viewModel.titleErrorMessageState.observe(viewLifecycleOwner) {
             binding.editTextTitle.error = it.asString(context)
             binding.editTextTitle.requestFocus()
         }
 
         // note content error observer
-        viewModel.contentErrorMessageLiveData.observe(viewLifecycleOwner) {
+        viewModel.contentErrorMessageState.observe(viewLifecycleOwner) {
             binding.editTextContent.error = it.asString(context)
             binding.editTextContent.requestFocus()
         }
 
         // is note updated observer
-        viewModel.isNoteUpdatedLiveData.observe(viewLifecycleOwner) {
+        viewModel.isNoteUpdatedState.observe(viewLifecycleOwner) {
             if (it) { // if updated, disables editing
                 disableEditing()
                 viewModel.isEditEnabled = false
-                viewModel.setNoteUpdateStatus(false)
+                viewModel.setNoteUpdateStatus(false) // reset status
             }
         }
 
         // is note created observer
-        viewModel.isNoteCreatedLiveData.observe(viewLifecycleOwner) {
+        viewModel.isNoteCreatedState.observe(viewLifecycleOwner) {
             if (it) {
                 findNavController().navigateUp() // pops the fragment and returns to the app that navigated to the deep link in this app
                 //findNavController().popBackStack() // pops the fragment only from the app backstack
                 viewModel.setNoteCreationStatus(false)
+            }
+        }
+
+        // is note deleted observer
+        viewModel.isNoteDeletedState.observe(viewLifecycleOwner) {
+            if (it) {
+                findNavController().navigateUp()
+                viewModel.setNoteDeletionStatus(false)
             }
         }
     }

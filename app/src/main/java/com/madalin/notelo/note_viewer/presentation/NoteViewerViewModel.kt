@@ -3,105 +3,225 @@ package com.madalin.notelo.note_viewer.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.madalin.notelo.R
 import com.madalin.notelo.core.domain.model.Note
-import com.madalin.notelo.core.domain.repository.FirebaseContentRepository
+import com.madalin.notelo.core.domain.repository.local.LocalContentRepository
+import com.madalin.notelo.core.domain.repository.remote.FirebaseContentRepository
+import com.madalin.notelo.core.domain.result.DeleteResult
+import com.madalin.notelo.core.domain.result.UpdateResult
+import com.madalin.notelo.core.domain.result.UpsertResult
 import com.madalin.notelo.core.domain.validation.NoteValidator
 import com.madalin.notelo.core.presentation.GlobalDriver
 import com.madalin.notelo.core.presentation.components.PopupBanner
 import com.madalin.notelo.core.presentation.util.UiText
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class NoteViewerViewModel(
     private val globalDriver: GlobalDriver,
-    private val repository: FirebaseContentRepository
+    private val localRepository: LocalContentRepository,
+    private val firebaseRepository: FirebaseContentRepository
 ) : ViewModel() {
-    var note: Note? = null // note from navigation argument
+    /**
+     * Note obtained as a navigation argument.
+     */
+    var note: Note? = null
+
     var isEditEnabled = false
 
-    private val _titleErrorMessageLiveData = MutableLiveData<UiText>()
-    val titleErrorMessageLiveData: LiveData<UiText> get() = _titleErrorMessageLiveData
+    private val _titleErrorMessageState = MutableLiveData<UiText>()
+    val titleErrorMessageState: LiveData<UiText> get() = _titleErrorMessageState
 
-    private val _contentErrorMessageLiveData = MutableLiveData<UiText>()
-    val contentErrorMessageLiveData: LiveData<UiText> get() = _contentErrorMessageLiveData
+    private val _contentErrorMessageState = MutableLiveData<UiText>()
+    val contentErrorMessageState: LiveData<UiText> get() = _contentErrorMessageState
 
-    private val _isNoteCreatedLiveData = MutableLiveData(false)
-    val isNoteCreatedLiveData: LiveData<Boolean> get() = _isNoteCreatedLiveData
+    private val _isNoteCreatedState = MutableLiveData(false)
+    val isNoteCreatedState: LiveData<Boolean> get() = _isNoteCreatedState
 
-    private val _isNoteUpdatedLiveData = MutableLiveData(false)
-    val isNoteUpdatedLiveData: LiveData<Boolean> get() = _isNoteUpdatedLiveData
+    private val _isNoteUpdatedState = MutableLiveData(false)
+    val isNoteUpdatedState: LiveData<Boolean> get() = _isNoteUpdatedState
+
+    private val _isNoteDeletedState = MutableLiveData(false)
+    val isNoteDeletedState: LiveData<Boolean> get() = _isNoteDeletedState
 
     /**
-     * Creates and adds a new [Note] to the database with the given [noteTitle] and [noteContent].
+     * Creates and saves a note with the given [title] and [content]. The note will be saved
+     * in both the local and remote databases.
      */
-    fun createNote(noteTitle: String, noteContent: String) {
+    fun saveNote(title: String, content: String) {
+        if (!validateFields(title, content)) return // if the provided data is valid
+
+        val newNote = Note(title = title, content = content)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = localRepository.upsertNote(newNote)
+            when (result) {
+                UpsertResult.Success -> {
+                    _isNoteCreatedState.value = true
+                    globalDriver.showPopupBanner(
+                        PopupBanner.TYPE_SUCCESS,
+                        R.string.note_created_successfully
+                    )
+                    saveNoteRemote(newNote)
+                }
+
+                is UpsertResult.Error -> globalDriver.showPopupBanner(
+                    PopupBanner.TYPE_FAILURE,
+                    result.message ?: R.string.could_not_create_the_note
+                )
+            }
+        }
+    }
+
+    /**
+     * Saves the given [note] in the remote database.
+     */
+    private fun saveNoteRemote(note: Note) {
         val userId = globalDriver.currentUser.value?.id
         if (userId == null) {
-            globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.could_not_create_a_new_note_because_the_user_id_is_null)
+            globalDriver.showPopupBanner(
+                PopupBanner.TYPE_FAILURE,
+                R.string.could_not_back_up_the_note_because_the_user_id_is_null
+            )
             return
         }
 
-        if (!valitateFields(noteTitle, noteContent)) return // if the provided data is valid
-
-        val newNote = Note(userId = userId, title = noteTitle, content = noteContent)
-
-        repository.createNote(newNote,
-            onSuccess = {
-                globalDriver.showPopupBanner(PopupBanner.TYPE_SUCCESS, R.string.note_created_successfully)
-                _isNoteCreatedLiveData.value = true
-            },
+        firebaseRepository.createNote(
+            note,
+            onSuccess = { },
             onFailure = {
-                globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.something_went_wrong_please_try_again)
+                globalDriver.showPopupBanner(
+                    PopupBanner.TYPE_FAILURE,
+                    it ?: R.string.could_not_back_up_the_note
+                )
             }
         )
     }
 
     /**
-     * Updates the current [note] with the given [newTitle] and [newContent] in the database.
+     * Updates the [current note][note] with the given [title][newTitle] and [content][newContent].
+     * The note will be updated in both the local and remote databases.
      */
     fun updateNote(newTitle: String, newContent: String) {
-        val noteId = note?.id
-        if (noteId == null) {
-            globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.something_went_wrong_please_try_again)
+        val currentNote = note
+        if (currentNote == null) {
+            globalDriver.showPopupBanner(
+                PopupBanner.TYPE_FAILURE,
+                R.string.could_not_update_the_note_because_the_note_is_null
+            )
             return
         }
+        if (!validateFields(newTitle, newContent)) return // not valid
 
-        if (!valitateFields(newTitle, newContent)) return // not valid
+        val updatedNote = currentNote.copy(title = newTitle, content = newContent)
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = localRepository.updateNote(updatedNote)
+            when (result) {
+                UpdateResult.Success -> {
+                    // updates the given note locally
+                    note?.title = newTitle
+                    note?.content = newContent
 
+                    _isNoteUpdatedState.value = true
+                    globalDriver.showPopupBanner(
+                        PopupBanner.TYPE_SUCCESS,
+                        R.string.note_updated_successfully
+                    )
+                    updateNoteRemote(currentNote.id, newTitle, newContent)
+                }
+
+                is UpdateResult.Error -> globalDriver.showPopupBanner(
+                    PopupBanner.TYPE_FAILURE,
+                    result.message ?: R.string.could_not_update_the_note
+                )
+            }
+        }
+    }
+
+    /**
+     * Updates the note with the given [id][noteId] with the given [title][newTitle] and
+     * [content][newContent] in the remote database.
+     */
+    private fun updateNoteRemote(noteId: String, newTitle: String, newContent: String) {
         val newData = mapOf(
             "title" to newTitle,
             "content" to newContent,
             "updatedAt" to null
         )
 
-        // updates the given note in the database
-        repository.updateNote(
+        firebaseRepository.updateNote(
             noteId, newData,
-            onSuccess = {
-                // updates the given note locally
-                note?.title = newTitle
-                note?.content = newContent
-
-                _isNoteUpdatedLiveData.value = true
-                globalDriver.showPopupBanner(PopupBanner.TYPE_SUCCESS, R.string.note_updated_successfully)
-            },
+            onSuccess = { },
             onFailure = {
-                globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.something_went_wrong_please_try_again)
+                globalDriver.showPopupBanner(
+                    PopupBanner.TYPE_FAILURE,
+                    it ?: R.string.could_not_update_backed_up_note
+                )
             }
         )
     }
 
     /**
-     * Checks if the given [noteTitle] and [noteContent] are valid. If not, it updates the data
+     * Deletes the [current note][note] from both the local and remote databases.
+     */
+    fun deleteNote() {
+        val currentNote = note
+        if (currentNote == null) {
+            globalDriver.showPopupBanner(
+                PopupBanner.TYPE_FAILURE,
+                R.string.could_not_delete_the_note_because_the_note_is_null
+            )
+            return
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = localRepository.deleteNote(currentNote)
+            when (result) {
+                DeleteResult.Success -> {
+                    _isNoteDeletedState.value = true
+                    globalDriver.showPopupBanner(
+                        PopupBanner.TYPE_SUCCESS,
+                        R.string.note_deleted_successfully
+                    )
+                    deleteNoteRemote(currentNote.id)
+                }
+
+                is DeleteResult.Error -> globalDriver.showPopupBanner(
+                    PopupBanner.TYPE_FAILURE,
+                    result.message ?: R.string.could_not_delete_the_note
+                )
+            }
+        }
+    }
+
+    /**
+     * Deletes the note with the given [id][noteId] from the remote database.
+     */
+    private fun deleteNoteRemote(noteId: String) {
+        firebaseRepository.deleteNote(
+            noteId,
+            onSuccess = { },
+            onFailure = {
+                globalDriver.showPopupBanner(
+                    PopupBanner.TYPE_FAILURE,
+                    it ?: R.string.could_not_delete_backed_up_note
+                )
+            }
+        )
+    }
+
+    /**
+     * Checks if the given [title] and [content] are valid. If not, it updates the data
      * holders accordingly.
      * @return `true` is valid, `false` otherwise.
      */
-    private fun valitateFields(noteTitle: String, noteContent: String): Boolean {
-        val result = NoteValidator.validateFields(noteTitle, noteContent)
+    private fun validateFields(title: String, content: String): Boolean {
+        val result = NoteValidator.validateFields(title, content)
         when (result) {
             NoteValidator.NoteResult.Valid -> return true
 
             NoteValidator.NoteResult.InvalidTitleLength -> {
-                _titleErrorMessageLiveData.value = UiText.Resource(
+                _titleErrorMessageState.value = UiText.Resource(
                     R.string.note_title_must_be_between_x_and_y_characters,
                     NoteValidator.MIN_NOTE_TITLE_LENGTH, NoteValidator.MAX_NOTE_TITLE_LENGTH
                 )
@@ -109,7 +229,7 @@ class NoteViewerViewModel(
             }
 
             NoteValidator.NoteResult.InvalidContentLength -> {
-                _contentErrorMessageLiveData.value = UiText.Resource(
+                _contentErrorMessageState.value = UiText.Resource(
                     R.string.note_content_must_be_between_x_and_y_characters,
                     NoteValidator.MIN_NOTE_CONTENT_LENGTH, NoteValidator.MAX_NOTE_CONTENT_LENGTH
                 )
@@ -119,18 +239,23 @@ class NoteViewerViewModel(
     }
 
     /**
-     * Sets the note creation data holder status to [status].
-     * @param status `true` if note has been created, `false` otherwise.
+     * Sets the note creation status to [isCreated].
      */
-    fun setNoteCreationStatus(status: Boolean) {
-        _isNoteCreatedLiveData.value = status
+    fun setNoteCreationStatus(isCreated: Boolean) {
+        _isNoteCreatedState.value = isCreated
     }
 
     /**
-     * Sets the note update status to [status].
-     * @param status `true` is note has been updated, `false` otherwise.
+     * Sets the note update status to [isUpdated].
      */
-    fun setNoteUpdateStatus(status: Boolean) {
-        _isNoteUpdatedLiveData.value = status
+    fun setNoteUpdateStatus(isUpdated: Boolean) {
+        _isNoteUpdatedState.value = isUpdated
+    }
+
+    /**
+     * Sets the note deletion status to [isDeleted].
+     */
+    fun setNoteDeletionStatus(isDeleted: Boolean) {
+        _isNoteDeletedState.value = isDeleted
     }
 }
