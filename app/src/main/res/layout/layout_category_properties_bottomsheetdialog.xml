@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_rounded"
+    android:backgroundTint="@color/background"
+    android:paddingLeft="@dimen/padding_container"
+    android:paddingRight="@dimen/padding_container"
+    android:paddingBottom="@dimen/padding_container">
+
+    <ImageView
+        android:id="@+id/imageViewPill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_pill"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/text" />
+
+    <!-- category name -->
+    <EditText
+        android:id="@+id/editTextCategoryName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_element"
+        android:hint="@string/category_name"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageViewPill" />
+
+    <!-- manage tags button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonManageTags"
+        style="@style/ButtonAltStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_element"
+        android:gravity="start"
+        android:text="@string/manage_tags"
+        android:textAllCaps="false"
+        android:textStyle="normal"
+        app:layout_constraintTop_toBottomOf="@id/editTextCategoryName" />
+
+    <!-- color picker -->
+    <com.skydoves.colorpickerview.ColorPickerView
+        android:id="@+id/colorPickerView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="@dimen/margin_element"
+        app:layout_constraintEnd_toStartOf="@id/cardViewColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonManageTags" />
+
+    <!-- color preview -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewColor"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="@dimen/padding_container"
+        app:cardCornerRadius="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/colorPickerView"
+        app:layout_constraintTop_toBottomOf="@id/buttonManageTags" />
+
+    <!-- brightness slider -->
+    <com.skydoves.colorpickerview.sliders.BrightnessSlideBar
+        android:id="@+id/brightnessSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_element"
+        app:borderColor_BrightnessSlider="@color/background_alt"
+        app:borderSize_BrightnessSlider="5"
+        app:layout_constraintTop_toBottomOf="@id/colorPickerView"
+        app:selector_BrightnessSlider="@drawable/wheel" />
+
+    <!-- create/update button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonCreateUpdate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_separator"
+        app:layout_constraintEnd_toStartOf="@id/buttonCancelDelete"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/brightnessSlider" />
+
+    <!-- cancel/delete button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonCancelDelete"
+        style="@style/ButtonAltStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_element"
+        android:layout_marginTop="@dimen/margin_separator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/buttonCreateUpdate"
+        app:layout_constraintTop_toBottomOf="@id/brightnessSlider" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

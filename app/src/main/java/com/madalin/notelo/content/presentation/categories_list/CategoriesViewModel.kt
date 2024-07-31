@@ -1,53 +1,49 @@
 package com.madalin.notelo.content.presentation.categories_list
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.madalin.notelo.R
 import com.madalin.notelo.core.domain.model.Category
-import com.madalin.notelo.core.domain.repository.FirebaseContentRepository
+import com.madalin.notelo.core.domain.repository.local.LocalContentRepository
 import com.madalin.notelo.core.presentation.GlobalDriver
 import com.madalin.notelo.core.presentation.components.PopupBanner
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.launch
 
-// Store and manage UI-related data in a lifecycle-conscious way
 class CategoriesViewModel(
     private val globalDriver: GlobalDriver,
-    private val repository: FirebaseContentRepository
+    private val localRepository: LocalContentRepository
 ) : ViewModel() {
-    private val currentUser = globalDriver.currentUser
-    private val categoriesList = mutableListOf<Category>() // list to store user's categories
+    private val uncategorized = Category(id = Category.ID_UNCATEGORIZED, name = Category.NAME_UNCATEGORIZED)
 
-    // data holders to observe
-    private val _categoriesListLiveData by lazy { MutableLiveData<MutableList<Category>>() }
-    val categoriesListLiveData: LiveData<MutableList<Category>> get() = _categoriesListLiveData
+    private var _categoriesListState = MutableLiveData(listOf(uncategorized))
+    val categoriesListState: LiveData<List<Category>> get() = _categoriesListState
 
     init {
-        getCategoriesFromFirestore()
+        getAndObserveUserCategories()
     }
 
     /**
-     * Obtains the categories associated with the current user ID, updates the data holders and
-     * starts listening for changes.
+     * Obtains the user categories and starts listening for changes.
      */
-    fun getCategoriesFromFirestore() {
-        val userId = currentUser.value?.id
-        if (userId == null) {
-            globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, R.string.could_not_get_the_categories_because_the_user_id_is_null)
-            return
+    fun getAndObserveUserCategories() {
+        viewModelScope.launch {
+            localRepository.getCategoriesObserver()
+                .catch {
+                    globalDriver.showPopupBanner(
+                        PopupBanner.TYPE_FAILURE,
+                        it.message ?: R.string.could_not_get_the_categories
+                    )
+                    Log.d("CategoriesViewModel", "Could not get the categories: ${it.message}")
+                }
+                .collect {
+                    val categories = mutableListOf(uncategorized) // first category is "Uncategorized"
+                    categories.addAll(1, it)
+                    _categoriesListState.postValue(categories)
+                }
         }
-
-        repository.getCategoriesByUserIdListener(
-            userId,
-            onSuccess = {
-                categoriesList.clear() // clears the current list
-                categoriesList.add(Category(id = Category.ID_UNCATEGORIZED, name = Category.NAME_UNCATEGORIZED))  // category used for uncategorized notes
-                categoriesList.addAll(it)
-
-                _categoriesListLiveData.value = categoriesList // sets the value and dispatches it to the active observers
-            },
-            onFailure = {
-                globalDriver.showPopupBanner(PopupBanner.TYPE_FAILURE, it ?: R.string.could_not_get_the_categories)
-            }
-        )
     }
 }

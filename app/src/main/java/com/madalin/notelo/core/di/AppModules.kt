@@ -40,18 +40,26 @@ val appModule = module {
 }
 
 val databaseModule = module {
-    single { Room.databaseBuilder(get(), ContentDatabase::class.java, "content_db").build() }
+    single {
+        Room.databaseBuilder(get(), ContentDatabase::class.java, "content_db")
+            //.addMigrations(MIGRATION_1_2)
+            .fallbackToDestructiveMigration()
+            .build()
+    }
     single { get<ContentDatabase>().noteDao() }
+    single { get<ContentDatabase>().categoryDao() }
+    single { get<ContentDatabase>().tagDao() }
+    single { get<ContentDatabase>().noteTagDao() }
 }
 
 val repositoryModule = module {
     // local repositories
-    single<LocalContentRepository> { LocalContentRepositoryImpl(get()) }
+    single<LocalContentRepository> { LocalContentRepositoryImpl(get(), get(), get(), get()) }
 
     // firebase repositories
     single<FirebaseAuthRepository> { FirebaseAuthRepositoryImpl(get(), get()) } // if FirebaseAuthRepository is used as a parameter
     single<FirebaseUserRepository> { FirebaseUserRepositoryImpl(get(), get()) }
-    single<FirebaseContentRepository> { FirebaseContentRepositoryImpl(get(), get()) }
+    single<FirebaseContentRepository> { FirebaseContentRepositoryImpl(get()) }
 
     // other remote repositories
 }

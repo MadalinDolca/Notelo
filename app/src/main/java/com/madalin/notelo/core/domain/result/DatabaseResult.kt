@@ -1,6 +1,8 @@
 package com.madalin.notelo.core.domain.result
 
+import com.madalin.notelo.core.domain.model.Category
 import com.madalin.notelo.core.domain.model.Note
+import com.madalin.notelo.core.domain.model.Tag
 
 sealed class UpsertResult {
     data object Success : UpsertResult()
@@ -25,4 +27,19 @@ sealed class GetNoteResult {
 sealed class GetNotesResult {
     data class Success(val notes: List<Note>) : GetNotesResult()
     data class Error(val message: String?) : GetNotesResult()
+}
+
+sealed class GetCategoryResult {
+    data class Success(val category: Category) : GetCategoryResult()
+    data class Error(val message: String?) : GetCategoryResult()
+}
+
+sealed class GetCategoriesResult {
+    data class Success(val categories: List<Category>) : GetCategoriesResult()
+    data class Error(val message: String?) : GetCategoriesResult()
+}
+
+sealed class GetTagsResult {
+    data class Success(val tags: List<Tag>) : GetTagsResult()
+    data class Error(val message: String?) : GetTagsResult()
 }

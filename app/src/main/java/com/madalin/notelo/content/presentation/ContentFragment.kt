@@ -38,7 +38,7 @@ class ContentFragment : Fragment() {
         // links the TabLayout to the ViewPager2 and sets the configuration
         TabLayoutMediator(binding.tabLayout, viewPager2) { tab, position ->
             when (position) {
-                0 -> tab.text = getString(R.string.all_notes)
+                0 -> tab.text = getString(R.string.notes)
                 1 -> tab.text = getString(R.string.categories)
             }
         }.attach()

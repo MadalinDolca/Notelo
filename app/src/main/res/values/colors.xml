@@ -2,8 +2,10 @@
 <resources>
     <!-- light theme colors -->
     <color name="primary">#FFBF00</color>
+    <color name="on_primary">#FFFFFF</color>
     <color name="secondary">#FFD559</color>
     <color name="background">#FFFFFF</color>
+    <color name="on_background">#414141</color>
     <color name="background_alt">#F2F2F2</color>
     <color name="stroke">#ECECEC</color>
     <color name="text">#414141</color>

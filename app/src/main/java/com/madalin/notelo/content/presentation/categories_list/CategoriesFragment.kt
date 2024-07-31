@@ -11,7 +11,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.madalin.notelo.R
 import com.madalin.notelo.content.presentation.categories_list.util.GridSpacingItemDecoration
-import com.madalin.notelo.core.presentation.components.CategoryPropertiesDialog
+import com.madalin.notelo.core.presentation.components.category_properties.CategoryPropertiesBottomSheetDialog
 import com.madalin.notelo.databinding.FragmentCategoriesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -45,7 +45,7 @@ class CategoriesFragment : Fragment() {
 
     private fun setupObservers() {
         // categories list observer
-        viewModel.categoriesListLiveData.observe(viewLifecycleOwner) {
+        viewModel.categoriesListState.observe(viewLifecycleOwner) {
             if (it != null) {
                 categoriesAdapter.setCategoriesList(it) // updates the categories from the adapter
                 categoriesAdapter.notifyDataSetChanged()
@@ -56,14 +56,14 @@ class CategoriesFragment : Fragment() {
     private fun setupListeners() {
         // obtains the categories on swipe refresh
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getCategoriesFromFirestore()
+            viewModel.getAndObserveUserCategories()
             binding.swipeRefreshLayout.isRefreshing = false // hide the refresh indicator when the data has been fetched
         }
 
         // FAB that triggers the category creation dialog
         binding.floatingActionButton.setOnClickListener {
             val context = context ?: return@setOnClickListener
-            CategoryPropertiesDialog(context, CategoryPropertiesDialog.MODE_CREATE).show()
+            CategoryPropertiesBottomSheetDialog(context).show()
         }
     }
 }

@@ -23,16 +23,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- visibility -->
-        <TextView
-            android:id="@+id/textViewVisibility"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_element"
-            android:text="@string/visibility"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/brightnessSlide" />
-
         <!-- color picker -->
         <com.skydoves.colorpickerview.ColorPickerView
             android:id="@+id/colorPickerView"
@@ -56,7 +46,7 @@
 
         <!-- brightness slider -->
         <com.skydoves.colorpickerview.sliders.BrightnessSlideBar
-            android:id="@+id/brightnessSlide"
+            android:id="@+id/brightnessSlider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_element"
@@ -65,59 +55,28 @@
             app:layout_constraintTop_toBottomOf="@id/colorPickerView"
             app:selector_BrightnessSlider="@drawable/wheel" />
 
-        <RadioGroup
-            android:id="@+id/radioGroupVisibility"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_element"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/textViewVisibility">
-
-            <!-- private -->
-            <RadioButton
-                android:id="@+id/radioButtonPrivate"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/_private" />
-
-            <!-- public -->
-            <RadioButton
-                android:id="@+id/radioButtonPublic"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_element"
-                android:layout_weight="1"
-                android:button="@null"
-                android:gravity="center"
-                android:text="@string/_public" />
-
-        </RadioGroup>
-
         <!-- create/update button -->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_create_update"
+            android:id="@+id/buttonCreateUpdate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_separator"
-            app:layout_constraintEnd_toStartOf="@id/button_cancel_delete"
+            app:layout_constraintEnd_toStartOf="@id/buttonCancelDelete"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/radioGroupVisibility" />
+            app:layout_constraintTop_toBottomOf="@id/brightnessSlider" />
 
         <!-- cancel/delete button -->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_cancel_delete"
+            android:id="@+id/buttonCancelDelete"
             style="@style/ButtonAltStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_element"
             android:layout_marginTop="@dimen/margin_separator"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/button_create_update"
-            app:layout_constraintTop_toBottomOf="@id/radioGroupVisibility" />
+            app:layout_constraintStart_toEndOf="@id/buttonCreateUpdate"
+            app:layout_constraintTop_toBottomOf="@id/brightnessSlider" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
