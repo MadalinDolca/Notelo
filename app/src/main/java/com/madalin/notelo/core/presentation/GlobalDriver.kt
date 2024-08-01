@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.madalin.notelo.R
 import com.madalin.notelo.core.domain.model.User
-import com.madalin.notelo.core.domain.repository.FirebaseUserRepository
+import com.madalin.notelo.core.domain.repository.remote.FirebaseUserRepository
 import com.madalin.notelo.core.domain.result.UserResult
 import com.madalin.notelo.core.presentation.components.PopupBanner
 import com.madalin.notelo.core.presentation.util.UiText
@@ -18,6 +18,8 @@ class GlobalDriver(
     private val userRepository: FirebaseUserRepository
 ) {
     private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+
+    val userId = userRepository.getCurrentUserId()
 
     private val _isUserSignedIn = MutableLiveData(false)
     val isUserSignedIn: LiveData<Boolean> get() = _isUserSignedIn
@@ -121,6 +123,6 @@ class GlobalDriver(
             is Int -> UiText.Resource(message)
             else -> UiText.Empty
         }
-        _popupBannerMessage.value = Pair(type, text)
+        _popupBannerMessage.postValue(Pair(type, text))
     }
 }
