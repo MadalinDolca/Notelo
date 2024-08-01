@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.Notelo" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -25,11 +25,13 @@
         <item name="editTextStyle">@style/EditTextStyle</item>
         <item name="buttonStyle">@style/ButtonStyle</item>
         <item name="radioButtonStyle">@style/RadioButtonFlatStyle</item>
+        <item name="imageButtonStyle">@style/ImageButtonWithBackgroundStyle</item>
         <item name="spinnerStyle">@style/SpinnerStyle</item>
         <item name="tabStyle">@style/TabLayoutStyle</item>
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialogStyle</item>
-        <item name="alertDialogStyle">@style/AlertDialogStyle</item>
-        <item name="android:dialogTheme">@style/DialogStyle</item>
+        <!--<item name="alertDialogStyle">@style/AlertDialogStyle</item>-->
+<!--        <item name="alertDialogStyle">@style/DialogStyle</item>-->
+<!--        <item name="android:dialogTheme">@style/DialogStyle</item>-->
     </style>
 
 </resources>

@@ -62,6 +62,21 @@
         <item name="android:backgroundTint">@color/background_alt</item>
     </style>
 
+    <!-- Image Button with Background -->
+    <style name="ImageButtonWithBackgroundStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:padding">@dimen/padding_container</item>
+        <item name="android:tint">@color/on_primary</item>
+        <item name="android:background">@drawable/background_rounded</item>
+        <item name="android:backgroundTint">@color/primary</item>
+    </style>
+
+    <!-- Image Button without Background -->
+    <style name="ImageButtonNoBackgroundStyle" parent="Widget.AppCompat.ImageButton">
+        <item name="android:padding">@dimen/padding_container</item>
+        <item name="android:tint">@color/on_background</item>
+        <item name="android:background">@null</item>
+    </style>
+
     <!-- RadioButton -->
     <style name="RadioButtonFlatStyle" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:textColor">@drawable/radio_button_selector_text_selector</item>
@@ -76,10 +91,14 @@
     </style>
 
     <!-- Dialog -->
-    <style name="DialogStyle" parent="@android:style/Theme.Dialog">
+    <style name="DialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@color/transparent</item>
         <!--<item name="android:windowMinWidthMajor">@dimen/dialog_min_width_major</item>-->
         <!--<item name="android:windowMinWidthMinor">@dimen/dialog_min_width_minor</item>-->
+        <!-- components -->
+        <!--<item name="editTextStyle">@style/EditTextStyle</item>
+        <item name="buttonStyle">@style/ButtonStyle</item>-->
+        <item name="imageButtonStyle">@style/ImageButtonWithBackgroundStyle</item>
     </style>
 
     <!-- AlertDialog -->
@@ -107,6 +126,7 @@
         <item name="android:layout_marginEnd">@dimen/margin_dialog</item>
         <item name="android:layout_marginBottom">@dimen/margin_dialog</item>
         <!-- components -->
+        <item name="editTextStyle">@style/EditTextStyle</item>
         <item name="buttonStyle">@style/ButtonStyle</item>
         <item name="radioButtonStyle">@style/RadioButtonFlatStyle</item>
         <item name="spinnerStyle">@style/SpinnerStyle</item>

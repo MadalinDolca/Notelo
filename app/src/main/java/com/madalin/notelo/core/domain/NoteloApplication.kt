@@ -3,10 +3,13 @@ package com.madalin.notelo.core.domain
 import android.app.Application
 import android.content.Context
 import com.madalin.notelo.core.di.appModule
+import com.madalin.notelo.core.di.databaseModule
+import com.madalin.notelo.core.di.repositoryModule
 import com.madalin.notelo.core.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 
 /**
  * Class to provide a single point of entry for initialization and configuration tasks,
@@ -24,9 +27,14 @@ class NoteloApplication : Application() {
         startKoin {
             androidLogger() // Koin logger
             androidContext(this@NoteloApplication)
-            modules(appModule, viewModelModule)
+            modules(appModule, databaseModule, repositoryModule, viewModelModule)
         }
 
         context = applicationContext
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        stopKoin()
     }
 }
