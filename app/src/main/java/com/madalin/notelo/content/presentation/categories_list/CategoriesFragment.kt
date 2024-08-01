@@ -11,8 +11,10 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.madalin.notelo.R
 import com.madalin.notelo.content.presentation.categories_list.util.GridSpacingItemDecoration
+import com.madalin.notelo.core.domain.model.Category
 import com.madalin.notelo.core.presentation.components.category_properties.CategoryPropertiesBottomSheetDialog
 import com.madalin.notelo.databinding.FragmentCategoriesBinding
+import com.madalin.notelo.home.presentation.HomeFragmentDirections
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CategoriesFragment : Fragment() {
@@ -29,8 +31,14 @@ class CategoriesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // obtains the nav controller of the parent activity
         activityNavController = (activity as AppCompatActivity).findNavController(R.id.mainActivityFragmentContainerView)
-        categoriesAdapter = CategoriesAdapter(context, activityNavController)
+
+        // sets up the notes adapter
+        categoriesAdapter = CategoriesAdapter(
+            onOpenCategoryClick = { openCategory(it, activityNavController) },
+            onOpenCategoryPropertiesClick = { openCategoryProperties(it) }
+        )
 
         // recycler view preparations
         with(binding) {
@@ -64,6 +72,24 @@ class CategoriesFragment : Fragment() {
         binding.floatingActionButton.setOnClickListener {
             val context = context ?: return@setOnClickListener
             CategoryPropertiesBottomSheetDialog(context).show()
+        }
+    }
+
+    /**
+     * Opens the fragment containing the notes from the given [category] using this [navController].
+     */
+    private fun openCategory(category: Category, navController: NavController) {
+        val action = HomeFragmentDirections.actionGlobalCategoryViewerFragment(category)
+        navController.navigate(action)
+    }
+
+    /**
+     * Opens the category properties dialog for the given [category] if it's not "Uncategorized".
+     */
+    private fun openCategoryProperties(category: Category) {
+        if (category.id != Category.ID_UNCATEGORIZED) {
+            val context = context ?: return
+            CategoryPropertiesBottomSheetDialog(context, category).show()
         }
     }
 }
