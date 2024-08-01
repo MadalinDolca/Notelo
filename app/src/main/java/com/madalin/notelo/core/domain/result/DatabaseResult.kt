@@ -29,6 +29,11 @@ sealed class GetNotesResult {
     data class Error(val message: String?) : GetNotesResult()
 }
 
+sealed class MoveNoteResult {
+    data object Success : MoveNoteResult()
+    data class Error(val message: String?) : MoveNoteResult()
+}
+
 sealed class GetCategoryResult {
     data class Success(val category: Category) : GetCategoryResult()
     data class Error(val message: String?) : GetCategoryResult()
@@ -42,4 +47,9 @@ sealed class GetCategoriesResult {
 sealed class GetTagsResult {
     data class Success(val tags: List<Tag>) : GetTagsResult()
     data class Error(val message: String?) : GetTagsResult()
+}
+
+sealed class TagsReplaceResult {
+    data object Success : TagsReplaceResult()
+    data class Error(val message: String?) : TagsReplaceResult()
 }

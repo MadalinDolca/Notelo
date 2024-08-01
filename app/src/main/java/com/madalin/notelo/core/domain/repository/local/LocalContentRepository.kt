@@ -8,6 +8,8 @@ import com.madalin.notelo.core.domain.result.GetCategoriesResult
 import com.madalin.notelo.core.domain.result.GetCategoryResult
 import com.madalin.notelo.core.domain.result.GetNoteResult
 import com.madalin.notelo.core.domain.result.GetTagsResult
+import com.madalin.notelo.core.domain.result.MoveNoteResult
+import com.madalin.notelo.core.domain.result.TagsReplaceResult
 import com.madalin.notelo.core.domain.result.UpdateResult
 import com.madalin.notelo.core.domain.result.UpsertResult
 import kotlinx.coroutines.flow.Flow
@@ -43,6 +45,12 @@ interface LocalContentRepository {
      * from the database and returns them as a [Flow].
      */
     fun getNotesWithCategoryAndTagsObserver(): Flow<List<Note>>
+
+    /**
+     * Moves the given [note] to the given [category] and replaces its previous associated tags with
+     * the given [tags] and returns a [MoveNoteResult].
+     */
+    suspend fun moveNoteToCategoryWithTags(note: Note, category: Category, tags: List<Tag>): MoveNoteResult
 
     /**
      * Upserts the given [category] in the database and returns an [UpdateResult].
@@ -95,7 +103,7 @@ interface LocalContentRepository {
     suspend fun getTagsByCategoryId(categoryId: String): GetTagsResult
 
     /**
-     * Obtains the tags associated with the given [categoryId] and returns them as a [Flow].
+     * Replaces the tags of this [note] with the given [tags] and returns a [TagsReplaceResult].
      */
-    fun getTagsByCategoryIdObserver(categoryId: String): Flow<List<Tag>>
+    suspend fun replaceNoteTags(note: Note, tags: List<Tag>): TagsReplaceResult
 }

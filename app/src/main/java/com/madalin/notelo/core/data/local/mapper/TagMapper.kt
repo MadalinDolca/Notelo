@@ -6,7 +6,7 @@ import com.madalin.notelo.core.domain.model.Tag
 /**
  * Returns a [Tag] representation of this [TagEntity].
  */
-fun TagEntity.toDomainModel() = Tag(
+fun TagEntity.toTagDomainModel() = Tag(
     id = id,
     categoryId = categoryId,
     name = name,
@@ -17,7 +17,7 @@ fun TagEntity.toDomainModel() = Tag(
 /**
  * Returns a [TagEntity] representation of this [Tag].
  */
-fun Tag.toEntity() = TagEntity(
+fun Tag.toTagEntity() = TagEntity(
     id = id,
     categoryId = categoryId,
     name = name,

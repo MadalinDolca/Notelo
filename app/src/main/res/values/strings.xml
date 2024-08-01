@@ -134,5 +134,20 @@
     <string name="could_not_delete_the_note_because_the_note_is_null">Could not delete the note because the note is null</string>
     <string name="could_not_delete_backed_up_note">Could not delete backed up note</string>
     <string name="could_not_update_backed_up_note">Could not update backed up note</string>
+    <string name="could_not_update_the_category_because_the_category_is_null">Could not update the category because the category is null</string>
+    <string name="could_not_delete_the_category_because_the_category_is_null">Could not delete the category because the category is null</string>
+    <string name="category_deleted_successfully">Category deleted successfully</string>
+    <string name="could_not_change_the_note_visibility">Could not change the note visibility</string>
+    <string name="manage_tags">Manage tags</string>
+    <string name="tag_name">Tag name</string>
+    <string name="close">Close</string>
+    <string name="could_not_get_the_tags_because_the_category_is_null">Could not get the tags because the category is null</string>
+    <string name="tag_name_must_be_between_x_and_y_characters">Tag name must be between %d and %d characters</string>
+    <string name="tag_name_can_not_be_empty">Tag name can not be empty</string>
+    <string name="could_not_create_the_tag">Could not create the tag</string>
+    <string name="could_not_delete_the_tag">Could not delete the tag</string>
+    <string name="tag_deleted_successfully">Tag deleted successfully</string>
+    <string name="could_not_update_the_tag">Could not update the tag</string>
+    <string name="could_not_update_the_tags">Could not update the tags</string>
 
 </resources>

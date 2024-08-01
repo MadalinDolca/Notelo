@@ -1,20 +1,21 @@
 package com.madalin.notelo.content.presentation.notes_list
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.madalin.notelo.core.domain.model.Note
-import com.madalin.notelo.core.presentation.components.noteproperties.NotePropertiesBottomSheetDialog
 import com.madalin.notelo.databinding.LayoutNoteCardBinding
-import com.madalin.notelo.home.presentation.HomeFragmentDirections
 
+/**
+ * [RecyclerView.Adapter] that can display a [Note].
+ * @param onNavigateToNote Function to call when the note is clicked.
+ * @param onOpenNoteProperties Function to call when the note is long clicked.
+ */
 class NotesAdapter(
-    var context: Context?,
-    private val navController: NavController
+    private val onNavigateToNote: (Note) -> Unit,
+    private val onOpenNoteProperties: (Note) -> Unit
 ) : RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
     private val notesList = mutableListOf<Note>()
 
@@ -29,28 +30,37 @@ class NotesAdapter(
     }
 
     override fun onBindViewHolder(holder: NotesViewHolder, position: Int) {
+        val currentNote = notesList[position]
+
         with(holder) {
-            val thisNote = notesList[position]
+            binding.textViewTitle.text = currentNote.title
+            binding.textViewContent.text = currentNote.content
 
-            binding.textViewTitle.text = thisNote.title
-            binding.textViewContent.text = thisNote.content
-            binding.imageViewTag.visibility = View.GONE
-            binding.textViewTags.visibility = View.GONE
-
-            if (notesList[position].categoryId != null) {
-                binding.textViewCategoryName.text = thisNote.categoryId
+            // shows the category name if it exists
+            val category = currentNote.category
+            if (category != null) {
+                binding.textViewCategoryName.text = category.name
+            } else {
+                binding.imageViewCategory.visibility = View.GONE
+                binding.textViewCategoryName.visibility = View.GONE
             }
 
-            // opens the note with the given data
+            // shows the tags if they exist
+            if (currentNote.tags.isNotEmpty()) {
+                binding.textViewTags.text = currentNote.tags.joinToString(separator = ", ") { it.name }
+            } else {
+                binding.imageViewTag.visibility = View.GONE
+                binding.textViewTags.visibility = View.GONE
+            }
+
+            // navigates to the note viewer with the given data
             binding.root.setOnClickListener {
-                val action = HomeFragmentDirections.actionGlobalNoteViewerFragment(thisNote)
-                navController.navigate(action) //navController.navigate(R.id.noteViewerFragment)
+                onNavigateToNote(currentNote)
             }
 
-            // open the properties dialog on long click
+            // opens the note properties dialog on long click
             binding.root.setOnLongClickListener {
-                val context = context ?: return@setOnLongClickListener true
-                NotePropertiesBottomSheetDialog(context, thisNote).show()
+                onOpenNoteProperties(currentNote)
                 return@setOnLongClickListener true
             }
         }
@@ -58,6 +68,9 @@ class NotesAdapter(
 
     override fun getItemCount() = notesList.size
 
+    /**
+     * Updates the [notesList] with the given [newNotesList].
+     */
     fun setNotesList(newNotesList: List<Note>) {
         notesList.clear()
         notesList.addAll(newNotesList)

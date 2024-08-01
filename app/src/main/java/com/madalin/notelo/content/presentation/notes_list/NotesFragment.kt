@@ -13,6 +13,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.madalin.notelo.R
 import com.madalin.notelo.core.presentation.components.LayoutMessage
+import com.madalin.notelo.core.presentation.components.note_properties.NotePropertiesBottomSheetDialog
 import com.madalin.notelo.databinding.FragmentNotesBinding
 import com.madalin.notelo.home.presentation.HomeFragmentDirections
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,7 +24,7 @@ class NotesFragment : Fragment() {
     private lateinit var notesAdapter: NotesAdapter
     private lateinit var activityNavController: NavController
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentNotesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -31,8 +32,19 @@ class NotesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // obtains the nav controller of the parent activity
         activityNavController = (activity as AppCompatActivity).findNavController(R.id.mainActivityFragmentContainerView)
-        notesAdapter = NotesAdapter(context, activityNavController)
+
+        // sets up the notes adapter
+        notesAdapter = NotesAdapter(
+            onNavigateToNote = { note ->
+                val action = HomeFragmentDirections.actionGlobalNoteViewerFragment(note)
+                activityNavController.navigate(action) //navController.navigate(R.id.noteViewerFragment)
+            },
+            onOpenNoteProperties = { note ->
+                context?.let { NotePropertiesBottomSheetDialog(it, note).show() }
+            }
+        )
 
         // recycler view preparations
         with(binding) {
@@ -88,7 +100,7 @@ class NotesFragment : Fragment() {
 
         // obtains the notes on swipe refresh
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.getAndObserveUserNotes()
+            viewModel.getNotesObserver()
             binding.swipeRefreshLayout.isRefreshing = false
         }
 

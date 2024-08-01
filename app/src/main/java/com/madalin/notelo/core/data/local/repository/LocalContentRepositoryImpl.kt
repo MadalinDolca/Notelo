@@ -4,8 +4,13 @@ import com.madalin.notelo.core.data.local.dao.CategoryDao
 import com.madalin.notelo.core.data.local.dao.NoteDao
 import com.madalin.notelo.core.data.local.dao.NoteTagDao
 import com.madalin.notelo.core.data.local.dao.TagDao
-import com.madalin.notelo.core.data.local.mapper.toDomainModel
-import com.madalin.notelo.core.data.local.mapper.toEntity
+import com.madalin.notelo.core.data.local.mapper.toCategoryDomainModel
+import com.madalin.notelo.core.data.local.mapper.toCategoryEntity
+import com.madalin.notelo.core.data.local.mapper.toNoteDomainModel
+import com.madalin.notelo.core.data.local.mapper.toNoteEntity
+import com.madalin.notelo.core.data.local.mapper.toNoteTagCrossRefEntities
+import com.madalin.notelo.core.data.local.mapper.toTagDomainModel
+import com.madalin.notelo.core.data.local.mapper.toTagEntity
 import com.madalin.notelo.core.domain.model.Category
 import com.madalin.notelo.core.domain.model.Note
 import com.madalin.notelo.core.domain.model.Tag
@@ -14,6 +19,8 @@ import com.madalin.notelo.core.domain.result.DeleteResult
 import com.madalin.notelo.core.domain.result.GetCategoriesResult
 import com.madalin.notelo.core.domain.result.GetCategoryResult
 import com.madalin.notelo.core.domain.result.GetTagsResult
+import com.madalin.notelo.core.domain.result.MoveNoteResult
+import com.madalin.notelo.core.domain.result.TagsReplaceResult
 import com.madalin.notelo.core.domain.result.UpdateResult
 import com.madalin.notelo.core.domain.result.UpsertResult
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +36,7 @@ class LocalContentRepositoryImpl(
 
     override suspend fun upsertNote(note: Note): UpsertResult {
         try {
-            noteDao.upsertNote(note.toEntity())
+            noteDao.upsertNote(note.toNoteEntity())
             return UpsertResult.Success
         } catch (e: Exception) {
             return UpsertResult.Error(e.message)
@@ -38,7 +45,7 @@ class LocalContentRepositoryImpl(
 
     override suspend fun updateNote(note: Note): UpdateResult {
         try {
-            noteDao.updateNote(note.toEntity())
+            noteDao.updateNote(note.toNoteEntity())
             return UpdateResult.Success
         } catch (e: Exception) {
             return UpdateResult.Error(e.message)
@@ -47,7 +54,7 @@ class LocalContentRepositoryImpl(
 
     override suspend fun deleteNoteAndRelatedData(note: Note): DeleteResult {
         try {
-            noteDao.deleteNote(note.toEntity()) // deletes the note
+            noteDao.deleteNote(note.toNoteEntity()) // deletes the note
             noteTagDao.deleteNoteTagByNoteId(note.id) // deletes the note tags association
             return DeleteResult.Success
         } catch (e: Exception) {
@@ -79,14 +86,29 @@ class LocalContentRepositoryImpl(
             .distinctUntilChanged()
             .map { list ->
                 list.map { noteWithCategoryAndTags ->
-                    noteWithCategoryAndTags.toDomainModel()
+                    noteWithCategoryAndTags.toNoteDomainModel()
                 }
             }
     }
 
+    override suspend fun moveNoteToCategoryWithTags(note: Note, category: Category, tags: List<Tag>): MoveNoteResult {
+        try {
+            val categoryId = if (category.id == Category.ID_UNCATEGORIZED) null else category.id
+            val noteTags = note.apply { this.tags = tags }.toNoteTagCrossRefEntities()
+
+            noteTagDao.deleteNoteTagByNoteId(note.id) // deletes the previous note-tag associations
+            noteDao.updateNoteCategory(note.id, categoryId) // updates the note category
+            noteTagDao.upsertNoteTags(noteTags) // inserts the new note-tag associations
+
+            return MoveNoteResult.Success
+        } catch (e: Exception) {
+            return MoveNoteResult.Error(e.message)
+        }
+    }
+
     override suspend fun upsertCategory(category: Category): UpsertResult {
         try {
-            categoryDao.upsertCategory(category.toEntity())
+            categoryDao.upsertCategory(category.toCategoryEntity())
             return UpsertResult.Success
         } catch (e: Exception) {
             return UpsertResult.Error(e.message)
@@ -95,7 +117,7 @@ class LocalContentRepositoryImpl(
 
     override suspend fun updateCategory(category: Category): UpdateResult {
         try {
-            categoryDao.updateCategory(category.toEntity())
+            categoryDao.updateCategory(category.toCategoryEntity())
             return UpdateResult.Success
         } catch (e: Exception) {
             return UpdateResult.Error(e.message)
@@ -116,7 +138,7 @@ class LocalContentRepositoryImpl(
             tagDao.deleteCategoryTags(category.id)
 
             // delete the category itself
-            categoryDao.deleteCategory(category.toEntity())
+            categoryDao.deleteCategory(category.toCategoryEntity())
 
             return DeleteResult.Success
         } catch (e: Exception) {
@@ -127,7 +149,7 @@ class LocalContentRepositoryImpl(
     override suspend fun getCategoryById(categoryId: String): GetCategoryResult {
         try {
             val category = categoryDao.getCategoryById(categoryId)
-            return GetCategoryResult.Success(category.toDomainModel())
+            return GetCategoryResult.Success(category.toCategoryDomainModel())
         } catch (e: Exception) {
             return GetCategoryResult.Error(e.message)
         }
@@ -135,7 +157,7 @@ class LocalContentRepositoryImpl(
 
     override suspend fun getCategories(): GetCategoriesResult {
         try {
-            val categories = categoryDao.getCategories().map { it.toDomainModel() }
+            val categories = categoryDao.getCategories().map { it.toCategoryDomainModel() }
             return GetCategoriesResult.Success(categories)
         } catch (e: Exception) {
             return GetCategoriesResult.Error(e.message)
@@ -147,14 +169,14 @@ class LocalContentRepositoryImpl(
             .distinctUntilChanged()
             .map { list ->
                 list.map { categoryEntity ->
-                    categoryEntity.toDomainModel()
+                    categoryEntity.toCategoryDomainModel()
                 }
             }
     }
 
     override suspend fun upsertTag(tag: Tag): UpsertResult {
         try {
-            tagDao.upsertTag(tag.toEntity())
+            tagDao.upsertTag(tag.toTagEntity())
             return UpsertResult.Success
         } catch (e: Exception) {
             return UpsertResult.Error(e.message)
@@ -163,7 +185,7 @@ class LocalContentRepositoryImpl(
 
     override suspend fun updateTag(tag: Tag): UpdateResult {
         try {
-            tagDao.updateTag(tag.toEntity())
+            tagDao.updateTag(tag.toTagEntity())
             return UpdateResult.Success
         } catch (e: Exception) {
             return UpdateResult.Error(e.message)
@@ -176,7 +198,7 @@ class LocalContentRepositoryImpl(
             noteTagDao.deleteNoteTagByTagId(tag.id)
 
             // deletes the tag itself
-            tagDao.deleteTag(tag.toEntity())
+            tagDao.deleteTag(tag.toTagEntity())
 
             return DeleteResult.Success
         } catch (e: Exception) {
@@ -186,20 +208,23 @@ class LocalContentRepositoryImpl(
 
     override suspend fun getTagsByCategoryId(categoryId: String): GetTagsResult {
         try {
-            val tags = tagDao.getTagsByCategoryId(categoryId).map { it.toDomainModel() }
+            val tags = tagDao.getTagsByCategoryId(categoryId).map { it.toTagDomainModel() }
             return GetTagsResult.Success(tags)
         } catch (e: Exception) {
             return GetTagsResult.Error(e.message)
         }
     }
 
-    override fun getTagsByCategoryIdObserver(categoryId: String): Flow<List<Tag>> {
-        return tagDao.getTagsByCategoryIdObserver(categoryId)
-            .distinctUntilChanged()
-            .map { list ->
-                list.map { tagEntity ->
-                    tagEntity.toDomainModel()
-                }
-            }
+    override suspend fun replaceNoteTags(note: Note, tags: List<Tag>): TagsReplaceResult {
+        try {
+            val noteTags = note.apply { this.tags = tags }.toNoteTagCrossRefEntities()
+
+            noteTagDao.deleteNoteTagByNoteId(note.id) // deletes the previous note-tag associations
+            noteTagDao.upsertNoteTags(noteTags) // inserts the new ones
+
+            return TagsReplaceResult.Success
+        } catch (e: Exception) {
+            return TagsReplaceResult.Error(e.message)
+        }
     }
 }
