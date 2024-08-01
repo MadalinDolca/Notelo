@@ -2,7 +2,7 @@ package com.madalin.notelo.core.domain.validation
 
 object NoteValidator {
     const val MIN_NOTE_TITLE_LENGTH = 3
-    const val MAX_NOTE_TITLE_LENGTH = 50
+    const val MAX_NOTE_TITLE_LENGTH = 200
 
     const val MIN_NOTE_CONTENT_LENGTH = 1
     const val MAX_NOTE_CONTENT_LENGTH = 1000

@@ -47,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@id/spinnerCategory" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonTags"
+        android:id="@+id/buttonSelectTags"
         style="@style/ButtonAltStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
         android:layout_marginVertical="@dimen/margin_element"
         android:text="@string/visibility"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/buttonTags" />
+        app:layout_constraintTop_toBottomOf="@id/buttonSelectTags" />
 
     <RadioGroup
         android:id="@+id/radioGroupVisibility"
