@@ -25,5 +25,13 @@ data class Category(
          * The name of the category that contains the uncategorized notes.
          */
         val NAME_UNCATEGORIZED = NoteloApplication.context.getString(R.string.uncategorized)
+
+        /**
+         * Returns a [Category] for "uncategorized" notes.
+         */
+        fun subUncategorized() = Category(
+            id = ID_UNCATEGORIZED,
+            name = NAME_UNCATEGORIZED
+        )
     }
 }

@@ -87,7 +87,7 @@ class NotePropertiesBottomSheetDialog(
                 is GetCategoriesResult.Success -> {
                     // adds the "uncategorized" entry and the obtained categories
                     val categoriesList = mutableListOf<Category>()
-                    categoriesList.add(Category(id = Category.ID_UNCATEGORIZED, name = Category.NAME_UNCATEGORIZED))
+                    categoriesList.add(Category.subUncategorized())
                     categoriesList.addAll(result.categories)
 
                     // updates the spinner adapter

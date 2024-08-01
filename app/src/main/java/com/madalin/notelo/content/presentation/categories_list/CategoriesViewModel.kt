@@ -17,9 +17,7 @@ class CategoriesViewModel(
     private val globalDriver: GlobalDriver,
     private val localRepository: LocalContentRepository
 ) : ViewModel() {
-    private val uncategorized = Category(id = Category.ID_UNCATEGORIZED, name = Category.NAME_UNCATEGORIZED)
-
-    private var _categoriesListState = MutableLiveData(listOf(uncategorized))
+    private var _categoriesListState = MutableLiveData(listOf(Category.subUncategorized()))
     val categoriesListState: LiveData<List<Category>> get() = _categoriesListState
 
     init {
@@ -40,7 +38,7 @@ class CategoriesViewModel(
                     Log.d("CategoriesViewModel", "Could not get the categories: ${it.message}")
                 }
                 .collect {
-                    val categories = mutableListOf(uncategorized) // first category is "Uncategorized"
+                    val categories = mutableListOf(Category.subUncategorized()) // first category is "Uncategorized"
                     categories.addAll(1, it)
                     _categoriesListState.postValue(categories)
                 }
