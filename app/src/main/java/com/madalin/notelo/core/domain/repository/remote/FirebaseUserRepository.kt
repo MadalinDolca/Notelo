@@ -1,4 +1,4 @@
-package com.madalin.notelo.core.domain.repository
+package com.madalin.notelo.core.domain.repository.remote
 
 import com.google.firebase.ktx.Firebase
 import com.madalin.notelo.core.domain.result.UserResult

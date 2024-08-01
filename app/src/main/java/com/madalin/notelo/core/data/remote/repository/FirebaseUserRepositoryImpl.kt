@@ -1,10 +1,10 @@
-package com.madalin.notelo.core.data.repository
+package com.madalin.notelo.core.data.remote.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.madalin.notelo.core.domain.model.User
-import com.madalin.notelo.core.domain.repository.FirebaseUserRepository
+import com.madalin.notelo.core.domain.repository.remote.FirebaseUserRepository
 import com.madalin.notelo.core.domain.result.UserResult
 import com.madalin.notelo.core.domain.util.DBCollection
 import kotlinx.coroutines.channels.awaitClose
