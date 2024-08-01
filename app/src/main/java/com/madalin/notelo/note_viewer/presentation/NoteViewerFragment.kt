@@ -8,16 +8,17 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.madalin.notelo.R
-import com.madalin.notelo.core.presentation.components.noteproperties.NotePropertiesBottomSheetDialog
+import com.madalin.notelo.core.domain.util.asDate
+import com.madalin.notelo.core.domain.util.asHourAndMinute
+import com.madalin.notelo.core.domain.util.isToday
+import com.madalin.notelo.core.presentation.components.note_properties.NotePropertiesBottomSheetDialog
 import com.madalin.notelo.core.presentation.util.EdgeToEdge.DIRECTION_BOTTOM
 import com.madalin.notelo.core.presentation.util.EdgeToEdge.DIRECTION_TOP
 import com.madalin.notelo.core.presentation.util.EdgeToEdge.SPACING_MARGIN
 import com.madalin.notelo.core.presentation.util.EdgeToEdge.edgeToEdge
 import com.madalin.notelo.databinding.FragmentNoteViewerBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 /**
  * Fragment used to view, create, update and delete a note.
@@ -40,7 +41,7 @@ class NoteViewerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         edgeToEdge(activity, binding.editTextTitle, SPACING_MARGIN, DIRECTION_TOP)
-        edgeToEdge(activity, binding.textViewLastEdited, SPACING_MARGIN, DIRECTION_BOTTOM)
+        edgeToEdge(activity, binding.layoutOptionsWrapper, SPACING_MARGIN, DIRECTION_BOTTOM)
 
         // determines the mode
         // if no note has been passed, then the creation layout will be shown
@@ -62,10 +63,13 @@ class NoteViewerFragment : Fragment() {
 
         // edit button (enables/disables editing)
         binding.textViewAction.setOnClickListener {
-            if (!viewModel.isEditEnabled) { // if not in editable state, then enable editing when clicking on "Edit"
+            // if not in editable state, then enable editing when clicking on "Edit"
+            if (!viewModel.isEditEnabled) {
                 enableEditing()
                 viewModel.isEditEnabled = true
-            } else { // if already in editable state, update the note when clicking on "Done"
+            }
+            // if already in editable state, update the note when clicking on "Done"
+            else {
                 viewModel.updateNote(binding.editTextTitle.text.toString(), binding.editTextContent.text.toString())
             }
         }
@@ -99,19 +103,9 @@ class NoteViewerFragment : Fragment() {
         if (updatedAt == null) {
             binding.textViewLastEdited.visibility = View.INVISIBLE
         } else {
-            val dateFormatPattern = if (isToday(updatedAt)) "hh:mm a" else "dd MMM yy"
-            val formattedDate = SimpleDateFormat(dateFormatPattern, Locale.getDefault()).format(updatedAt)
+            val formattedDate = if (updatedAt.isToday()) updatedAt.asHourAndMinute() else updatedAt.asDate()
             binding.textViewLastEdited.text = getString(R.string.edited_date, formattedDate)
         }
-    }
-
-    /**
-     * Returns `true` if the given [date] is today, `false` otherwise.
-     */
-    private fun isToday(date: Date): Boolean {
-        val now = Date()
-        return SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(now) ==
-                SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(date)
     }
 
     /**
