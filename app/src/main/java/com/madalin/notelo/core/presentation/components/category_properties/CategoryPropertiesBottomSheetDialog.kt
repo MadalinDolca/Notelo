@@ -10,6 +10,7 @@ import com.madalin.notelo.R
 import com.madalin.notelo.core.domain.model.Category
 import com.madalin.notelo.core.domain.repository.local.LocalContentRepository
 import com.madalin.notelo.core.domain.result.DeleteResult
+import com.madalin.notelo.core.domain.result.GetCategoryResult
 import com.madalin.notelo.core.domain.result.UpdateResult
 import com.madalin.notelo.core.domain.result.UpsertResult
 import com.madalin.notelo.core.domain.validation.CategoryValidator
@@ -26,15 +27,15 @@ import org.koin.core.component.inject
 import java.util.Date
 
 /**
- * [BottomSheetDialog] used to create or update a category. If [givenCategory] is `null`, the
+ * [BottomSheetDialog] used to create or update a category. If [categoryId] is `null`, the
  * creation mode will be used, otherwise the update mode.
  *
- * @param ownerContext context from where the dialog is called
- * @param givenCategory the category to update
+ * @param ownerContext Caller's context
+ * @param categoryId ID of the category to update
  */
 class CategoryPropertiesBottomSheetDialog(
     ownerContext: Context,
-    private var givenCategory: Category? = null
+    private var categoryId: String? = null
 ) : BottomSheetDialog(ownerContext), KoinComponent {
     private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     lateinit var binding: LayoutCategoryPropertiesBottomsheetdialogBinding
@@ -51,8 +52,37 @@ class CategoryPropertiesBottomSheetDialog(
         behavior.state = BottomSheetBehavior.STATE_EXPANDED // fully opened sheet
 
         initializeColorPicker()
-        if (givenCategory == null) initializeCreateMode()
-        else initializeUpdateMode()
+        if (categoryId == null) {
+            initializeCreateMode()
+        } else {
+            getCategoryData()
+        }
+    }
+
+    /**
+     * Obtains the data of the category with the given [categoryId] and initializes the update mode.
+     */
+    private fun getCategoryData() {
+        val id = categoryId
+        if (id == null) {
+            globalDriver.showPopupBanner(
+                PopupBanner.TYPE_FAILURE,
+                R.string.could_not_update_the_category_because_the_category_id_is_null
+            )
+            return
+        }
+
+        scope.launch(Dispatchers.IO) {
+            val result = localRepository.getCategoryById(id)
+            when (result) {
+                is GetCategoryResult.Success -> initializeUpdateMode(result.category)
+
+                is GetCategoryResult.Error -> globalDriver.showPopupBanner(
+                    PopupBanner.TYPE_FAILURE,
+                    result.message ?: R.string.could_not_get_this_category_data
+                )
+            }
+        }
     }
 
     /**
@@ -84,13 +114,12 @@ class CategoryPropertiesBottomSheetDialog(
     }
 
     /**
-     * Initializes the update mode of the dialog.
+     * Initializes the update mode of the dialog using this [category].
      * This will allow the user to **update** a category or to **delete** it.
      */
-    private fun initializeUpdateMode() {
-        val category = givenCategory ?: return
-
-        binding.editTextCategoryName.setText(category.name) // adds the name to the EditText
+    private fun initializeUpdateMode(category: Category) {
+        // adds the name to the EditText
+        binding.editTextCategoryName.setText(category.name)
 
         // if the category has a color, then the picker sets it as the initial color
         if (category.color != null) {
@@ -105,15 +134,15 @@ class CategoryPropertiesBottomSheetDialog(
         binding.buttonManageTags.setOnClickListener { ManageTagsDialog(context, category).show() }
 
         // update and delete button listeners
-        binding.buttonCreateUpdate.setOnClickListener { updateCategory() }
-        binding.buttonCancelDelete.setOnClickListener { deleteCategory() }
+        binding.buttonCreateUpdate.setOnClickListener { updateCategoryAndClose(category) }
+        binding.buttonCancelDelete.setOnClickListener { deleteCategoryAndClose(category) }
     }
 
     /**
      * Creates a new category with the data provided in this dialog and stores it in the database.
      */
     private fun createCategory() {
-        val name = binding.editTextCategoryName.text.toString()
+        val name = binding.editTextCategoryName.text.toString().trim()
 
         if (!validateName(name)) return
 
@@ -143,34 +172,19 @@ class CategoryPropertiesBottomSheetDialog(
     }
 
     /**
-     * Updates the given [givenCategory] with the data provided in this dialog.
+     * Updates the given [category] with the data provided in this dialog and closes the dialog.
      */
-    private fun updateCategory() {
-        val currentCategory = givenCategory
-        if (currentCategory == null) {
-            globalDriver.showPopupBanner(
-                PopupBanner.TYPE_FAILURE,
-                R.string.could_not_update_the_category_because_the_category_is_null
-            )
-            return
-        }
-
+    private fun updateCategoryAndClose(category: Category) {
         val newName = binding.editTextCategoryName.text.toString()
 
         // validates the category name
         if (!validateName(newName)) return
 
-        val updatedCategory = currentCategory.copy(name = newName, color = newColor)
+        val updatedCategory = category.copy(name = newName, color = newColor)
         scope.launch(Dispatchers.IO) {
             val result = localRepository.updateCategory(updatedCategory)
             when (result) {
                 UpdateResult.Success -> {
-                    // applies the data to the local category
-                    givenCategory?.apply {
-                        name = newName
-                        color = newColor
-                    }
-
                     globalDriver.showPopupBanner(
                         PopupBanner.TYPE_SUCCESS,
                         context.getString(R.string.category_updated_successfully)
@@ -187,20 +201,11 @@ class CategoryPropertiesBottomSheetDialog(
     }
 
     /**
-     * Deletes the current [givenCategory] from the database and closes the dialog.
+     * Deletes the given [category] from the database and closes the dialog.
      */
-    private fun deleteCategory() {
-        val currentCategory = givenCategory
-        if (currentCategory == null) {
-            globalDriver.showPopupBanner(
-                PopupBanner.TYPE_FAILURE,
-                R.string.could_not_delete_the_category_because_the_category_is_null
-            )
-            return
-        }
-
+    private fun deleteCategoryAndClose(category: Category) {
         scope.launch(Dispatchers.IO) {
-            val result = localRepository.deleteCategoryAndRelatedData(currentCategory)
+            val result = localRepository.deleteCategoryAndRelatedData(category)
             when (result) {
                 DeleteResult.Success -> {
                     globalDriver.showPopupBanner(
@@ -217,39 +222,6 @@ class CategoryPropertiesBottomSheetDialog(
             }
         }
     }
-
-    /*    private fun showManageTagsDialog() {
-            val dialogBinding = LayoutManageTagsDialogBinding.inflate(layoutInflater)
-            val items = mutableListOf("Item 1", "Item 2", "Item 3")
-            val adapter = ItemAdapter(items, { position ->
-                // Edit item
-                val newText = editTextInput.text.toString()
-                if (newText.isNotEmpty()) {
-                    items[position] = newText
-                    adapter.notifyItemChanged(position)
-                }
-            }, { position ->
-                // Delete item
-                items.removeAt(position)
-                adapter.notifyItemRemoved(position)
-            })
-
-            dialogBinding.recyclerViewTags.layoutManager = LinearLayoutManager(context)
-            dialogBinding.recyclerViewTags.adapter = adapter
-
-            AlertDialog.Builder(context)
-                .setView(dialogBinding.root)
-                .setPositiveButton("Add") { _, _ ->
-                    val newItem = editTextInput.text.toString()
-                    if (newItem.isNotEmpty()) {
-                        items.add(newItem)
-                        adapter.notifyItemInserted(items.size - 1)
-                        editTextInput.text.clear()
-                    }
-                }
-                .create()
-                .show()
-        }*/
 
     /**
      * Validates the given category [name] and returns `true` if valid, `false` otherwise.
