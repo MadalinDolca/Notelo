@@ -16,6 +16,7 @@ import com.madalin.notelo.core.domain.repository.local.LocalContentRepository
 import com.madalin.notelo.core.domain.repository.remote.FirebaseContentRepository
 import com.madalin.notelo.core.domain.result.DeleteResult
 import com.madalin.notelo.core.domain.result.GetCategoriesResult
+import com.madalin.notelo.core.domain.result.GetNoteResult
 import com.madalin.notelo.core.domain.result.GetTagsResult
 import com.madalin.notelo.core.domain.result.MoveNoteResult
 import com.madalin.notelo.core.domain.result.TagsReplaceResult
@@ -32,11 +33,14 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 /**
- * [BottomSheetDialog] used to manage the properties of the [selectedNote].
+ * [BottomSheetDialog] used to manage the properties of the note that has this [noteId].
+ *
+ * @param ownerContext Caller's context
+ * @param noteId ID of the note to manage
  */
 class NotePropertiesBottomSheetDialog(
     private var ownerContext: Context,
-    private var selectedNote: Note
+    private var noteId: String
 ) : BottomSheetDialog(ownerContext), KoinComponent {
     private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     lateinit var binding: LayoutNotePropertiesBottomsheetdialogBinding
@@ -55,12 +59,36 @@ class NotePropertiesBottomSheetDialog(
         setContentView(binding.root)
         behavior.state = BottomSheetBehavior.STATE_EXPANDED // fully opened dialog
 
+        getNoteData()
+    }
+
+    /**
+     * Obtains the data of the note with the given [noteId] and initializes the dialog.
+     */
+    private fun getNoteData() {
+        scope.launch(Dispatchers.IO) {
+            val result = localRepository.getNoteWithCategoryAndTagsByNoteId(noteId)
+            when (result) {
+                is GetNoteResult.Success -> initializeDialog(result.note)
+
+                is GetNoteResult.Error -> globalDriver.showPopupBanner(
+                    PopupBanner.TYPE_FAILURE,
+                    result.message ?: R.string.could_not_get_the_note_data
+                )
+            }
+        }
+    }
+
+    /**
+     * Initializes the dialog with the given [note] data.
+     */
+    private fun initializeDialog(note: Note) {
         // adds the tags that the note already has to avoid their deletion on update when the
         // tags selection dialog hasn't been invoked
-        dialogSelectedTags.addAll(selectedNote.tags)
+        dialogSelectedTags.addAll(note.tags)
 
         // chooses what visibility radio button to check
-        if (!selectedNote.public) {
+        if (!note.public) {
             binding.radioButtonPrivate.isChecked = true
         } else {
             binding.radioButtonPublic.isChecked = true
@@ -68,19 +96,20 @@ class NotePropertiesBottomSheetDialog(
 
         // categories spinner
         binding.spinnerCategory.adapter = categoryAdapter
-        populateCategoriesSpinner()
+        populateCategoriesSpinner(note.categoryId)
         binding.spinnerCategory.onItemSelectedListener = itemSelectedListener() // sets the item selection listener
 
         // listeners
-        binding.buttonSelectTags.setOnClickListener { showTagsSelectionDialog() }
-        binding.buttonSave.setOnClickListener { updateNoteAndDismiss() }
-        binding.buttonDelete.setOnClickListener { deleteNoteAndDismiss() }
+        binding.buttonSelectTags.setOnClickListener { showTagsSelectionDialog(note) }
+        binding.buttonSave.setOnClickListener { updateNoteAndDismiss(note) }
+        binding.buttonDelete.setOnClickListener { deleteNoteAndDismiss(note) }
     }
 
     /**
-     * Obtains the categories from the database and updates the [categoryAdapter].
+     * Obtains the categories from the database and updates the [categoryAdapter]. Sets the category
+     * spinner position to the [noteCategoryId].
      */
-    private fun populateCategoriesSpinner() {
+    private fun populateCategoriesSpinner(noteCategoryId: String?) {
         lifecycleScope.launch(Dispatchers.IO) {
             val result = localRepository.getCategories()
             when (result) {
@@ -97,7 +126,7 @@ class NotePropertiesBottomSheetDialog(
                     }
 
                     // gets the position of the note's category in the list and sets the spinner's selection
-                    val position = categoriesList.indexOfFirst { it.id == selectedNote.categoryId }
+                    val position = categoriesList.indexOfFirst { it.id == noteCategoryId }
                     binding.spinnerCategory.setSelection(position)
                 }
 
@@ -163,14 +192,14 @@ class NotePropertiesBottomSheetDialog(
     }
 
     /**
-     * Prepares the tags list, initializes the tags [AlertDialog] and shows it.
+     * Prepares the tags list of this [note], initializes the tags [AlertDialog] and shows it.
      */
-    private fun showTagsSelectionDialog() {
+    private fun showTagsSelectionDialog(note: Note) {
         val dialogCheckedTags = BooleanArray(spinnerCategoryTags.size) { false } // array to mark the existent tags of the note
 
         // determines which tags the current note has and marks them
         for (i in spinnerCategoryTags.indices) {
-            if (selectedNote.tags.contains(spinnerCategoryTags[i])) {
+            if (note.tags.contains(spinnerCategoryTags[i])) {
                 dialogCheckedTags[i] = true
             }
         }
@@ -202,66 +231,52 @@ class NotePropertiesBottomSheetDialog(
     }
 
     /**
-     * Updates [selectedNote] with the selected data from this dialog and closes the dialog.
+     * Updates given [note] with the selected data from this dialog and closes the dialog.
      */
-    private fun updateNoteAndDismiss() {
+    private fun updateNoteAndDismiss(note: Note) {
         val categoryFromSpinner = categoryAdapter.getItem(binding.spinnerCategory.selectedItemPosition)
         val visibilityFromRadioButton = !binding.radioButtonPrivate.isChecked
 
         lifecycleScope.launch(Dispatchers.IO) {
-            // todo don't replace the tags if the category hasn't changed
-            // if the category remains the same, only the tags will be replaced
-            if (selectedNote.categoryId == categoryFromSpinner.id) {
-                val result = localRepository.replaceNoteTags(selectedNote, dialogSelectedTags)
-                when (result) {
-                    TagsReplaceResult.Success -> {
-                        globalDriver.showPopupBanner(
-                            PopupBanner.TYPE_SUCCESS,
-                            context.getString(R.string.note_updated_successfully)
-                        )
-                        this@NotePropertiesBottomSheetDialog.dismiss()
-                    }
-
-                    is TagsReplaceResult.Error -> globalDriver.showPopupBanner(
-                        PopupBanner.TYPE_FAILURE,
-                        result.message ?: context.getString(R.string.could_not_update_the_tags)
-                    )
-                }
-            }
-            // the category has been changed, the tags will be replaced as well
-            else {
-                val result = localRepository.moveNoteToCategoryWithTags(selectedNote, categoryFromSpinner, dialogSelectedTags)
-                when (result) {
-                    MoveNoteResult.Success -> {
-                        globalDriver.showPopupBanner(
-                            PopupBanner.TYPE_SUCCESS,
-                            context.getString(R.string.note_updated_successfully)
-                        )
-                        this@NotePropertiesBottomSheetDialog.dismiss()
-                    }
-
-                    is MoveNoteResult.Error -> globalDriver.showPopupBanner(
-                        PopupBanner.TYPE_FAILURE,
-                        result.message ?: context.getString(R.string.could_not_update_the_note)
-                    )
-                }
-            }
-
             // if the visibility has been changed, the note will be updated as well
-            if (selectedNote.public != visibilityFromRadioButton) {
-                updateNoteVisibilityRemote(visibilityFromRadioButton)
+            if (note.public != visibilityFromRadioButton) {
+                updateNoteVisibility(note.id, visibilityFromRadioButton)
+            }
+
+            // if the category remains the same, only the tags will be replaced
+            if (note.categoryId == categoryFromSpinner.id) {
+                replaceNoteTags(note, dialogSelectedTags)
+            } else {
+                // the category has been changed, the tags will be replaced as well
+                moveNoteToCategoryWithTags(note, categoryFromSpinner, dialogSelectedTags)
             }
         }
     }
 
     /**
-     * Updates the [selectedNote] visibility to [isPublic] in the remote database.
+     * Updates the visibility of the note with the given [noteId] to [isPublic] in both the local
+     * and remote database.
      */
-    private suspend fun updateNoteVisibilityRemote(isPublic: Boolean) {
+    private suspend fun updateNoteVisibility(noteId: String, isPublic: Boolean) {
+        val result = localRepository.updateNoteVisibility(noteId, isPublic)
+        when (result) {
+            UpdateResult.Success -> updateNoteVisibilityRemote(noteId, isPublic)
+
+            is UpdateResult.Error -> globalDriver.showPopupBanner(
+                PopupBanner.TYPE_FAILURE,
+                result.message ?: R.string.could_not_change_the_note_visibility
+            )
+        }
+    }
+
+    /**
+     * Updates the visibility of the note with the given [noteId] to [isPublic] in the remote database.
+     */
+    private suspend fun updateNoteVisibilityRemote(noteId: String, isPublic: Boolean) {
         val newData = mapOf("public" to isPublic)
 
         scope.launch {
-            val result = firebaseRepository.updateNote(selectedNote.id, newData)
+            val result = firebaseRepository.updateNote(noteId, newData)
             when (result) {
                 UpdateResult.Success -> {}
                 is UpdateResult.Error -> globalDriver.showPopupBanner(
@@ -273,14 +288,56 @@ class NotePropertiesBottomSheetDialog(
     }
 
     /**
-     * Deletes the [selectedNote] from both the local and remote database and closes the dialog.
+     * Replaces the tags of the given [note] with the given [tags] in the database.
      */
-    private fun deleteNoteAndDismiss() {
+    private suspend fun replaceNoteTags(note: Note, tags: List<Tag>) {
+        val result = localRepository.replaceNoteTags(note, tags)
+        when (result) {
+            TagsReplaceResult.Success -> {
+                globalDriver.showPopupBanner(
+                    PopupBanner.TYPE_SUCCESS,
+                    context.getString(R.string.note_updated_successfully)
+                )
+                this@NotePropertiesBottomSheetDialog.dismiss()
+            }
+
+            is TagsReplaceResult.Error -> globalDriver.showPopupBanner(
+                PopupBanner.TYPE_FAILURE,
+                result.message ?: context.getString(R.string.could_not_update_the_tags)
+            )
+        }
+    }
+
+    /**
+     * Moves the given [note] to the given [category] with the given [tags] in the database.
+     */
+    private suspend fun moveNoteToCategoryWithTags(note: Note, category: Category, tags: List<Tag>) {
+        val result = localRepository.moveNoteToCategoryWithTags(note, category, tags)
+        when (result) {
+            MoveNoteResult.Success -> {
+                globalDriver.showPopupBanner(
+                    PopupBanner.TYPE_SUCCESS,
+                    context.getString(R.string.note_updated_successfully)
+                )
+                this@NotePropertiesBottomSheetDialog.dismiss()
+            }
+
+            is MoveNoteResult.Error -> globalDriver.showPopupBanner(
+                PopupBanner.TYPE_FAILURE,
+                result.message ?: context.getString(R.string.could_not_update_the_note)
+            )
+        }
+    }
+
+    /**
+     * Deletes the given [note] from both the local and remote database and closes the dialog.
+     */
+    private fun deleteNoteAndDismiss(note: Note) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val result = localRepository.deleteNoteAndRelatedData(selectedNote)
+            val result = localRepository.deleteNoteAndRelatedData(note)
             when (result) {
                 DeleteResult.Success -> {
-                    deleteNoteRemote(selectedNote.id)
+                    deleteNoteRemote(note.id)
                     globalDriver.showPopupBanner(
                         PopupBanner.TYPE_SUCCESS,
                         context.getString(R.string.note_deleted_successfully)

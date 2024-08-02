@@ -22,13 +22,23 @@ interface NoteDao {
     @Delete
     suspend fun deleteNote(note: NoteEntity)
 
+    @Query("SELECT * FROM notes WHERE id = :noteId")
+    suspend fun getNoteById(noteId: String): NoteEntity
+
     @Query("UPDATE notes SET categoryId = :categoryId WHERE id = :noteId")
     suspend fun updateNoteCategory(noteId: String, categoryId: String?)
+
+    @Query("UPDATE notes SET public = :isPublic WHERE id = :noteId")
+    suspend fun updateNoteVisibility(noteId: String, isPublic: Boolean)
 
     /*@Query("SELECT * FROM notes " +
             "INNER JOIN categories ON notes.categoryId = categories.id " +
             "INNER JOIN notes_tags ON notes.id = notes_tags.noteId " +
             "INNER JOIN tags ON notes_tags.tagId = tags.id")*/
+    @Transaction
+    @Query("SELECT * FROM notes where id = :noteId")
+    fun getNoteWithCategoryAndTagsByNoteId(noteId: String): NoteWithCategoryAndTags
+
     @Transaction
     @Query("SELECT * FROM notes")
     fun getNotesWithCategoryAndTagsObserver(): Flow<List<NoteWithCategoryAndTags>>

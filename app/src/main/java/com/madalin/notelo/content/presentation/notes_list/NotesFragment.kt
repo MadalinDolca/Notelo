@@ -43,7 +43,7 @@ class NotesFragment : Fragment() {
                 activityNavController.navigate(action) //navController.navigate(R.id.noteViewerFragment)
             },
             onOpenNoteProperties = { note ->
-                context?.let { NotePropertiesBottomSheetDialog(it, note).show() }
+                context?.let { NotePropertiesBottomSheetDialog(it, note.id).show() }
             }
         )
 

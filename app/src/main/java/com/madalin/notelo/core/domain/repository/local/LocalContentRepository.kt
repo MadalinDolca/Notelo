@@ -6,6 +6,7 @@ import com.madalin.notelo.core.domain.model.Tag
 import com.madalin.notelo.core.domain.result.DeleteResult
 import com.madalin.notelo.core.domain.result.GetCategoriesResult
 import com.madalin.notelo.core.domain.result.GetCategoryResult
+import com.madalin.notelo.core.domain.result.GetNoteResult
 import com.madalin.notelo.core.domain.result.GetTagsResult
 import com.madalin.notelo.core.domain.result.MoveNoteResult
 import com.madalin.notelo.core.domain.result.TagsReplaceResult
@@ -25,9 +26,26 @@ interface LocalContentRepository {
     suspend fun updateNote(note: Note): UpdateResult
 
     /**
+     * Obtains the note with the given [noteId] from the database and returns a [GetNoteResult].
+     */
+    suspend fun getNoteById(noteId: String): GetNoteResult
+
+    /**
+     * Updates the visibility of the note with the given [noteId] to [isPublic] in the database and
+     * returns an [UpdateResult].
+     */
+    suspend fun updateNoteVisibility(noteId: String, isPublic: Boolean): UpdateResult
+
+    /**
      * Deletes the given [note] and its related data from the database and returns an [DeleteResult].
      */
     suspend fun deleteNoteAndRelatedData(note: Note): DeleteResult
+
+    /**
+     * Obtains the note with the given [noteId] from the database alongside the category it is in
+     * and the category tags applied to it and returns a [GetNoteResult].
+     */
+    suspend fun getNoteWithCategoryAndTagsByNoteId(noteId: String): GetNoteResult
 
     /**
      * Obtains all notes alongside the category they are in and the category tags applied to them

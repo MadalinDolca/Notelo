@@ -78,7 +78,7 @@ class NoteViewerFragment : Fragment() {
         binding.textViewProperties.setOnClickListener {
             val context = context ?: return@setOnClickListener
             val currentNote = viewModel.note ?: return@setOnClickListener
-            NotePropertiesBottomSheetDialog(context, currentNote).show()
+            NotePropertiesBottomSheetDialog(context, currentNote.id).show()
         }
     }
 

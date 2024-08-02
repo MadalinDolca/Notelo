@@ -99,28 +99,28 @@
 
     </RadioGroup>
 
-    <!-- save button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonSave"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_separator"
-        android:text="@string/save"
-        app:layout_constraintEnd_toStartOf="@+id/buttonDelete"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/radioGroupVisibility" />
-
     <!-- delete button -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonDelete"
         style="@style/ButtonAltStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_element"
         android:layout_marginTop="@dimen/margin_separator"
         android:text="@string/detele_note"
+        app:layout_constraintEnd_toStartOf="@+id/buttonSave"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/radioGroupVisibility" />
+
+    <!-- save button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonSave"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_element"
+        android:layout_marginTop="@dimen/margin_separator"
+        android:text="@string/save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonSave"
+        app:layout_constraintStart_toEndOf="@+id/buttonDelete"
         app:layout_constraintTop_toBottomOf="@id/radioGroupVisibility" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

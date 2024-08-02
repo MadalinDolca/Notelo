@@ -1,6 +1,6 @@
 package com.madalin.notelo.discover.data.network
 
-import com.madalin.notelo.core.data.model.ArticleResponse
+import com.madalin.notelo.core.data.remote.model.ArticleResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

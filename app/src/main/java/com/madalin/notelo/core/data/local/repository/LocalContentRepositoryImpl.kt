@@ -18,6 +18,7 @@ import com.madalin.notelo.core.domain.repository.local.LocalContentRepository
 import com.madalin.notelo.core.domain.result.DeleteResult
 import com.madalin.notelo.core.domain.result.GetCategoriesResult
 import com.madalin.notelo.core.domain.result.GetCategoryResult
+import com.madalin.notelo.core.domain.result.GetNoteResult
 import com.madalin.notelo.core.domain.result.GetTagsResult
 import com.madalin.notelo.core.domain.result.MoveNoteResult
 import com.madalin.notelo.core.domain.result.TagsReplaceResult
@@ -52,6 +53,24 @@ class LocalContentRepositoryImpl(
         }
     }
 
+    override suspend fun getNoteById(noteId: String): GetNoteResult {
+        try {
+            val note = noteDao.getNoteById(noteId)
+            return GetNoteResult.Success(note.toNoteDomainModel())
+        } catch (e: Exception) {
+            return GetNoteResult.Error(e.message)
+        }
+    }
+
+    override suspend fun updateNoteVisibility(noteId: String, isPublic: Boolean): UpdateResult {
+        try {
+            noteDao.updateNoteVisibility(noteId, isPublic)
+            return UpdateResult.Success
+        } catch (e: Exception) {
+            return UpdateResult.Error(e.message)
+        }
+    }
+
     override suspend fun deleteNoteAndRelatedData(note: Note): DeleteResult {
         try {
             noteDao.deleteNote(note.toNoteEntity()) // deletes the note
@@ -59,6 +78,15 @@ class LocalContentRepositoryImpl(
             return DeleteResult.Success
         } catch (e: Exception) {
             return DeleteResult.Error(e.message)
+        }
+    }
+
+    override suspend fun getNoteWithCategoryAndTagsByNoteId(noteId: String): GetNoteResult {
+        try {
+            val note = noteDao.getNoteWithCategoryAndTagsByNoteId(noteId)
+            return GetNoteResult.Success(note.toNoteDomainModel())
+        } catch (e: Exception) {
+            return GetNoteResult.Error(e.message)
         }
     }
 

@@ -10,9 +10,9 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.madalin.notelo.R
-import com.madalin.notelo.core.presentation.adapter.NotesAdapter
 import com.madalin.notelo.core.domain.model.Note
 import com.madalin.notelo.core.domain.model.Tag
+import com.madalin.notelo.core.presentation.adapter.NotesAdapter
 import com.madalin.notelo.core.presentation.components.note_properties.NotePropertiesBottomSheetDialog
 import com.madalin.notelo.databinding.FragmentTagNotesBinding
 import com.madalin.notelo.home.presentation.HomeFragmentDirections
@@ -60,7 +60,7 @@ class TaggedNotesFragment : Fragment() {
                 activityNavController.navigate(action)
             },
             onOpenNoteProperties = { note ->
-                context?.let { NotePropertiesBottomSheetDialog(it, note).show() }
+                context?.let { NotePropertiesBottomSheetDialog(it, note.id).show() }
             }
         )
 

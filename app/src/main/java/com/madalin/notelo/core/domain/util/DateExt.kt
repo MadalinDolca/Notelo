@@ -21,4 +21,4 @@ fun Date.asHourAndMinute(): String = SimpleDateFormat("hh:mm a", Locale.getDefau
 /**
  * Returns this [Date] formatted as `dd MMM yy`.
  */
-fun Date.asDate(): String = SimpleDateFormat("dd.MMM.yy", Locale.getDefault()).format(this)
+fun Date.asDate(): String = SimpleDateFormat("dd MMM yy", Locale.getDefault()).format(this)
