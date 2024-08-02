@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.madalin.notelo.R
+import com.madalin.notelo.category_viewer.presentation.adapter.CategoryTagNotesStateAdapter
 import com.madalin.notelo.core.domain.model.Category
 import com.madalin.notelo.core.domain.model.Note
 import com.madalin.notelo.core.domain.model.Tag

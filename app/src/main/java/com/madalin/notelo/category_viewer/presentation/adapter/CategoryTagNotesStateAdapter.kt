@@ -1,8 +1,9 @@
-package com.madalin.notelo.category_viewer.presentation
+package com.madalin.notelo.category_viewer.presentation.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.madalin.notelo.category_viewer.presentation.TaggedNotesFragment
 
 /**
  * Adapter that returns a [TaggedNotesFragment] when [ViewPager2] is used.

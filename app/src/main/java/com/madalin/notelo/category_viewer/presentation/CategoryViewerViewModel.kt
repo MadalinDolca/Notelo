@@ -6,6 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.madalin.notelo.R
+import com.madalin.notelo.category_viewer.domain.TagNotesMapBuilder.buildTagNotesMap
 import com.madalin.notelo.core.domain.model.Category
 import com.madalin.notelo.core.domain.model.Note
 import com.madalin.notelo.core.domain.model.Tag
@@ -80,13 +81,7 @@ class CategoryViewerViewModel(
                     )
                 }
                 .collect {
-                    val data = mutableMapOf<Tag, List<Note>>()
-                    val allTag = Tag.subAllNotes(categoryId)
-                    val allNotes = it.values.flatten().toSet().toList() // unique notes
-
-                    data.put(allTag, allNotes)
-                    data.putAll(it)
-                    _tagNotesMapState.postValue(data)
+                    _tagNotesMapState.postValue(buildTagNotesMap(it))
                 }
         }
     }
