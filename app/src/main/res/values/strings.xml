@@ -149,5 +149,10 @@
     <string name="tag_deleted_successfully">Tag deleted successfully</string>
     <string name="could_not_update_the_tag">Could not update the tag</string>
     <string name="could_not_update_the_tags">Could not update the tags</string>
+    <string name="could_not_obtain_this_category_tags_with_notes">Could not obtain this category tags with notes</string>
+    <string name="could_not_obtain_the_tags_and_notes_of_a_null_category">Could not obtain the tags and notes of a null category</string>
+    <string name="could_not_get_this_category_content">Could not get this category content</string>
+    <string name="could_not_get_this_category_content_because_the_category_id_is_null">Could not get this category content because the category ID is null</string>
+    <string name="could_not_get_this_category_data">Could not get this category data</string>
 
 </resources>

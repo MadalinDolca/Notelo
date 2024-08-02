@@ -76,27 +76,27 @@
         app:layout_constraintTop_toBottomOf="@id/colorPickerView"
         app:selector_BrightnessSlider="@drawable/wheel" />
 
-    <!-- create/update button -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonCreateUpdate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_separator"
-        app:layout_constraintEnd_toStartOf="@id/buttonCancelDelete"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/brightnessSlider" />
-
     <!-- cancel/delete button -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonCancelDelete"
         style="@style/ButtonAltStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_separator"
+        app:layout_constraintEnd_toStartOf="@id/buttonCreateUpdate"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/brightnessSlider" />
+
+    <!-- create/update button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonCreateUpdate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_element"
         android:layout_marginTop="@dimen/margin_separator"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/buttonCreateUpdate"
+        app:layout_constraintStart_toEndOf="@id/buttonCancelDelete"
         app:layout_constraintTop_toBottomOf="@id/brightnessSlider" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

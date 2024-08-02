@@ -1,49 +1,44 @@
 package com.madalin.notelo.category_viewer.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.madalin.notelo.R
-import com.madalin.notelo.databinding.FragmentTagNotesBinding
+import com.madalin.notelo.content.presentation.notes_list.NotesAdapter
 import com.madalin.notelo.core.domain.model.Note
 import com.madalin.notelo.core.domain.model.Tag
+import com.madalin.notelo.core.presentation.components.note_properties.NotePropertiesBottomSheetDialog
+import com.madalin.notelo.databinding.FragmentTagNotesBinding
+import com.madalin.notelo.home.presentation.HomeFragmentDirections
 
 /**
- * [Fragment] to display the list of [Note]s associated with a given [Tag].
+ * [Fragment] that displays the [Note]s associated with a given [Tag].
  */
 class TaggedNotesFragment : Fragment() {
     private lateinit var binding: FragmentTagNotesBinding
-    private lateinit var taggedNotesAdapter: TaggedNotesAdapter
+    private lateinit var notesAdapter: NotesAdapter
     private lateinit var activityNavController: NavController
 
-    private var tag: Tag? = null
-    private var notesList = mutableListOf<Note>()
-
-    // gets the CategoryNotesFragment's ViewModel instance once
-    //private val categoryNotesViewModel by lazy { ViewModelProvider(requireParentFragment())[CategoryNotesViewModel::class.java] }
+    // fragment initialization parameters
+    private val ARG_TAG = "ARG_TAG"
+    private val ARG_NOTES = "ARG_NOTES"
 
     companion object {
-        // the fragment initialization parameters
-        private const val ARG_TAG = "ARG_TAG"
-        private const val ARG_NOTES_LIST = "ARG_NOTES_LIST"
-
         /**
-         * Factory method to create an instance of this fragment and with a bundle with the given data.
-         * @param tag [Tag] of the notes
-         * @param notesList list of notes
-         * @return new instance of [TaggedNotesFragment]
+         * Factory method that creates and returns a [TaggedNotesFragment] instance bundled with
+         * this [tag] and [notesList].
          */
         fun newInstance(tag: Tag, notesList: List<Note>) =
             TaggedNotesFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_TAG, tag)
-                    putParcelableArrayList(ARG_NOTES_LIST, ArrayList(notesList))
+                    putParcelableArrayList(ARG_NOTES, ArrayList(notesList))
                 }
             }
     }
@@ -55,17 +50,29 @@ class TaggedNotesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        // obtains the nav controller of the parent activity
         activityNavController = (activity as AppCompatActivity).findNavController(R.id.mainActivityFragmentContainerView)
-        // obtains the arguments and creates an adapter
-        tag = arguments?.getParcelable(ARG_TAG)
-        notesList = arguments?.getParcelableArrayList(ARG_NOTES_LIST)!!
-        taggedNotesAdapter = TaggedNotesAdapter(context, notesList, activityNavController)
+
+        // sets up the notes adapter
+        notesAdapter = NotesAdapter(
+            onNavigateToNote = { note ->
+                val action = HomeFragmentDirections.actionGlobalNoteViewerFragment(note)
+                activityNavController.navigate(action)
+            },
+            onOpenNoteProperties = { note ->
+                context?.let { NotePropertiesBottomSheetDialog(it, note).show() }
+            }
+        )
 
         // recycler view preparations
         with(binding) {
             recyclerView.layoutManager = LinearLayoutManager(context)
-            recyclerView.adapter = taggedNotesAdapter
+            recyclerView.adapter = notesAdapter
         }
+
+        // populates the adapter
+        val notes = arguments?.getParcelableArrayList<Note>(ARG_NOTES) ?: emptyList()
+        notesAdapter.setNotesList(notes)
+        notesAdapter.notifyDataSetChanged()
     }
 }

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.madalin.notelo.content.presentation.categories_list.util.DynamicColor.getDynamicColor
+import com.madalin.notelo.core.presentation.util.DynamicColor.getDynamicColor
 import com.madalin.notelo.core.domain.model.Category
 import com.madalin.notelo.databinding.LayoutCategoryCardBinding
 

@@ -1,7 +1,10 @@
 package com.madalin.notelo.core.data.local.mapper
 
 import com.madalin.notelo.core.data.local.entity.TagEntity
+import com.madalin.notelo.core.data.local.relation.NullTag
+import com.madalin.notelo.core.domain.model.Category
 import com.madalin.notelo.core.domain.model.Tag
+import java.util.Date
 
 /**
  * Returns a [Tag] representation of this [TagEntity].
@@ -22,5 +25,13 @@ fun Tag.toTagEntity() = TagEntity(
     categoryId = categoryId,
     name = name,
     createdAt = createdAt,
+    updatedAt = updatedAt
+)
+
+fun NullTag.toTagDomainModel() = Tag(
+    id = id ?: Tag.ID_UNTAGGED,
+    categoryId = categoryId ?: Category.ID_UNCATEGORIZED,
+    name = name ?: Tag.NAME_UNTAGGED,
+    createdAt = createdAt ?: Date(),
     updatedAt = updatedAt
 )

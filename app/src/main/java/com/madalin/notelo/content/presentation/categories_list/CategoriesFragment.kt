@@ -36,8 +36,8 @@ class CategoriesFragment : Fragment() {
 
         // sets up the notes adapter
         categoriesAdapter = CategoriesAdapter(
-            onOpenCategoryClick = { openCategory(it, activityNavController) },
-            onOpenCategoryPropertiesClick = { openCategoryProperties(it) }
+            onOpenCategoryClick = { openCategory(it.id, activityNavController) },
+            onOpenCategoryPropertiesClick = { openCategoryProperties(it.id) }
         )
 
         // recycler view preparations
@@ -76,20 +76,22 @@ class CategoriesFragment : Fragment() {
     }
 
     /**
-     * Opens the fragment containing the notes from the given [category] using this [navController].
+     * Opens the fragment containing the notes from the category that has the given [category] using
+     * this [navController].
      */
-    private fun openCategory(category: Category, navController: NavController) {
-        val action = HomeFragmentDirections.actionGlobalCategoryViewerFragment(category)
+    private fun openCategory(categoryId: String, navController: NavController) {
+        val action = HomeFragmentDirections.actionGlobalCategoryViewerFragment(categoryId)
         navController.navigate(action)
     }
 
     /**
-     * Opens the category properties dialog for the given [category] if it's not "Uncategorized".
+     * Opens the properties dialog for the category that has the given [categoryId] if it's not
+     * "Uncategorized".
      */
-    private fun openCategoryProperties(category: Category) {
-        if (category.id != Category.ID_UNCATEGORIZED) {
+    private fun openCategoryProperties(categoryId: String) {
+        if (categoryId != Category.ID_UNCATEGORIZED) {
             val context = context ?: return
-            CategoryPropertiesBottomSheetDialog(context, category).show()
+            CategoryPropertiesBottomSheetDialog(context, categoryId).show()
         }
     }
 }

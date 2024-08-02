@@ -6,7 +6,6 @@ import com.madalin.notelo.core.domain.model.Tag
 import com.madalin.notelo.core.domain.result.DeleteResult
 import com.madalin.notelo.core.domain.result.GetCategoriesResult
 import com.madalin.notelo.core.domain.result.GetCategoryResult
-import com.madalin.notelo.core.domain.result.GetNoteResult
 import com.madalin.notelo.core.domain.result.GetTagsResult
 import com.madalin.notelo.core.domain.result.MoveNoteResult
 import com.madalin.notelo.core.domain.result.TagsReplaceResult
@@ -29,16 +28,6 @@ interface LocalContentRepository {
      * Deletes the given [note] and its related data from the database and returns an [DeleteResult].
      */
     suspend fun deleteNoteAndRelatedData(note: Note): DeleteResult
-
-    /**
-     * Obtains the note with the given [noteId] and returns a [GetNoteResult].
-     */
-    //suspend fun getNoteWithTagsByNoteId(noteId: String): GetNoteResult
-
-    /**
-     * Obtains all notes with their tags from the database and returns them as a [Flow].
-     */
-    //fun getNotesWithTagsObserver(): Flow<List<Note>>
 
     /**
      * Obtains all notes alongside the category they are in and the category tags applied to them
@@ -73,6 +62,11 @@ interface LocalContentRepository {
     suspend fun getCategoryById(categoryId: String): GetCategoryResult
 
     /**
+     * Obtains the category with the given [categoryId] and returns it as a [Flow].
+     */
+    suspend fun getCategoryByIdObserver(categoryId: String): Flow<Category>
+
+    /**
      * Obtains all categories from the database and returns a [GetCategoriesResult].
      */
     suspend fun getCategories(): GetCategoriesResult
@@ -101,6 +95,17 @@ interface LocalContentRepository {
      * Obtains the tags associated with the given [categoryId] and returns a [GetTagsResult].
      */
     suspend fun getTagsByCategoryId(categoryId: String): GetTagsResult
+
+    /**
+     * Obtains the tags associated with the given [categoryId] and returns them as a [Flow].
+     */
+    fun getTagsByCategoryIdObserver(categoryId: String): Flow<List<Tag>>
+
+    /**
+     * Obtains lists of notes mapped by possible tags that belong to the given [categoryId] and
+     * returns them as a [Flow].
+     */
+    fun getNotesInCategoryMappedByTagsObserver(categoryId: String): Flow<Map<Tag, List<Note>>>
 
     /**
      * Replaces the tags of this [note] with the given [tags] and returns a [TagsReplaceResult].

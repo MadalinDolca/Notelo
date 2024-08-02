@@ -62,25 +62,6 @@ class LocalContentRepositoryImpl(
         }
     }
 
-    /*    override suspend fun getNoteWithTagsByNoteId(noteId: String): GetNoteResult {
-            try {
-                val noteWithTags = noteDao.getNoteWithTagsByNoteId(noteId)
-                return GetNoteResult.Success(noteWithTags.toDomainModel())
-            } catch (e: Exception) {
-                return GetNoteResult.Error(e.message)
-            }
-        }*/
-
-    /*override fun getNotesWithTagsObserver(): Flow<List<Note>> {
-        return noteDao.getNotesWithTagsObserver()
-            .distinctUntilChanged()
-            .map { list ->
-                list.map { noteWithTags ->
-                    noteWithTags.toDomainModel()
-                }
-            }
-    }*/
-
     override fun getNotesWithCategoryAndTagsObserver(): Flow<List<Note>> {
         return noteDao.getNotesWithCategoryAndTagsObserver()
             .distinctUntilChanged()
@@ -127,7 +108,7 @@ class LocalContentRepositoryImpl(
     override suspend fun deleteCategoryAndRelatedData(category: Category): DeleteResult {
         try {
             // retrieve all notes in the category
-            val notesInCategory = noteDao.getNotesInCategoryByCategoryId(category.id)
+            val notesInCategory = noteDao.getNotesByCategoryId(category.id)
 
             // for each note, delete its tag relationships
             notesInCategory.forEach { note ->
@@ -153,6 +134,11 @@ class LocalContentRepositoryImpl(
         } catch (e: Exception) {
             return GetCategoryResult.Error(e.message)
         }
+    }
+
+    override suspend fun getCategoryByIdObserver(categoryId: String): Flow<Category> {
+        return categoryDao.getCategoryByIdObserver(categoryId)
+            .map { it.toCategoryDomainModel() }
     }
 
     override suspend fun getCategories(): GetCategoriesResult {
@@ -213,6 +199,23 @@ class LocalContentRepositoryImpl(
         } catch (e: Exception) {
             return GetTagsResult.Error(e.message)
         }
+    }
+
+    override fun getTagsByCategoryIdObserver(categoryId: String): Flow<List<Tag>> {
+        return tagDao.getTagsByCategoryIdObserver(categoryId)
+            .distinctUntilChanged()
+            .map { list ->
+                list.map { it.toTagDomainModel() }
+            }
+    }
+
+    override fun getNotesInCategoryMappedByTagsObserver(categoryId: String): Flow<Map<Tag, List<Note>>> {
+        return noteDao.getNotesInCategoryMappedByTagsObserver(categoryId)
+            .map { entityMap ->
+                entityMap
+                    .mapKeys { (nullTag, _) -> nullTag.toTagDomainModel() }
+                    .mapValues { (_, noteEntities) -> noteEntities.map { it.toNoteDomainModel() } }
+            }
     }
 
     override suspend fun replaceNoteTags(note: Note, tags: List<Tag>): TagsReplaceResult {

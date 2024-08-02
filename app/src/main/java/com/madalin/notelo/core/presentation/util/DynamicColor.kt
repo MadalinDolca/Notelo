@@ -1,4 +1,4 @@
-package com.madalin.notelo.content.presentation.categories_list.util
+package com.madalin.notelo.core.presentation.util
 
 import android.graphics.Color
 import androidx.core.graphics.ColorUtils

@@ -27,4 +27,13 @@ interface TagDao {
 
     @Query("DELETE FROM tags WHERE categoryId = :categoryId")
     suspend fun deleteCategoryTags(categoryId: String)
+
+    /*    @Transaction
+        @Query(
+            "SELECT * FROM tags " +
+                    "INNER JOIN notes_tags ON tags.id = notes_tags.tagId " +
+                    "INNER JOIN notes ON notes_tags.noteId = notes.id " +
+                    "WHERE tags.categoryId = :categoryId"
+        )
+        fun getTagsWithNotesByCategoryIdObserver(categoryId: String): Flow<Map<TagEntity, List<NoteEntity>>>*/
 }

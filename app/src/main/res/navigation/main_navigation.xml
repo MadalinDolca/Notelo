@@ -5,25 +5,35 @@
     android:id="@+id/main_navigation"
     app:startDestination="@id/signInFragment">
 
+    <include app:graph="@navigation/notes_navigation" />
+
     <action
         android:id="@+id/action_global_noteViewerFragment"
         app:destination="@id/noteViewerFragment"
         app:enterAnim="@android:anim/slide_in_left"
         app:exitAnim="@android:anim/slide_out_right" />
+
+    <action
+        android:id="@+id/action_global_categoryViewerFragment"
+        app:destination="@id/categoryViewerFragment"
+        app:enterAnim="@android:anim/slide_in_left"
+        app:exitAnim="@android:anim/slide_out_right" />
+
     <fragment
         android:id="@+id/noteViewerFragment"
         android:name="com.madalin.notelo.note_viewer.presentation.NoteViewerFragment"
-        android:label="fragment_note_viewer"
+        android:label="Note Viewer"
         tools:layout="@layout/fragment_note_viewer">
         <argument
             android:name="noteData"
             app:argType="com.madalin.notelo.core.domain.model.Note"
             app:nullable="true" />
     </fragment>
+
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.madalin.notelo.auth.presentation.signin.SingInFragment"
-        android:label="Sign In Fragment"
+        android:label="Sign In"
         tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_signInFragment_to_homeFragment"
@@ -50,10 +60,11 @@
             app:popUpTo="@id/signInFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.madalin.notelo.auth.presentation.signup.SignUpFragment"
-        android:label="Sign Up Fragment"
+        android:label="Sign Up"
         tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
@@ -64,19 +75,21 @@
             app:popUpTo="@id/signUpFragment"
             app:popUpToInclusive="true" />
     </fragment>
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.madalin.notelo.home.presentation.HomeFragment"
-        android:label="Fragment used to display content, discovery and other fragments"
+        android:label="Home (notes/tags, discovery, etc.)"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_notes_navigation"
             app:destination="@id/notes_navigation" />
     </fragment>
+
     <fragment
         android:id="@+id/passwordResetFragment"
         android:name="com.madalin.notelo.auth.presentation.passwordreset.PasswordResetFragment"
-        android:label="fragment_password_reset"
+        android:label="Password Reset"
         tools:layout="@layout/fragment_password_reset">
         <action
             android:id="@+id/action_passwordResetFragment_to_signInFragment"
@@ -87,21 +100,16 @@
             app:popUpTo="@id/passwordResetFragment"
             app:popUpToInclusive="true" />
     </fragment>
-    <include app:graph="@navigation/notes_navigation" />
+
     <fragment
         android:id="@+id/categoryViewerFragment"
         android:name="com.madalin.notelo.category_viewer.presentation.CategoryViewerFragment"
-        android:label="fragment_category_viewer"
+        android:label="Category Viewer"
         tools:layout="@layout/fragment_category_viewer">
         <argument
-            android:name="categoryData"
-            app:argType="com.madalin.notelo.core.domain.model.Category" />
+            android:name="categoryId"
+            app:argType="string" />
     </fragment>
-    <action
-        android:id="@+id/action_global_categoryViewerFragment"
-        app:destination="@id/categoryViewerFragment"
-        app:enterAnim="@android:anim/slide_in_left"
-        app:exitAnim="@android:anim/slide_out_right" />
 
     <!--    <navigation-->
     <!--        android:id="@+id/notes_navigation"-->

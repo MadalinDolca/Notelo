@@ -8,6 +8,7 @@ import androidx.room.Update
 import androidx.room.Upsert
 import com.madalin.notelo.core.data.local.entity.NoteEntity
 import com.madalin.notelo.core.data.local.relation.NoteWithCategoryAndTags
+import com.madalin.notelo.core.data.local.relation.NullTag
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -32,14 +33,14 @@ interface NoteDao {
     @Query("SELECT * FROM notes")
     fun getNotesWithCategoryAndTagsObserver(): Flow<List<NoteWithCategoryAndTags>>
 
-    /*@Transaction
-    @Query("SELECT * FROM notes WHERE id = :noteId")
-    suspend fun getNoteWithTagsByNoteId(noteId: String): NoteWithTags*/
-
-    /*    @Transaction
-        @Query("SELECT * FROM notes")
-        fun getNotesWithTagsObserver(): Flow<List<NoteWithTags>>*/
-
     @Query("SELECT * FROM notes WHERE categoryId = :categoryId")
-    suspend fun getNotesInCategoryByCategoryId(categoryId: String): List<NoteEntity>
+    suspend fun getNotesByCategoryId(categoryId: String): List<NoteEntity>
+
+    @Query(
+        """SELECT tags.*, notes.* FROM notes
+        LEFT JOIN notes_tags ON notes.id = notes_tags.noteId
+        LEFT JOIN tags ON notes_tags.tagId = tags.id
+        WHERE notes.categoryId = :categoryId"""
+    )
+    fun getNotesInCategoryMappedByTagsObserver(categoryId: String): Flow<Map<NullTag, List<NoteEntity>>>
 }

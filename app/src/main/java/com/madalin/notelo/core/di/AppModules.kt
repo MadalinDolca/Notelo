@@ -1,5 +1,6 @@
 package com.madalin.notelo.core.di
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.room.Room
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -73,5 +74,5 @@ val viewModelModule = module {
     viewModel { NotesViewModel(get(), get()) }
     viewModel { CategoriesViewModel(get(), get()) }
     viewModel { NoteViewerViewModel(get(), get(), get()) }
-    viewModel { CategoryViewerViewModel(get(), get()) }
+    viewModel { (handle: SavedStateHandle) -> CategoryViewerViewModel(handle, get(), get()) }
 }
