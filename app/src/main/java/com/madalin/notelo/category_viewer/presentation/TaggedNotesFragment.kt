@@ -10,7 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.madalin.notelo.R
-import com.madalin.notelo.content.presentation.notes_list.NotesAdapter
+import com.madalin.notelo.core.presentation.adapter.NotesAdapter
 import com.madalin.notelo.core.domain.model.Note
 import com.madalin.notelo.core.domain.model.Tag
 import com.madalin.notelo.core.presentation.components.note_properties.NotePropertiesBottomSheetDialog
