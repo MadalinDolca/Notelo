@@ -13,6 +13,6 @@ data class NoteDocument(
     var title: String = "",
     var content: String = "",
     var public: Boolean = false,
-    var createdAt: Date, // TODO initialize
+    var createdAt: Date = Date(),
     @ServerTimestamp var updatedAt: Date? = null
 ) : Parcelable

@@ -1,7 +1,6 @@
-package com.madalin.notelo.discover.presentation
+package com.madalin.notelo.discover.presentation.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
@@ -9,13 +8,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
-import com.madalin.notelo.core.domain.model.Article
 import com.madalin.notelo.databinding.LayoutArticleCardBinding
-import com.madalin.notelo.articleviewer.presentation.ArticleViewerActivity
-import com.madalin.notelo.core.domain.util.Extra
+import com.madalin.notelo.discover.domain.model.Article
 
 class ArticleAdapter(
-    var context: Context?
+    private val context: Context?,
+    private val onArticleClick: (Article) -> Unit
 ) : RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
 
     private val articlesList = mutableListOf<Article>()
@@ -45,17 +43,16 @@ class ArticleAdapter(
             // darken the article's image
             binding.imageViewArticle.setColorFilter(Color.argb(100, 0, 0, 0), PorterDuff.Mode.DARKEN)
 
-            // opens the article view activity on click
-            binding.root.setOnClickListener {
-                val intent = Intent(context, ArticleViewerActivity::class.java)
-                intent.putExtra(Extra.ARTICLE, articlesList[position])
-                context?.startActivity(intent)
-            }
+            // opens the article viewer on click
+            binding.root.setOnClickListener { onArticleClick(articlesList[position]) }
         }
     }
 
     override fun getItemCount() = articlesList.size
 
+    /**
+     * Sets the list of articles to [newArticlesList].
+     */
     fun setArticlesList(newArticlesList: List<Article>) {
         articlesList.clear()
         articlesList.addAll(newArticlesList)

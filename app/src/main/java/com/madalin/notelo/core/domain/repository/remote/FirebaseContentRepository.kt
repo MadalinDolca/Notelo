@@ -2,6 +2,7 @@ package com.madalin.notelo.core.domain.repository.remote
 
 import com.madalin.notelo.core.domain.model.Note
 import com.madalin.notelo.core.domain.result.DeleteResult
+import com.madalin.notelo.core.domain.result.GetNotesResult
 import com.madalin.notelo.core.domain.result.UpdateResult
 import com.madalin.notelo.core.domain.result.UpsertResult
 
@@ -24,4 +25,15 @@ interface FirebaseContentRepository {
      * Deletes the note that has this [noteId] from Firestore and returns a [DeleteResult].
      */
     suspend fun deleteNote(noteId: String): DeleteResult
+
+    /**
+     * Obtains all public notes from Firestore and returns a [GetNotesResult].
+     */
+    suspend fun getAllPublicNotes(): GetNotesResult
+
+    /**
+     * Obtains all public notes from Firestore that match the given [query] and returns a
+     * [GetNotesResult].
+     */
+    suspend fun getAllPublicNotesByQuery(query: String): GetNotesResult
 }

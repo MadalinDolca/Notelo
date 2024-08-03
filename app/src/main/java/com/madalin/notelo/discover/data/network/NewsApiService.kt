@@ -1,7 +1,6 @@
 package com.madalin.notelo.discover.data.network
 
-import com.madalin.notelo.core.data.remote.model.ArticleResponse
-import retrofit2.Response
+import com.madalin.notelo.discover.data.model.NewsResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -15,18 +14,18 @@ interface NewsApiService {
     suspend fun getEverythingByTerm(
         @Query("q") term: String,
         @Query("apiKey") apiKey: String
-    ): Response<ArticleResponse>
+    ): NewsResponse
 
     @GET("v2/everything")
     suspend fun getEverythingByTermAndSortByPublished(
         @Query("q") term: String,
         @Query("sortBy") sortBy: String,
         @Query("apiKey") apiKey: String
-    ): Response<ArticleResponse>
+    ): NewsResponse
 
     @GET("v2/top-headlines")
     suspend fun getTopHeadlinesFromCountry(
         @Query("country") country: String = "ro",
         @Query("apiKey") apiKey: String
-    ): Response<ArticleResponse>
+    ): NewsResponse
 }

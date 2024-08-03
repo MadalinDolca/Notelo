@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.madalin.notelo.core.di.appModule
 import com.madalin.notelo.core.di.databaseModule
+import com.madalin.notelo.core.di.networkModule
 import com.madalin.notelo.core.di.repositoryModule
 import com.madalin.notelo.core.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
@@ -27,7 +28,7 @@ class NoteloApplication : Application() {
         startKoin {
             androidLogger() // Koin logger
             androidContext(this@NoteloApplication)
-            modules(appModule, databaseModule, repositoryModule, viewModelModule)
+            modules(appModule, databaseModule, networkModule, repositoryModule, viewModelModule)
         }
 
         context = applicationContext

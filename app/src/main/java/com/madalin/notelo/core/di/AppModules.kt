@@ -22,10 +22,16 @@ import com.madalin.notelo.core.domain.repository.remote.FirebaseContentRepositor
 import com.madalin.notelo.core.domain.repository.remote.FirebaseUserRepository
 import com.madalin.notelo.core.presentation.GlobalDriver
 import com.madalin.notelo.core.presentation.MainViewModel
+import com.madalin.notelo.discover.data.network.NewsApiService
+import com.madalin.notelo.discover.data.repository.NewsRepositoryImpl
+import com.madalin.notelo.discover.domain.repository.NewsRepository
+import com.madalin.notelo.discover.presentation.DiscoverViewModel
 import com.madalin.notelo.home.presentation.HomeViewModel
 import com.madalin.notelo.note_viewer.presentation.NoteViewerViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 /**
  * Koin modules to define application components to be injected.
@@ -37,7 +43,6 @@ val appModule = module {
 
     //factory<CoroutineScope> { GlobalScope }
     //factory<CoroutineDispatcher> { Dispatchers.Default }
-    //single { FirebaseRepositoryImpl() } // singleton component of FirebaseRepositoryImpl
 }
 
 val databaseModule = module {
@@ -53,6 +58,19 @@ val databaseModule = module {
     single { get<ContentDatabase>().noteTagDao() }
 }
 
+val networkModule = module {
+    // Retrofit builder instance
+    single {
+        Retrofit.Builder()
+            .baseUrl("https://newsapi.org/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    // implementation of the API endpoints defined by the service interface
+    single { get<Retrofit>().create(NewsApiService::class.java) }
+}
+
 val repositoryModule = module {
     // local repositories
     single<LocalContentRepository> { LocalContentRepositoryImpl(get(), get(), get(), get()) }
@@ -63,6 +81,7 @@ val repositoryModule = module {
     single<FirebaseContentRepository> { FirebaseContentRepositoryImpl(get()) }
 
     // other remote repositories
+    single<NewsRepository> { NewsRepositoryImpl(get(), "a5e7ded12876444db2b12dccad073c6d") }
 }
 
 val viewModelModule = module {
@@ -75,4 +94,5 @@ val viewModelModule = module {
     viewModel { CategoriesViewModel(get(), get()) }
     viewModel { NoteViewerViewModel(get(), get(), get()) }
     viewModel { (handle: SavedStateHandle) -> CategoryViewerViewModel(handle, get(), get()) }
+    viewModel { DiscoverViewModel(get(), get(), get()) }
 }

@@ -1,9 +1,13 @@
 package com.madalin.notelo.core.data.remote.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObjects
+import com.madalin.notelo.core.data.remote.mapper.toDomainModel
+import com.madalin.notelo.core.data.remote.model.NoteDocument
 import com.madalin.notelo.core.domain.model.Note
 import com.madalin.notelo.core.domain.repository.remote.FirebaseContentRepository
 import com.madalin.notelo.core.domain.result.DeleteResult
+import com.madalin.notelo.core.domain.result.GetNotesResult
 import com.madalin.notelo.core.domain.result.UpdateResult
 import com.madalin.notelo.core.domain.result.UpsertResult
 import com.madalin.notelo.core.domain.util.DBCollection
@@ -42,6 +46,37 @@ class FirebaseContentRepositoryImpl(
             return DeleteResult.Success
         } catch (e: Exception) {
             return DeleteResult.Error(e.message)
+        }
+    }
+
+    override suspend fun getAllPublicNotes(): GetNotesResult {
+        val docRef = firestore.collection(DBCollection.NOTES)
+        val filter = docRef.whereEqualTo("public", true)
+        try {
+            val noteDocuments = filter.get().await().toObjects<NoteDocument>()
+            val notes = noteDocuments.map { it.toDomainModel() }
+
+            return GetNotesResult.Success(notes)
+        } catch (e: Exception) {
+            return GetNotesResult.Error(e.message)
+        }
+    }
+
+    override suspend fun getAllPublicNotesByQuery(query: String): GetNotesResult {
+        val docRef = firestore.collection(DBCollection.NOTES)
+        val filter = docRef.whereEqualTo("public", true)
+        try {
+            val noteDocuments = filter.get().await().toObjects<NoteDocument>()
+            val notes = noteDocuments
+                .map { it.toDomainModel() }
+                .filter {
+                    it.title.contains(query, true)
+                            || it.content.contains(query, true)
+                }
+
+            return GetNotesResult.Success(notes)
+        } catch (e: Exception) {
+            return GetNotesResult.Error(e.message)
         }
     }
 }

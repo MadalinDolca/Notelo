@@ -119,5 +119,11 @@
     <string name="could_not_get_this_category_content_because_the_category_id_is_null">Could not get this category content because the category ID is null</string>
     <string name="could_not_get_this_category_data">Could not get this category data</string>
     <string name="could_not_get_the_note_data">Could not get the note data</string>
+    <string name="could_not_fetch_articles">Could not fetch articles</string>
+    <string name="search_anything">Search anything</string>
+    <string name="articles">Articles</string>
+    <string name="could_not_fetch_notes">Could not fetch notes</string>
+    <string name="could_not_fetch_searched_notes">Could not fetch searched notes</string>
+    <string name="could_not_fetch_searched_articles">Could not fetch searched articles</string>
 
 </resources>

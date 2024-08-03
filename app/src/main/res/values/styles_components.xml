@@ -29,6 +29,12 @@
         <item name="android:backgroundTint">@color/background_alt</item>
     </style>
 
+    <!-- Header TextView -->
+    <style name="TextViewHeader">
+        <item name="android:textSize">@dimen/text_big</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <!-- Clickable TextView -->
     <style name="TextViewClickable">
         <item name="android:clickable">true</item>
