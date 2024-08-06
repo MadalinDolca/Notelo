@@ -5,7 +5,7 @@
         <item name="windowSplashScreenBackground">@color/background</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
         <!--<item name="windowSplashScreenAnimationDuration">1000</item>-->
-        <item name="postSplashScreenTheme">@style/Theme.Notelo</item>
+        <item name="postSplashScreenTheme">@style/Theme.Notelo.Light</item>
     </style>
 
     <!-- Old Splash Screen style used without the API -->

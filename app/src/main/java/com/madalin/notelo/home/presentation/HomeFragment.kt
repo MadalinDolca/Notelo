@@ -12,13 +12,11 @@ import com.madalin.notelo.core.presentation.util.EdgeToEdge.DIRECTION_BOTTOM
 import com.madalin.notelo.core.presentation.util.EdgeToEdge.SPACING_MARGIN
 import com.madalin.notelo.core.presentation.util.EdgeToEdge.edgeToEdge
 import com.madalin.notelo.databinding.FragmentHomeBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Fragment used to display notes/categories, add and discovery fragments with a bottom navigation bar.
  */
 class HomeFragment : Fragment() {
-    private val viewModel: HomeViewModel by viewModel()
     private lateinit var binding: FragmentHomeBinding
     private lateinit var navController: NavController
 
@@ -33,8 +31,5 @@ class HomeFragment : Fragment() {
 
         navController = (childFragmentManager.findFragmentById(binding.mainFragmentFragmentContainerView.id) as NavHostFragment).navController
         binding.bottomNavigationView.setupWithNavController(navController) // sets the BottomNavigationView's NavController
-
-        // sign user out on click
-        binding.buttonSignOut.setOnClickListener { viewModel.logout() }
     }
 }

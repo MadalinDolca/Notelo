@@ -133,5 +133,12 @@
     <string name="articled_has_been_added_to_the_personal_collection">Article has been added to the personal collection</string>
     <string name="could_not_add_the_article_to_the_personal_collection">Could not add the article to the personal collection</string>
     <string name="could_not_open_the_article_because_the_url_is_null">Could not open the article because the URL is null</string>
+    <string name="settings">Settings</string>
+    <string name="sign_out">Sign out</string>
+    <string name="switch_theme">Switch theme</string>
+    <string name="signed_in_as_x">Signed in as %s</string>
+    <string name="synchronize_notes">Synchronize notes</string>
+    <string name="enable_dark_mode">Enable dark mode</string>
+    <string name="enable_light_mode">Enable light mode</string>
 
 </resources>

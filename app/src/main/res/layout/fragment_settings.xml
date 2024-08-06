@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/padding_container"
+    android:paddingTop="@dimen/padding_container"
+    tools:context=".settings.presentation.SettingsFragment">
+
+    <!-- header -->
+    <TextView
+        android:id="@+id/textViewHeader"
+        style="@style/TextViewHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- signed in as -->
+    <TextView
+        android:id="@+id/textViewSignInAs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_separator"
+        android:text="@string/signed_in_as_x"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewHeader" />
+
+    <!-- sync notes -->
+    <com.madalin.notelo.settings.presentation.component.SettingRowView
+        android:id="@+id/rowSyncNotes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_element"
+        app:icon="@drawable/ic_cloud_sync"
+        app:layout_constraintTop_toBottomOf="@id/textViewSignInAs"
+        app:text="@string/synchronize_notes" />
+
+    <!-- switch theme -->
+    <com.madalin.notelo.settings.presentation.component.SettingRowView
+        android:id="@+id/rowSwitchTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_element"
+        app:icon="@drawable/ic_light_mode"
+        app:layout_constraintTop_toBottomOf="@id/rowSyncNotes"
+        app:text="@string/switch_theme" />
+
+    <!-- sign out -->
+    <com.madalin.notelo.settings.presentation.component.SettingRowView
+        android:id="@+id/rowSignOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_element"
+        app:icon="@drawable/ic_save"
+        app:layout_constraintTop_toBottomOf="@id/rowSwitchTheme"
+        app:text="@string/sign_out" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

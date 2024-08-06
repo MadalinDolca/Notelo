@@ -6,8 +6,9 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.madalin.notelo.R
-import com.madalin.notelo.core.presentation.util.EdgeToEdge.edgeToEdge
 import com.madalin.notelo.core.presentation.components.PopupBanner
+import com.madalin.notelo.core.presentation.util.EdgeToEdge.edgeToEdge
+import com.madalin.notelo.core.presentation.util.ThemeState
 import com.madalin.notelo.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ThemeState.setModeFromPreferences(this)
         installSplashScreen()
 
         binding = ActivityMainBinding.inflate(layoutInflater) // binds this activity's views
@@ -47,16 +49,5 @@ class MainActivity : AppCompatActivity() {
         viewModel.popupBannerMessage.observe(this) {
             PopupBanner.make(this, it.first, it.second.asString(this)).show()
         }
-
-        // application login state observer
-        /*ApplicationState.isUserSignedIn.observe(this) {
-            if (it) {
-                val navOptions = NavOptions.Builder()
-                    .setPopUpTo(R.id.mainFragment, false)
-                    .build()
-
-                navController.navigate(R.id.mainFragment, null, navOptions)
-            }
-        }*/
     }
 }

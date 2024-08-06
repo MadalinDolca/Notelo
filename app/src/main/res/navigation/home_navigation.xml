@@ -11,10 +11,10 @@
         android:label="Fragment that contains NotesFragment and CategoriesFragment"
         tools:layout="@layout/fragment_notes_and_categories" />
     <fragment
-        android:id="@+id/addFragment"
-        android:name="com.madalin.notelo.add.presentation.AddFragment"
-        android:label="fragment_add"
-        tools:layout="@layout/fragment_add" />
+        android:id="@+id/settingsFragment"
+        android:name="com.madalin.notelo.settings.presentation.SettingsFragment"
+        android:label="Settings fragment"
+        tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/discoverFragment"
         android:name="com.madalin.notelo.discover.presentation.DiscoverFragment"

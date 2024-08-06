@@ -27,8 +27,8 @@ import com.madalin.notelo.discover.data.network.NewsApiService
 import com.madalin.notelo.discover.data.repository.NewsRepositoryImpl
 import com.madalin.notelo.discover.domain.repository.NewsRepository
 import com.madalin.notelo.discover.presentation.DiscoverViewModel
-import com.madalin.notelo.home.presentation.HomeViewModel
 import com.madalin.notelo.note_viewer.presentation.NoteViewerViewModel
+import com.madalin.notelo.settings.presentation.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -90,9 +90,9 @@ val viewModelModule = module {
     viewModel { SignInViewModel(get(), get()) } // injects LoginViewModel with the above dependencies
     viewModel { SignUpViewModel(get(), get()) }
     viewModel { PasswordResetViewModel(get(), get()) }
-    viewModel { HomeViewModel(get()) }
     viewModel { NotesViewModel(get(), get()) }
     viewModel { CategoriesViewModel(get(), get()) }
+    viewModel { SettingsViewModel(get()) }
     viewModel { (handle: SavedStateHandle) -> NoteViewerViewModel(handle, get(), get(), get()) }
     viewModel { (handle: SavedStateHandle) -> CategoryViewerViewModel(handle, get(), get()) }
     viewModel { DiscoverViewModel(get(), get(), get()) }
