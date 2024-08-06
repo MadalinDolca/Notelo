@@ -27,10 +27,10 @@ interface CategoryDao {
     @Query("SELECT * FROM categories WHERE id = :categoryId")
     fun getCategoryByIdObserver(categoryId: String): Flow<CategoryEntity>
 
-    @Query("SELECT * FROM categories")
+    @Query("SELECT * FROM categories ORDER BY coalesce(updatedAt, createdAt) DESC")
     suspend fun getCategories(): List<CategoryEntity>
 
-    @Query("SELECT * FROM categories")
+    @Query("SELECT * FROM categories ORDER BY coalesce(updatedAt, createdAt) DESC")
     fun getCategoriesObserver(): Flow<List<CategoryEntity>>
 
     @Transaction

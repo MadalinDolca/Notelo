@@ -180,7 +180,7 @@ class CategoryPropertiesBottomSheetDialog(
         // validates the category name
         if (!validateName(newName)) return
 
-        val updatedCategory = category.copy(name = newName, color = newColor)
+        val updatedCategory = category.copy(name = newName, color = newColor, updatedAt = Date())
         scope.launch(Dispatchers.IO) {
             val result = localRepository.updateCategory(updatedCategory)
             when (result) {

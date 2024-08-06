@@ -40,17 +40,22 @@ interface NoteDao {
     fun getNoteWithCategoryAndTagsByNoteId(noteId: String): NoteWithCategoryAndTags
 
     @Transaction
-    @Query("SELECT * FROM notes")
+    @Query("SELECT * FROM notes ORDER BY coalesce(updatedAt, createdAt) DESC")
     fun getNotesWithCategoryAndTagsObserver(): Flow<List<NoteWithCategoryAndTags>>
 
-    @Query("SELECT * FROM notes WHERE categoryId = :categoryId")
+    @Query(
+        """SELECT * FROM notes 
+        WHERE categoryId = :categoryId 
+        ORDER BY coalesce(updatedAt, createdAt) DESC"""
+    )
     suspend fun getNotesByCategoryId(categoryId: String): List<NoteEntity>
 
     @Query(
         """SELECT tags.*, notes.* FROM notes
         LEFT JOIN notes_tags ON notes.id = notes_tags.noteId
         LEFT JOIN tags ON notes_tags.tagId = tags.id
-        WHERE notes.categoryId = :categoryId"""
+        WHERE notes.categoryId = :categoryId
+        ORDER BY coalesce(notes.updatedAt, notes.createdAt) DESC"""
     )
     fun getNotesInCategoryMappedByTagsObserver(categoryId: String): Flow<Map<NullTag, List<NoteEntity>>>
 }
