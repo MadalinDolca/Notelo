@@ -92,7 +92,7 @@ val viewModelModule = module {
     viewModel { HomeViewModel(get()) }
     viewModel { NotesViewModel(get(), get()) }
     viewModel { CategoriesViewModel(get(), get()) }
-    viewModel { NoteViewerViewModel(get(), get(), get()) }
+    viewModel { (handle: SavedStateHandle) -> NoteViewerViewModel(handle, get(), get(), get()) }
     viewModel { (handle: SavedStateHandle) -> CategoryViewerViewModel(handle, get(), get()) }
     viewModel { DiscoverViewModel(get(), get(), get()) }
 }

@@ -125,5 +125,9 @@
     <string name="could_not_fetch_notes">Could not fetch notes</string>
     <string name="could_not_fetch_searched_notes">Could not fetch searched notes</string>
     <string name="could_not_fetch_searched_articles">Could not fetch searched articles</string>
+    <string name="could_not_add_the_note_to_the_personal_collection_because_the_user_id_is_null">Could not add the note to the personal collection because the user ID is null</string>
+    <string name="could_not_add_a_null_note_to_the_personal_collection">Could not add a null note to the personal collection</string>
+    <string name="could_not_add_the_note_to_the_personal_collection">Could not add the note to the personal collection</string>
+    <string name="note_has_been_added_to_the_personal_collection">Note has been added to the personal collection</string>
 
 </resources>

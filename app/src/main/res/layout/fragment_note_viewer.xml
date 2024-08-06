@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/background_rounded_top"
         android:backgroundTint="@color/background_alt"
-        android:padding="@dimen/padding_container"
+        android:paddingHorizontal="@dimen/padding_container"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
@@ -77,17 +77,32 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 
-            <!-- properties button -->
-            <TextView
-                android:id="@+id/textViewProperties"
-                style="@style/TextViewClickable"
+            <!-- properties/add button flipper -->
+            <ViewFlipper
+                android:id="@+id/flipperLeft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/properties"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- properties button -->
+                <ImageButton
+                    android:id="@+id/imageButtonProperties"
+                    style="@style/ImageButtonNoBackgroundStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_settings" />
+
+                <!-- add button -->
+                <ImageButton
+                    android:id="@+id/imageButtonAdd"
+                    style="@style/ImageButtonNoBackgroundStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_library_add" />
+
+            </ViewFlipper>
 
             <!-- last edited -->
             <TextView
@@ -100,17 +115,40 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- edit/save/create button -->
-            <TextView
-                android:id="@+id/textViewAction"
-                style="@style/TextViewClickable"
+            <!-- edit/save/create button flipper -->
+            <ViewFlipper
+                android:id="@+id/flipperRight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/edit"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- create button -->
+                <ImageButton
+                    android:id="@+id/imageButtonCreate"
+                    style="@style/ImageButtonNoBackgroundStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add_circle" />
+
+                <!-- edit button -->
+                <ImageButton
+                    android:id="@+id/imageButtonEdit"
+                    style="@style/ImageButtonNoBackgroundStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_edit" />
+
+                <!-- save button -->
+                <ImageButton
+                    android:id="@+id/imageButtonSave"
+                    style="@style/ImageButtonNoBackgroundStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_save" />
+
+            </ViewFlipper>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.madalin.notelo.R
 import com.madalin.notelo.core.domain.util.asDate
 import com.madalin.notelo.core.domain.util.asHourAndMinute
@@ -16,6 +15,7 @@ import com.madalin.notelo.core.presentation.util.EdgeToEdge.DIRECTION_BOTTOM
 import com.madalin.notelo.core.presentation.util.EdgeToEdge.DIRECTION_TOP
 import com.madalin.notelo.core.presentation.util.EdgeToEdge.SPACING_MARGIN
 import com.madalin.notelo.core.presentation.util.EdgeToEdge.edgeToEdge
+import com.madalin.notelo.core.presentation.util.flipTo
 import com.madalin.notelo.databinding.FragmentNoteViewerBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Date
@@ -28,11 +28,11 @@ class NoteViewerFragment : Fragment() {
     private lateinit var binding: FragmentNoteViewerBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // obtains the note's data and sets it to the ViewModel only if it hasn't been set before
+        /*// obtains the note's data and sets it to the ViewModel only if it hasn't been set before
         if (viewModel.note == null) {
             val args: NoteViewerFragmentArgs by navArgs()
             viewModel.note = args.noteData
-        }
+        }*/
 
         binding = FragmentNoteViewerBinding.inflate(inflater, container, false)
         return binding.root
@@ -43,57 +43,32 @@ class NoteViewerFragment : Fragment() {
         edgeToEdge(activity, binding.editTextTitle, SPACING_MARGIN, DIRECTION_TOP)
         edgeToEdge(activity, binding.layoutOptionsWrapper, SPACING_MARGIN, DIRECTION_BOTTOM)
 
-        // determines the mode
-        // if no note has been passed, then the creation layout will be shown
-        if (viewModel.note != null) initializeViewAndUpdateMode()
+        if (viewModel.note != null) initializeViewMode()
         else initializeCreateMode()
 
+        setupListeners()
         setupObservers()
     }
 
     /**
-     * Initializes the note viewing and updating mode. Prepares the layout to allow the user to
-     * view and update the given note.
+     * Initializes the note viewing mode. Prepares the layout to allow the user to
+     * view the current note.
      */
-    private fun initializeViewAndUpdateMode() {
+    private fun initializeViewMode() {
         binding.editTextTitle.setText(viewModel.note?.title)
         binding.editTextContent.setText(viewModel.note?.content)
+        binding.flipperRight.flipTo(binding.imageButtonEdit)
         disableTitleAndContentField() // disabled when opened
         setLastEditedLabel(viewModel.note?.updatedAt)
-
-        // edit button (enables/disables editing)
-        binding.textViewAction.setOnClickListener {
-            // if not in editable state, then enable editing when clicking on "Edit"
-            if (!viewModel.isEditEnabled) {
-                enableEditing()
-                viewModel.isEditEnabled = true
-            }
-            // if already in editable state, update the note when clicking on "Done"
-            else {
-                viewModel.updateNote(binding.editTextTitle.text.toString(), binding.editTextContent.text.toString())
-            }
-        }
-
-        // properties button (shows the properties dialog)
-        binding.textViewProperties.setOnClickListener {
-            val context = context ?: return@setOnClickListener
-            val currentNote = viewModel.note ?: return@setOnClickListener
-            NotePropertiesBottomSheetDialog(context, currentNote.id).show()
-        }
     }
 
     /**
      * Initializes the note creation mode. Prepares the layout to allow the user to create a new note.
      */
     private fun initializeCreateMode() {
-        binding.textViewProperties.visibility = View.GONE
-        binding.textViewAction.text = getString(R.string.create_note)
-
+        binding.imageButtonProperties.visibility = View.GONE
+        binding.flipperRight.flipTo(binding.imageButtonCreate)
         enableTitleAndContentField()
-
-        binding.textViewAction.setOnClickListener { // creates a note when clicking on "Create note"
-            viewModel.saveNote(binding.editTextTitle.text.toString(), binding.editTextContent.text.toString())
-        }
     }
 
     /**
@@ -112,7 +87,7 @@ class NoteViewerFragment : Fragment() {
      * Enabled the editing layout.
      */
     private fun enableEditing() {
-        binding.textViewAction.text = getString(R.string.done)
+        binding.flipperRight.flipTo(binding.imageButtonSave)
         enableTitleAndContentField()
     }
 
@@ -120,7 +95,7 @@ class NoteViewerFragment : Fragment() {
      * Disabled the editing layout.
      */
     private fun disableEditing() {
-        binding.textViewAction.text = getString(R.string.edit)
+        binding.flipperRight.flipTo(binding.imageButtonEdit)
         disableTitleAndContentField()
     }
 
@@ -141,7 +116,48 @@ class NoteViewerFragment : Fragment() {
         binding.editTextContent.background = null
     }
 
+    private fun setupListeners() {
+        // properties button (shows the properties dialog)
+        binding.imageButtonProperties.setOnClickListener {
+            val context = context ?: return@setOnClickListener
+            val currentNote = viewModel.note ?: return@setOnClickListener
+            NotePropertiesBottomSheetDialog(context, currentNote.id).show()
+        }
+
+        // add button
+        binding.imageButtonAdd.setOnClickListener {
+            viewModel.addNoteToCollection()
+        }
+
+        // edit button
+        binding.imageButtonEdit.setOnClickListener {
+            enableEditing()
+        }
+
+        // save button
+        binding.imageButtonSave.setOnClickListener {
+            val title = binding.editTextTitle.text.toString()
+            val content = binding.editTextContent.text.toString()
+            viewModel.updateNote(title, content)
+        }
+
+        // create button
+        binding.imageButtonCreate.setOnClickListener {
+            val title = binding.editTextTitle.text.toString()
+            val content = binding.editTextContent.text.toString()
+            viewModel.saveNote(title, content)
+        }
+    }
+
     private fun setupObservers() {
+        // note owner observer
+        viewModel.isOwnerState.observe(viewLifecycleOwner) {
+            if (!it) {
+                binding.flipperRight.visibility = View.GONE
+                binding.flipperLeft.flipTo(binding.imageButtonAdd)
+            }
+        }
+
         // note title error observer
         viewModel.titleErrorMessageState.observe(viewLifecycleOwner) {
             binding.editTextTitle.error = it.asString(context)
@@ -154,12 +170,11 @@ class NoteViewerFragment : Fragment() {
             binding.editTextContent.requestFocus()
         }
 
-        // is note updated observer
-        viewModel.isNoteUpdatedState.observe(viewLifecycleOwner) {
-            if (it) { // if updated, disables editing
-                disableEditing()
-                viewModel.isEditEnabled = false
-                viewModel.setNoteUpdateStatus(false) // reset status
+        // is note saved observer
+        viewModel.isNoteSavedState.observe(viewLifecycleOwner) {
+            if (it) {
+                findNavController().navigateUp()
+                viewModel.setNoteSavedStatus(false)
             }
         }
 
@@ -169,6 +184,14 @@ class NoteViewerFragment : Fragment() {
                 findNavController().navigateUp() // pops the fragment and returns to the app that navigated to the deep link in this app
                 //findNavController().popBackStack() // pops the fragment only from the app backstack
                 viewModel.setNoteCreationStatus(false)
+            }
+        }
+
+        // is note updated observer
+        viewModel.isNoteUpdatedState.observe(viewLifecycleOwner) {
+            if (it) { // if updated, disables editing
+                disableEditing()
+                viewModel.setNoteUpdateStatus(false) // reset status
             }
         }
 

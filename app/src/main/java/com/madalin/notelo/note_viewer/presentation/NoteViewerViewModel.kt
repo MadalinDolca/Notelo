@@ -2,41 +2,43 @@ package com.madalin.notelo.note_viewer.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.madalin.notelo.R
 import com.madalin.notelo.core.domain.model.Note
 import com.madalin.notelo.core.domain.repository.local.LocalContentRepository
 import com.madalin.notelo.core.domain.repository.remote.FirebaseContentRepository
-import com.madalin.notelo.core.domain.result.DeleteResult
 import com.madalin.notelo.core.domain.result.UpdateResult
 import com.madalin.notelo.core.domain.result.UpsertResult
+import com.madalin.notelo.core.domain.util.generateId
 import com.madalin.notelo.core.domain.validation.NoteValidator
 import com.madalin.notelo.core.presentation.GlobalDriver
 import com.madalin.notelo.core.presentation.components.PopupBanner
 import com.madalin.notelo.core.presentation.util.UiText
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.Date
 
 class NoteViewerViewModel(
+    savedStateHandle: SavedStateHandle,
     private val globalDriver: GlobalDriver,
     private val localRepository: LocalContentRepository,
     private val firebaseRepository: FirebaseContentRepository
 ) : ViewModel() {
-    /**
-     * Note obtained as a navigation argument.
-     */
-    var note: Note? = null
+    var note: Note? = savedStateHandle["noteData"]
 
-    var isEditEnabled = false
+    private val _isOwnerState = MutableLiveData(false)
+    val isOwnerState: LiveData<Boolean> get() = _isOwnerState
 
     private val _titleErrorMessageState = MutableLiveData<UiText>()
     val titleErrorMessageState: LiveData<UiText> get() = _titleErrorMessageState
 
     private val _contentErrorMessageState = MutableLiveData<UiText>()
     val contentErrorMessageState: LiveData<UiText> get() = _contentErrorMessageState
+
+    private val _isNoteSavedState = MutableLiveData(false)
+    val isNoteSavedState: LiveData<Boolean> get() = _isNoteSavedState
 
     private val _isNoteCreatedState = MutableLiveData(false)
     val isNoteCreatedState: LiveData<Boolean> get() = _isNoteCreatedState
@@ -46,6 +48,65 @@ class NoteViewerViewModel(
 
     private val _isNoteDeletedState = MutableLiveData(false)
     val isNoteDeletedState: LiveData<Boolean> get() = _isNoteDeletedState
+
+    init {
+        // checks if the note is owned by the current user
+        if (note?.userId == null || note?.userId == globalDriver.userId) {
+            _isOwnerState.value = true
+        } else {
+            _isOwnerState.value = false
+        }
+    }
+
+    /**
+     * Adds the current note to the user's personal collection.
+     */
+    fun addNoteToCollection() {
+        val currentNote = note
+        if (currentNote == null) {
+            globalDriver.showPopupBanner(
+                PopupBanner.TYPE_FAILURE,
+                R.string.could_not_add_a_null_note_to_the_personal_collection
+            )
+            return
+        }
+
+        val userId = globalDriver.userId
+        if (userId == null) {
+            globalDriver.showPopupBanner(
+                PopupBanner.TYPE_FAILURE,
+                R.string.could_not_add_the_note_to_the_personal_collection_because_the_user_id_is_null
+            )
+            return
+        }
+
+        val newNote = currentNote.copy(
+            id = generateId(),
+            userId = userId,
+            public = false,
+            createdAt = Date(),
+            updatedAt = null
+        )
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = localRepository.upsertNote(newNote)
+            when (result) {
+                UpsertResult.Success -> {
+                    saveNoteRemote(newNote)
+                    _isNoteSavedState.postValue(true)
+                    globalDriver.showPopupBanner(
+                        PopupBanner.TYPE_SUCCESS,
+                        R.string.note_has_been_added_to_the_personal_collection
+                    )
+                }
+
+                is UpsertResult.Error -> globalDriver.showPopupBanner(
+                    PopupBanner.TYPE_FAILURE,
+                    result.message ?: R.string.could_not_add_the_note_to_the_personal_collection
+                )
+            }
+        }
+    }
 
     /**
      * Creates and saves a note with the given [title] and [content]. The note will be saved
@@ -169,55 +230,6 @@ class NoteViewerViewModel(
     }
 
     /**
-     * Deletes the [current note][note] from both the local and remote databases.
-     */
-    fun deleteNote() {
-        val currentNote = note
-        if (currentNote == null) {
-            globalDriver.showPopupBanner(
-                PopupBanner.TYPE_FAILURE,
-                R.string.could_not_delete_the_note_because_the_note_is_null
-            )
-            return
-        }
-
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = localRepository.deleteNoteAndRelatedData(currentNote)
-            when (result) {
-                DeleteResult.Success -> {
-                    deleteNoteRemote(currentNote.id)
-                    _isNoteDeletedState.postValue(true)
-                    globalDriver.showPopupBanner(
-                        PopupBanner.TYPE_SUCCESS,
-                        R.string.note_deleted_successfully
-                    )
-                }
-
-                is DeleteResult.Error -> globalDriver.showPopupBanner(
-                    PopupBanner.TYPE_FAILURE,
-                    result.message ?: R.string.could_not_delete_the_note
-                )
-            }
-        }
-    }
-
-    /**
-     * Deletes the note with the given [id][noteId] from the remote database.
-     */
-    private suspend fun deleteNoteRemote(noteId: String) {
-        viewModelScope.launch {
-            val result = async { firebaseRepository.deleteNote(noteId) }.await()
-            when (result) {
-                DeleteResult.Success -> {}
-                is DeleteResult.Error -> globalDriver.showPopupBanner(
-                    PopupBanner.TYPE_FAILURE,
-                    result.message ?: R.string.could_not_delete_backed_up_note
-                )
-            }
-        }
-    }
-
-    /**
      * Checks if the given [title] and [content] are valid. If not, it updates the data
      * holders accordingly.
      * @return `true` is valid, `false` otherwise.
@@ -243,6 +255,13 @@ class NoteViewerViewModel(
                 return false
             }
         }
+    }
+
+    /**
+     * Sets the note saving status to [isSaved].
+     */
+    fun setNoteSavedStatus(isSaved: Boolean) {
+        _isNoteSavedState.value = isSaved
     }
 
     /**
