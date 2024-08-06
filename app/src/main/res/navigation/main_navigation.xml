@@ -19,6 +19,12 @@
         app:enterAnim="@android:anim/slide_in_left"
         app:exitAnim="@android:anim/slide_out_right" />
 
+    <action
+        android:id="@+id/action_global_articleViewerFragment"
+        app:destination="@id/articleViewerFragment"
+        app:enterAnim="@android:anim/slide_in_left"
+        app:exitAnim="@android:anim/slide_out_right" />
+
     <fragment
         android:id="@+id/noteViewerFragment"
         android:name="com.madalin.notelo.note_viewer.presentation.NoteViewerFragment"
@@ -109,6 +115,17 @@
         <argument
             android:name="categoryId"
             app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/articleViewerFragment"
+        android:name="com.madalin.notelo.article_viewer.presentation.ArticleViewerFragment"
+        android:label="fragment_article_viewer"
+        tools:layout="@layout/fragment_article_viewer">
+        <argument
+            android:name="articleData"
+            app:argType="com.madalin.notelo.discover.domain.model.Article"
+            app:nullable="true" />
     </fragment>
 
     <!--    <navigation-->

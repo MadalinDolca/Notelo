@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/padding_container"
-    tools:context=".articleviewer.presentation.ArticleViewerActivity">
+    tools:context=".article_viewer.presentation.ArticleViewerFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -68,7 +68,7 @@
 
         <!-- button save article as note -->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonSaveAsNote"
+            android:id="@+id/button_add_to_collection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_element"
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_element"
             android:text="@string/article_content"
-            app:layout_constraintTop_toBottomOf="@id/buttonSaveAsNote" />
+            app:layout_constraintTop_toBottomOf="@id/button_add_to_collection" />
 
         <!-- source text -->
         <TextView

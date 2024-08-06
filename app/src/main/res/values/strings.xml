@@ -129,5 +129,9 @@
     <string name="could_not_add_a_null_note_to_the_personal_collection">Could not add a null note to the personal collection</string>
     <string name="could_not_add_the_note_to_the_personal_collection">Could not add the note to the personal collection</string>
     <string name="note_has_been_added_to_the_personal_collection">Note has been added to the personal collection</string>
+    <string name="could_not_add_to_collection_a_null_article">Could not add to collection a null article</string>
+    <string name="articled_has_been_added_to_the_personal_collection">Article has been added to the personal collection</string>
+    <string name="could_not_add_the_article_to_the_personal_collection">Could not add the article to the personal collection</string>
+    <string name="could_not_open_the_article_because_the_url_is_null">Could not open the article because the URL is null</string>
 
 </resources>

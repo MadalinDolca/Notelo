@@ -55,14 +55,11 @@ class DiscoverFragment : Fragment() {
     private fun setupAdapters(navController: NavController) {
         articlesAdapter = ArticleAdapter(context = context,
             onArticleClick = { article ->
-                // todo navigate to article viewer
-                /*val intent = Intent(context, ArticleViewerActivity::class.java)
-                intent.putExtra(Extra.ARTICLE, articlesList[position])
-                context?.startActivity(intent)*/
+                val action = HomeFragmentDirections.actionGlobalArticleViewerFragment(article)
+                navController.navigate(action)
             }
         )
 
-        // todo check if this user owns the note
         notesAdapter = NotesAdapter(
             onNavigateToNote = { note ->
                 val action = HomeFragmentDirections.actionGlobalNoteViewerFragment(note)

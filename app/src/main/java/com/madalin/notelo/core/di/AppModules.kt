@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.madalin.notelo.article_viewer.presentation.ArticleViewerViewModel
 import com.madalin.notelo.auth.data.FirebaseAuthRepositoryImpl
 import com.madalin.notelo.auth.domain.repository.FirebaseAuthRepository
 import com.madalin.notelo.auth.presentation.passwordreset.PasswordResetViewModel
@@ -95,4 +96,5 @@ val viewModelModule = module {
     viewModel { (handle: SavedStateHandle) -> NoteViewerViewModel(handle, get(), get(), get()) }
     viewModel { (handle: SavedStateHandle) -> CategoryViewerViewModel(handle, get(), get()) }
     viewModel { DiscoverViewModel(get(), get(), get()) }
+    viewModel { ArticleViewerViewModel(get(), get(), get(), get()) }
 }
