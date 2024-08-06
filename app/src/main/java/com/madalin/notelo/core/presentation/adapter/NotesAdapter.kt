@@ -36,6 +36,13 @@ class NotesAdapter(
             binding.textViewTitle.text = currentNote.title
             binding.textViewContent.text = currentNote.content
 
+            // show the globe icon if the note is public
+            if (currentNote.public) {
+                binding.imageViewVisibility.visibility = View.VISIBLE
+            } else {
+                binding.imageViewVisibility.visibility = View.GONE
+            }
+
             // shows the category name if it exists
             val category = currentNote.category
             if (category != null) {
