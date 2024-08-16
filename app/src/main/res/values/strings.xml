@@ -140,5 +140,10 @@
     <string name="synchronize_notes">Synchronize notes</string>
     <string name="enable_dark_mode">Enable dark mode</string>
     <string name="enable_light_mode">Enable light mode</string>
+    <string name="could_not_synchronize_notes_because_the_user_id_is_null">Could not synchronize notes because the user ID is null</string>
+    <string name="synchronization_has_started">Synchronization has started</string>
+    <string name="synchronization_has_succeeded">Synchronization has succeeded</string>
+    <string name="synchronization_has_failed">Synchronization has failed</string>
+    <string name="notes_synchronization">Notes synchronization</string>
 
 </resources>

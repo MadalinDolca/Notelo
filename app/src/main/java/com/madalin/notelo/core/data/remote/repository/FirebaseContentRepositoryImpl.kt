@@ -49,6 +49,18 @@ class FirebaseContentRepositoryImpl(
         }
     }
 
+    override suspend fun getNotesByUserId(userId: String): GetNotesResult {
+        val colRef = firestore.collection(DBCollection.NOTES)
+        val filter = colRef.whereEqualTo("userId", userId)
+
+        try {
+            val notes = filter.get().await().toObjects<NoteDocument>()
+            return GetNotesResult.Success(notes.map { it.toDomainModel() })
+        } catch (e: Exception) {
+            return GetNotesResult.Error(e.message)
+        }
+    }
+
     override suspend fun getAllPublicNotes(): GetNotesResult {
         val docRef = firestore.collection(DBCollection.NOTES)
         val filter = docRef.whereEqualTo("public", true)

@@ -27,6 +27,11 @@ interface FirebaseContentRepository {
     suspend fun deleteNote(noteId: String): DeleteResult
 
     /**
+     * Obtains all notes from Firestore that belong to the given [userId] and returns a [GetNotesResult].
+     */
+    suspend fun getNotesByUserId(userId: String): GetNotesResult
+
+    /**
      * Obtains all public notes from Firestore and returns a [GetNotesResult].
      */
     suspend fun getAllPublicNotes(): GetNotesResult

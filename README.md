@@ -10,6 +10,7 @@ group them by tags, making it easy to manage and find the notes you need.
 - Organize notes into categories for easy browsing
 - Group notes by tags for quick filtering
 - Sync your notes across devices using your account
+- Explore and save the public notes of other users or news articles
 - Customize the app with themes and settings
 
 ## 🔜 Coming soon
@@ -21,16 +22,20 @@ group them by tags, making it easy to manage and find the notes you need.
 ## 🔮 Technologies
 
 - **Kotlin** for the app logic
+- **Room** for persistent data
 - **Firebase** as the backend
 - **ViewModel**s to manage the UI's data in a lifecycle-aware fashion
 - **LiveData** to handle data in a lifecycle-aware fashion
-- **Kotlin Coroutines**
+- **Kotlin Coroutines** for asynchronous tasks
+- **Kotlin Flows**
+- **WorkManager**
 - **Koin** for dependency injection
 - **Navigation Component** to allow users to navigate across, into, and back out from the different pieces of content within the app
 - **Safe Args** to attach data to a navigation operation by defining arguments for a destination
 - **Kotlin Parcelize** as a `Parcelable` implementation generator
 - **Retrofit** for the API calls
-- **Glide** for the image loading 
+- **Glide** for the image loading
+- **View Binding** to generate a binding class for each XML layout file
 - Other nice things
 
 ## 🚀 Getting started

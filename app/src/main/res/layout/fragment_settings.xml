@@ -55,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_element"
-        app:icon="@drawable/ic_save"
+        app:icon="@drawable/ic_logout"
         app:layout_constraintTop_toBottomOf="@id/rowSwitchTheme"
         app:text="@string/sign_out" />
 

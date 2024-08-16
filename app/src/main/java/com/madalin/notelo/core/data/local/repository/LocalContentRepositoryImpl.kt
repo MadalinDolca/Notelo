@@ -19,6 +19,7 @@ import com.madalin.notelo.core.domain.result.DeleteResult
 import com.madalin.notelo.core.domain.result.GetCategoriesResult
 import com.madalin.notelo.core.domain.result.GetCategoryResult
 import com.madalin.notelo.core.domain.result.GetNoteResult
+import com.madalin.notelo.core.domain.result.GetNotesResult
 import com.madalin.notelo.core.domain.result.GetTagsResult
 import com.madalin.notelo.core.domain.result.MoveNoteResult
 import com.madalin.notelo.core.domain.result.TagsReplaceResult
@@ -59,6 +60,15 @@ class LocalContentRepositoryImpl(
             return GetNoteResult.Success(note.toNoteDomainModel())
         } catch (e: Exception) {
             return GetNoteResult.Error(e.message)
+        }
+    }
+
+    override suspend fun getAllNotes(): GetNotesResult {
+        try {
+            val notes = noteDao.getAllNotes().map { it.toNoteDomainModel() }
+            return GetNotesResult.Success(notes)
+        } catch (e: Exception) {
+            return GetNotesResult.Error(e.message)
         }
     }
 
