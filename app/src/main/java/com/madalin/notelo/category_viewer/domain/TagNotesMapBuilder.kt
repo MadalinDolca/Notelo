@@ -1,5 +1,6 @@
 package com.madalin.notelo.category_viewer.domain
 
+import com.madalin.notelo.core.domain.model.Category
 import com.madalin.notelo.core.domain.model.Note
 import com.madalin.notelo.core.domain.model.Tag
 
@@ -22,6 +23,17 @@ object TagNotesMapBuilder {
         // removes the possible "Untagged" tag
         val untaggedKey = builtMap.keys.find { it.id == Tag.ID_UNTAGGED }
         untaggedKey?.let { builtMap.remove(it) }
+
+        return builtMap
+    }
+
+    /**
+     * Builds a map of a single tag with notes based on the given [notesList] representing the
+     * uncategorized notes.
+     */
+    fun buildTagNotesMap(notesList: List<Note>): Map<Tag, List<Note>> {
+        val builtMap = mutableMapOf<Tag, List<Note>>()
+        builtMap[Tag.subAllNotes(Category.ID_UNCATEGORIZED)] = notesList
 
         return builtMap
     }

@@ -112,7 +112,7 @@ class LocalContentRepositoryImpl(
 
     override suspend fun moveNoteToCategoryWithTags(note: Note, category: Category, tags: List<Tag>): MoveNoteResult {
         try {
-            val categoryId = if (category.id == Category.ID_UNCATEGORIZED) null else category.id
+            val categoryId = if (Category.isUncategorized(category.id)) null else category.id
             val noteTags = note.apply { this.tags = tags }.toNoteTagCrossRefEntities()
 
             noteTagDao.deleteNoteTagByNoteId(note.id) // deletes the previous note-tag associations
@@ -254,6 +254,11 @@ class LocalContentRepositoryImpl(
                     .mapKeys { (nullTag, _) -> nullTag.toTagDomainModel() }
                     .mapValues { (_, noteEntities) -> noteEntities.map { it.toNoteDomainModel() } }
             }
+    }
+
+    override fun getUncategorizedNotesObserver(): Flow<List<Note>> {
+        return noteDao.getUncategorizedNotesObserver()
+            .map { it.map { noteEntity -> noteEntity.toNoteDomainModel() } }
     }
 
     override suspend fun replaceNoteTags(note: Note, tags: List<Tag>): TagsReplaceResult {

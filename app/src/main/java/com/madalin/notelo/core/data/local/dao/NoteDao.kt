@@ -61,4 +61,11 @@ interface NoteDao {
         ORDER BY coalesce(notes.updatedAt, notes.createdAt) DESC"""
     )
     fun getNotesInCategoryMappedByTagsObserver(categoryId: String): Flow<Map<NullTag, List<NoteEntity>>>
+
+    @Query(
+        """SELECT * FROM notes 
+        WHERE categoryId IS NULL
+        ORDER BY coalesce(notes.updatedAt, notes.createdAt) DESC"""
+    )
+    fun getUncategorizedNotesObserver(): Flow<List<NoteEntity>>
 }

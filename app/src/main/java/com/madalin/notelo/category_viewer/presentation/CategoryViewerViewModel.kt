@@ -46,8 +46,13 @@ class CategoryViewerViewModel(
             return
         }
 
-        getCategoryByIdObserver(categoryId)
-        getNotesMappedByTagsObserver(categoryId)
+        if (Category.isUncategorized(categoryId)) {
+            _categoryState.value = Category.subUncategorized()
+            getUncategorizedNotesObserver()
+        } else {
+            getCategoryByIdObserver(categoryId)
+            getNotesMappedByTagsObserver(categoryId)
+        }
     }
 
     /**
@@ -78,6 +83,24 @@ class CategoryViewerViewModel(
                     globalDriver.showPopupBanner(
                         PopupBanner.TYPE_FAILURE,
                         it.message ?: R.string.could_not_get_this_category_content
+                    )
+                }
+                .collect {
+                    _tagNotesMapState.postValue(buildTagNotesMap(it))
+                }
+        }
+    }
+
+    /**
+     * Obtains the uncategorized notes and observes for changes.
+     */
+    private fun getUncategorizedNotesObserver() {
+        viewModelScope.launch(Dispatchers.IO) {
+            localRepository.getUncategorizedNotesObserver()
+                .catch {
+                    globalDriver.showPopupBanner(
+                        PopupBanner.TYPE_FAILURE,
+                        it.message ?: R.string.could_not_get_the_notes
                     )
                 }
                 .collect {

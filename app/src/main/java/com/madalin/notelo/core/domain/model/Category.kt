@@ -33,5 +33,11 @@ data class Category(
             id = ID_UNCATEGORIZED,
             name = NAME_UNCATEGORIZED
         )
+
+        /**
+         * Returns `true` if the given [id] is null or equal to [ID_UNCATEGORIZED], otherwise returns `false`.
+         */
+        fun isUncategorized(id: String?) = id == ID_UNCATEGORIZED || id == null
+
     }
 }

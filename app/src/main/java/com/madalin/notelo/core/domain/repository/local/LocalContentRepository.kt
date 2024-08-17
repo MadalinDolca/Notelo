@@ -132,6 +132,11 @@ interface LocalContentRepository {
     fun getNotesInCategoryMappedByTagsObserver(categoryId: String): Flow<Map<Tag, List<Note>>>
 
     /**
+     * Obtains all uncategorized notes from the database and returns them as a [Flow].
+     */
+    fun getUncategorizedNotesObserver(): Flow<List<Note>>
+
+    /**
      * Replaces the tags of this [note] with the given [tags] and returns a [TagsReplaceResult].
      */
     suspend fun replaceNoteTags(note: Note, tags: List<Tag>): TagsReplaceResult

@@ -60,7 +60,7 @@ class CategoryViewerFragment : Fragment() {
         }
 
         // shows category properties on click if the category is not "uncategorized"
-        if (viewModel.categoryId != null && viewModel.categoryId != Category.ID_UNCATEGORIZED) {
+        if (!Category.isUncategorized(viewModel.categoryId)) {
             binding.imageButtonProperties.setOnClickListener {
                 val context = context ?: return@setOnClickListener
                 CategoryPropertiesBottomSheetDialog(context, viewModel.categoryId).show()
@@ -82,7 +82,8 @@ class CategoryViewerFragment : Fragment() {
         if (color != null) {
             val backgroundColor = Color.parseColor(color)
             val textColor = DynamicColor.getDynamicColor(backgroundColor)
-            binding.tabLayoutTags.setTabTextColors(resources.getColor(R.color.text_on_primary), textColor)
+            // todo fix selected tag text color
+            //binding.tabLayoutTags.setTabTextColors(resources.getColor(R.color.text_on_primary), textColor)
             binding.tabLayoutTags.setSelectedTabIndicatorColor(Color.parseColor(color))
         }
     }
