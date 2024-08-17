@@ -29,7 +29,7 @@ class ManageTagsDialog(
     ownerContext: Context,
     private val givenCategory: Category
 ) : Dialog(ownerContext), KoinComponent {
-    private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val binding = LayoutManageTagsDialogBinding.inflate(layoutInflater)
 
     private val globalDriver: GlobalDriver by inject()
@@ -66,7 +66,7 @@ class ManageTagsDialog(
      * Obtains the tags of [givenCategory] from the database and notifies the [tagsAdapter].
      */
     private fun getCategoryTags() {
-        scope.launch(Dispatchers.IO) {
+        scope.launch {
             val result = localRepository.getTagsByCategoryId(givenCategory.id)
             when (result) {
                 is GetTagsResult.Success -> {
@@ -93,15 +93,14 @@ class ManageTagsDialog(
         if (!validateTagName(tagName)) return // checks if the provided data is valid
         val newTag = Tag(name = tagName, categoryId = givenCategory.id)
 
-        scope.launch(Dispatchers.IO) {
+        scope.launch {
             val result = localRepository.upsertTag(newTag)
             when (result) {
                 UpsertResult.Success -> {
-                    binding.editTextAddTag.text.clear()
-                    tagsList.add(newTag)
-
-                    // updates the adapter on the original thread
+                    // updates on the original thread
                     withContext(Dispatchers.Main) {
+                        tagsList.add(newTag)
+                        binding.editTextAddTag.text.clear()
                         tagsAdapter.notifyItemInserted(tagsList.size - 1)
                     }
                 }
@@ -148,11 +147,12 @@ class ManageTagsDialog(
             val result = localRepository.deleteTagAndRelatedData(tag)
             when (result) {
                 DeleteResult.Success -> {
-                    val removedTagIndex = tagsList.indexOf(tag)
-                    tagsList.removeAt(removedTagIndex)
-
                     withContext(Dispatchers.Main) {
-                        tagsAdapter.notifyItemRemoved(removedTagIndex)
+                        val removedTagIndex = tagsList.indexOf(tag)
+                        if (removedTagIndex != -1) {
+                            tagsList.removeAt(removedTagIndex)
+                            tagsAdapter.notifyItemRemoved(removedTagIndex)
+                        }
                     }
                 }
 
